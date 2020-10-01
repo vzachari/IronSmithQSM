@@ -119,7 +119,7 @@ if [ -z "$CSVFile" ]; then
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: No input file provided! "
 	echo "Syntax: Ironsmith MyInputFile.txt  /path/to/output/folder"
-	echo "Please see $Path\README.txt for details"
+	echo "Please see $Path/README.txt for details"
 	echo -e "----------------------------------------------\e[0m"	
 	echo ""	
 	exit
@@ -130,7 +130,7 @@ elif [ -z "$OutFolder" ]; then
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: No output folder provided! "
 	echo "Syntax: Ironsmith MyInputFile.txt  /path/to/output/folder"
-	echo "Please see $Path\README.txt for details"
+	echo "Please see $Path/README.txt for details"
 	echo -e "----------------------------------------------\e[0m"	
 	echo ""	
 	exit
@@ -140,7 +140,7 @@ elif [ ! -z "$TooManyInputs" ]; then
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: Too many arguments provided! "
 	echo "Syntax: Ironsmith MyInputFile.txt /path/to/output/folder"
-	echo "Please see $Path\README.txt for details"
+	echo "Please see $Path/README.txt for details"
 	echo -e "----------------------------------------------\e[0m"	
 	echo ""
 	echo $TooManyInputs	
