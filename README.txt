@@ -1,8 +1,11 @@
-██ ██████   ██████  ███    ██     ███████ ███    ███ ██ ████████ ██   ██ 
-██ ██   ██ ██    ██ ████   ██     ██      ████  ████ ██    ██    ██   ██ 
-██ ██████  ██    ██ ██ ██  ██     ███████ ██ ████ ██ ██    ██    ███████ 
-██ ██   ██ ██    ██ ██  ██ ██          ██ ██  ██  ██ ██    ██    ██   ██ 
-██ ██   ██  ██████  ██   ████     ███████ ██      ██ ██    ██    ██   ██ 
+ ___   ______    _______  __    _    _______  __   __  ___   _______  __   __ 
+|   | |    _ |  |       ||  |  | |  |       ||  |_|  ||   | |       ||  | |  |
+|   | |   | ||  |   _   ||   |_| |  |  _____||       ||   | |_     _||  |_|  |
+|   | |   |_||_ |  | |  ||       |  | |_____ |       ||   |   |   |  |       |
+|   | |    __  ||  |_|  ||  _    |  |_____  ||       ||   |   |   |  |       |
+|   | |   |  | ||       || | |   |   _____| || ||_|| ||   |   |   |  |   _   |
+|___| |___|  |_||_______||_|  |__|  |_______||_|   |_||___|   |___|  |__| |__|
+
 
 # Ironsmith QSM Toolkit V1.0 (09/24/2020)		       
 Created by Valentinos Zachariou	    		       
@@ -57,8 +60,12 @@ University of Kentucky
 
 			a) DICOMS (Only MPR/MEMPR DICOMS should be present in the MPR folder if you want IronSmith to process DICOMS). 
 				If NIFTI files exist together with the DICOMS, they will be selected instead (see "b" below). 
-			b) Multiple .nii/.nii.gz files each corresponding to a different echo.    
-			c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.    
+			
+			b) Multiple .nii/.nii.gz files each corresponding to a different echo. 
+				Each NIFTI file needs to have _e# in the file name, where # is the echo# (e.g S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz ...)
+				This is the default dcm2niix output format for multiple echos and protects against errors. 
+    
+			c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo. NIFTI    
 			d) Single .nii/nii.gz file with a single echo/timepoint. <--- this can be rms/averaged across echos or just a single echo T1 MPRAGE.
  
 		Column4 = Absolute path to folder with QSM DICOM files (e.g. /home/subjecs/S01/QSM_Dicom).
@@ -75,7 +82,11 @@ University of Kentucky
 
 			a) DICOMS (Only MPR/MEMPR DICOMS should be present in the MPR folder if you want IronSmith to process DICOMS). 
 				If NIFTI files exist together with the DICOMS, they will be selected instead (see "b" below).  
+			
 			b) Multiple .nii/.nii.gz files each corresponding to a different echo.   
+				Each NIFTI file needs to have _e# in the file name, where # is the echo# (e.g S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz ...)
+				This is the default dcm2niix output format for multiple echos and protects against errors.
+			
 			c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.    
 			d) Single .nii/nii.gz file with a single echo/timepoint <--- this can be rms/averaged across echos or just a single echo T1 MPRAGE.
 
@@ -123,25 +134,3 @@ University of Kentucky
 			Group_QSM_SNR.csv <--- Per ROI SNR measures: mean signal intensity of magnitude image within ROI / standard deviation of magnitude signal outside the head.
 				The outside the head mask is /QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz
 				
-
-#   .-'  /           
-# .'    /   /`.    
-# |    /   /  |   
-# |    \__/   |   
-# `.         .'   
-#   `.     .'    
-#     | ][ |      
-#     | ][ |
-#     | ][ |
-#     | ][ |    
-#     | ][ |  
-#     | ][ |      
-#     | ][ |    
-#     | ][ |    
-#     | ][ |
-#   .'  __  `.
-#   |  /  \  | 
-#   |  \__/  |
-#   `.      .'
-#     `----'
-

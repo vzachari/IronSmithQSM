@@ -82,7 +82,6 @@ echo ""
 sleep 3s
 
 echo ""
-#echo -e "Path set to \e[44m$Path\e[0m"
 echo "Path set to $Path"
 echo ""
    
@@ -95,6 +94,31 @@ First_DICOM=0
 DICOM_Error=0
 ContainerFlag=0 #1 = Singularity, 2 = Docker
 MatlabFlag=0
+
+#Check if QSM_Container.simg is in /Functions
+
+if [ -f "$Path/Functions/QSM_Container.simg" ] && [[ $(find $Path/Functions/QSM_Container.simg -type f -size +8G 2>/dev/null) ]]; then
+
+	echo ""	
+	echo "QSM_Container.simg FOUND in $Path/Functions"
+	echo ""
+
+else
+
+	echo ""	
+	echo -e "\e[31m----------------------------------------------"
+	echo "ERROR: QSM_Container.simg NOT FOUND in $Path/Functions or is the wrong size (should be 8.8G)! (⊙_◎) "
+	echo ""	
+	echo "Please download QSM_Container.simg from:"
+	echo ""
+	echo "https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing"
+	echo ""
+	echo "Then place in $Path/Functions"
+	echo -e "----------------------------------------------\e[0m"	
+	echo ""	
+	exit
+
+fi
 
 echo ""
 echo "---------------------------------------------------------------"
@@ -115,6 +139,7 @@ fi
 #Check arguments provided with Master_Script command
 
 if [ -z "$CSVFile" ]; then
+	
 	echo ""	
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: No input file provided! "
@@ -311,7 +336,7 @@ do
 			
 			# First check for Matlab
 			unset MatVer	
-			#MatVer=$(matlab -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n2 | head -c 3) # change matlab command
+			#MatVer=$(matlab -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n2 | head -c 3)
 			bash $Path/Functions/MatlabVer.sh $Path < /dev/null
 			MatVer=$(cat $Path/Functions/MatTempFile.txt)
 			rm $Path/Functions/MatTempFile.txt		
@@ -412,7 +437,7 @@ do
 	if [ ! -d "$MPRDir" ]; then
 		echo ""
 		echo -e "\e[31m----------------------------------------------"
-		echo "ERROR: MPRAGE Directory: $MPRDir NOT FOUND! Skipping $Subj..."
+		echo "ERROR: MPR/MEMPR Directory: $MPRDir NOT FOUND! Skipping $Subj..."
 		echo -e "----------------------------------------------\e[0m"
 		echo ""
 		continue	
@@ -420,7 +445,7 @@ do
 	else
 		echo ""		
 		#echo -e "\e[44m$MPRDir\e[0m FOUND! Checking folder contents"
-		echo "MPRAGE Directory: $MPRDir FOUND! Checking folder contents"			
+		echo "MPR/MEMPR Directory: $MPRDir FOUND! Checking folder contents..."			
 		echo ""
 
 		if [ ! "$(ls -A $MPRDir)" ]; then
@@ -452,9 +477,9 @@ do
 					
 					echo ""	
 					echo -e "\e[31m----------------------------------------------"
-					echo "ERROR: MPR directory $MPRDir has one or more of these issues:" 
+					echo "ERROR: MPR/MEMPR directory $MPRDir has one or more of these issues:" 
 					echo "1. Folder has DICOMs but also other files that are not DICOMS (excluding: NIFTI/AFNI/Analyze formats)"
-					echo "2. Folder has files in it but are neither NIFTI nor DICOMs"
+					echo "2. Folder has files in it but are neither NIFTI nor DICOM! It's a mystery ¿ⓧ_ⓧﮌ "
 					echo "PLEASE check $MPRDir! Skipping $Subj..."
 					echo -e "----------------------------------------------\e[0m"
 					echo ""					
@@ -470,8 +495,7 @@ do
 				unset First_DICOM Dicom_Err
 
 
-
-			elif [[ -n $(find $MPRDir -mindepth 1 -maxdepth 1 -type f -name "*_e*nii*") ]]; then 
+			elif [[ -n $(find $MPRDir -mindepth 1 -maxdepth 1 -type f -name "*_e*nii*") ]] && [ $(ls -1 $MPRDir/*_e*nii* 2>/dev/null | wc -l) -gt 1 ]; then 
 				
 				echo ""				
 				echo "Multiple echos found as separate NIFTI files:"
@@ -482,7 +506,8 @@ do
 				MPRType=1 # Multiple echos as separate _e files			
 				echo ""	
 		
-			elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [[ -n $(find . -mindepth 1 -maxdepth 1 -type f ! -name "*_e*") ]]; then
+			#elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [[ -n $(find . -mindepth 1 -maxdepth 1 -type f ! -name "*_e*") ]]; then
+			 elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [ $(ls -1 $MPRDir/*.nii* 2>/dev/null | wc -l) -eq 1 ]; then
 			
 				echo ""	
 				echo "Single NIFTI file found, checking if multiple echos exist within file:"
