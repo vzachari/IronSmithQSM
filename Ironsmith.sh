@@ -94,6 +94,7 @@ First_DICOM=0
 DICOM_Error=0
 ContainerFlag=0 #1 = Singularity, 2 = Docker
 MatlabFlag=0
+MatPath="MATLAB PATH NOT SET"
 
 #Check if QSM_Container.simg is in /Functions
 
@@ -335,9 +336,12 @@ do
 		if [[ $MatlabFlag == 0 ]]; then
 			
 			# First check for Matlab
-			unset MatVer	
-			#MatVer=$(matlab -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n2 | head -c 3)
-			bash $Path/Functions/MatlabVer.sh $Path < /dev/null
+			unset MatVer
+			
+			MatPath=$(grep -v "#" Matlab_Config.txt | grep "MATLAB_Path=" | awk -F'"' '{print $2}')
+	
+			#MatVer=$($MatPath -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n2 | head -c 3)
+			bash $Path/Functions/MatlabVer.sh $Path $MatPath < /dev/null
 			MatVer=$(cat $Path/Functions/MatTempFile.txt)
 			rm $Path/Functions/MatTempFile.txt		
 
@@ -731,9 +735,10 @@ do
 		#2) Output Folder
 		#3) Path
 		#4) QSM_Dicom_Dir
+		#5) Matlab path
 
 		#Command		
-		bash $Path/Functions/MEDI.sh $Subj $OutFolder $Path $QSM_Dicom_Dir < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI.txt
+		bash $Path/Functions/MEDI.sh $Subj $OutFolder $Path $QSM_Dicom_Dir $MatPath < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI.txt
 
 		#Error Handling
 		ExCode=$?
@@ -859,10 +864,11 @@ do
 		#1) Suject
 		#2) Output folder
 		#3) Path
-		#3) QSM DICOM Dir
+		#4) QSM DICOM Dir
+		#5) Matlab path
 				
 		#Command
-		bash $Path/Functions/MEDI_QSM_New_Ref.sh $Subj $OutFolder $Path $QSM_Dicom_Dir < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI_QSM_New_Ref.txt
+		bash $Path/Functions/MEDI_QSM_New_Ref.sh $Subj $OutFolder $Path $QSM_Dicom_Dir $MatPath < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI_QSM_New_Ref.txt
 
 		#Error Handling
 		ExCode=$?

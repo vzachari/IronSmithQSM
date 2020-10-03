@@ -33,6 +33,7 @@ Subj=$1
 OutFolder=$2
 Path=$3
 QSM_Dicom_Dir=$4
+MatPath=$5
 
 log_file=$(echo "$OutFolder/$Subj/LogFiles/$Subj.Output.MEDI.QSM.New.Ref.txt")
 exec &> >(tee -a "$log_file")
@@ -138,9 +139,9 @@ echo ""
 
 #Run MEDI_QSM_New_Ref.m FILE to create QSM Maps with new CSF and new WM masks as reference
 #stty -tostop
-#matlab -nodisplay -nosplash -nodesktop -r "run('${Subj}_MEDI_QSM.m');exit;"
-#matlab -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-matlab -nodisplay -nosplash -nodesktop -r "try; ${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt
+#$MatPath -nodisplay -nosplash -nodesktop -r "run('${Subj}_MEDI_QSM.m');exit;"
+#$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
+$MatPath -nodisplay -nosplash -nodesktop -r "try; ${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt
 
 if (grep -Fq "*ERROR*ERROR*ERROR*" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt); then
 	

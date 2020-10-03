@@ -1,0 +1,4 @@
+#change the path within the quotes to the path of the MATLAB executalbe on your system (supported versions between R2017b to R2019b)
+#running /usr/local/MATLAB/R2019b/bin/matlab from the command line should launch matlab
+
+MATLAB_Path="/usr/local/MATLAB/R2019b/bin/matlab"

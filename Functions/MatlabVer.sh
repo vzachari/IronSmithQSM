@@ -3,6 +3,7 @@
 set -e #Exit on error
 
 Path=$1
+MatPath=$2
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
@@ -21,7 +22,7 @@ Path=$1
 #                  { }
 
 
-MatVersion=$(matlab -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n1 | head -c 3) # change matlab command
+MatVersion=$($MatPath -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n1 | head -c 3) # change matlab command
 
 echo "${MatVersion:-ERROR}" > $Path/Functions/MatTempFile.txt
 
