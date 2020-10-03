@@ -3,7 +3,7 @@
 Valentinos Zachariou  
 University of Kentucky
 
-## IronSmith uses the following software, provided in the form of a singularity image:
+## Ironsmith uses the following software, provided in the form of a singularity image:
 
 ### 1.AFNI
 
@@ -43,7 +43,10 @@ http://pre.weill.cornell.edu/mri/pages/qsm.html
 
 #### a) MATLAB
 
-Ironsmith requires Matlab to run MEDI and supports versions R2017b to R2019b.  Matlab is not needed if MEDI is not required. The symbolic link/command "matlab" must exist and should open one of the required Matlab versions.
+Ironsmith requires Matlab to run MEDI and supports versions R2017b to R2019b.  
+Matlab is not needed if MEDI is not required.  
+Please edit Matlab_Config.txt in IronSmithQSM folder with the path to the matlab executable on your system.  
+*(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*
 
 #### b) Singularity
 
@@ -90,11 +93,11 @@ b) Each row corresponds to a different participant.
 
 a) DICOMS
 
-Only MPR/MEMPR DICOMS should be present in the MPR folder if you want IronSmith to process DICOMS. If NIFTI files exist together with DICOMS, they will be selected instead (see "b" below).
+Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith to process DICOMS. If NIFTI files exist together with DICOMS, they will be selected instead (see "b" below).
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo.
 
-Each NIFTI file needs to have _e# in the file name, where # is the echo number  
+Each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
@@ -106,14 +109,14 @@ This can be rms/averaged across echos or just a single echo T1 MPRAGE.
 **Column4** = Absolute path to folder with QSM DICOM files  
 *(e.g. /home/subjecs/S01/QSM_Dicom)*
 
-Preferably only QSM DICOMS should be present in the QSM_Dicom folder.  However, IronSmith can filter out the following filetypes .nii .json .txt .nii.gz .HEAD .BRIK .hdr .img
+Preferably only QSM DICOMS should be present in the QSM_Dicom folder. However, Ironsmith can filter out the following filetypes .nii .json .txt .nii.gz .HEAD .BRIK .hdr .img
 
 All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 
 ### If MEDI is NOT required. That is QSM Maps, Phase and Magnitude images are already available:  
 
-**Column1** = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer).  
-**Column2** = MEDI_No <-- This is case sensitive.  
+**Column1** = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
+**Column2** = MEDI_No <-- This is case sensitive  
 **Column3** = Absolute path to directory with MPR/MEMPR files  
 *(e.g. /home/subjecs/S01/MPR)*
 
@@ -121,11 +124,11 @@ All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 
 a) DICOMS
 
-Only MPR/MEMPR DICOMS should be present in the MPR folder if you want IronSmith to process DICOMS. If NIFTI files exist together with DICOMS, they will be selected instead (see "b" below).
+Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith to process DICOMS. If NIFTI files exist together with DICOMS, they will be selected instead (see "b" below).
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo.
 
-Each NIFTI file needs to have _e# in the file name, where # is the echo number  
+Each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
@@ -161,13 +164,13 @@ a) All masks/ROIs are placed under:
 **S0001/QSM/Freesurf_QSM_Masks/Cort_Masks_AL_QSM_RS_Erx1  
 S0001/QSM/Freesurf_QSM_Masks/SubC_Masks_AL_QSM_RS_Erx1**
 
-b) All QSM maps/images created are under S0001/QSM/Freesurf_QSM_Masks and are labelled as:
+b) All QSM maps/images created are placed under S0001/QSM/Freesurf_QSM_Masks and are labelled as:
 
-**Subj_QSM_Map_FSL.nii.gz**		<-- Default MEDI  
+**Subj_QSM_Map_FSL.nii.gz**	<-- Default MEDI  
 **Subj_QSM_Map_New_CSF_FSL.nii.gz** <-- Lateral ventricles as the QSM reference structure  
-**Subj_QSM_Map_New_WM_FSL.nii.gz**  <-- White matter as the QSM reference structure  
+**Subj_QSM_Map_New_WM_FSL.nii.gz** <-- White matter as the QSM reference structure  
 
-c) All QSM maps warped to MNI space are placed in
+c) All QSM maps warped to MNI space are placed under
 
 **S0001/QSM/Freesurf_QSM_Masks/MNI152_QSM**
 
@@ -175,7 +178,7 @@ d) QSM per ROI means (87 ROIs) are under **/QSM_Analysis/Group** as follows:
 
 **Group_QSM_Mean.csv** <--- Using only positive QSM voxels  
 **Group_QSM_Adj_Mean.csv** <--- Using only positive QSM voxels and adjusting for ROI size  
-**Group_QSM_SNR.csv** <--- Per ROI SNR measures.
+**Group_QSM_SNR.csv** <--- Per ROI SNR measures
 
 SNR is calculated as follows:  
 mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head.
