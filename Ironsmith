@@ -233,7 +233,6 @@ echo ""
 
 #Check for Singularity or docker
 
-
 if command -v singularity &> /dev/null; then
 
 	#SingVer1=$(singularity --version | awk -F 'version' '{print $1}')
@@ -311,6 +310,22 @@ elif ! command -v singularity &> /dev/null; then
 		exit
 	fi
 fi
+
+echo "									___/-\___ "
+echo "---------------------------------------------------------------        |---------|"
+echo "*** Cleaning $Path/LogFiles:						| | | | | "
+echo "									| | | | | "
+echo "Log files older than 30 days will be deleted *** 			| | | | | "
+echo "---------------------------------------------------------------		| | | | | "
+echo "									|_______| "
+
+echo ""
+echo "Delting log files..."
+echo ""
+
+find $Path/LogFiles -daystart -maxdepth 1 -mtime +30 -type f -name "Output.Ironsmith*.txt" -delete
+
+
 
 echo ""
 echo "---------------------------------------------------------------"
