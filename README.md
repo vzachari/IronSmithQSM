@@ -80,12 +80,12 @@ a) MyInputFile has to be CSV formatted (entries separated by commas ',').
 
 b) Each row corresponds to a different participant.  
 
-*see Example_File.CSV in IronSmithQSM folder:*  
+*see Example_File.csv in IronSmithQSM folder:*  
 
 ### If MEDI is required to create QSM images/maps:  
 
 **Column1** = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
-**Column2** = MEDI_Yes <-- this is case sensitive  	
+**Column2** = MEDI_Yes <-- this is case sensitive  
 **Column3** = Absolute path to directory with MPR/MEMPR files  
 *(e.g. /home/subjecs/S01/MPR).*
 
