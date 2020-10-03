@@ -1,7 +1,7 @@
 # Ironsmith QSM Toolkit		       
 
-Valentinos Zachariou  
-University of Kentucky
+#### This software has been developed for research purposes only and is not a clinical tool.  
+Copyright (c) 2020 Valentinos Zachariou, University of Kentucky. All rights reserved (see license.txt for more details).
 
 ## Ironsmith uses the following software, provided in the form of a singularity image:
 
