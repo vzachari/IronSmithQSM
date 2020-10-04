@@ -10,8 +10,6 @@ Copyright (c) 2020 Valentinos Zachariou, University of Kentucky. All rights rese
 
 Ironsmith requires Matlab to run MEDI and supports versions R2017b to R2019b.  
 Matlab is not needed if MEDI is not required.  
-Please edit Matlab_Config.txt in IronSmithQSM folder with the path to the matlab executable on your system.  
-*(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*
 
 #### b) Singularity
 
@@ -25,7 +23,7 @@ https://sylabs.io/guides/3.5/admin-guide/installation.html
 
 a) Download Ironsmith QSM Toolkit
 
-Option 1: download from gihub  
+Option 1: download from github  
 https://github.com/vzachari/IronSmithQSM
 
 Option 2: using git  
@@ -36,7 +34,12 @@ https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=shari
 
 c) Place QSM_Container.simg in IronSmithQSM/Functions
 
-d) Add the IronSmithQSM directory to $PATH
+d) Edit IronSmithQSM/Matlab_Config.txt with the path to the matlab executable on your system.  
+*(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*  
+Supported versions R2017b to R2019b.  
+
+e) Add the IronSmithQSM directory to $PATH  
+Guide: https://opensource.com/article/17/6/set-path-linux
 
 ## 3) Syntax:
 
