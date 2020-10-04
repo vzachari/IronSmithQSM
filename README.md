@@ -50,7 +50,7 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 
 *Ex. if S0001 is specified in MyInputFile and folder S0001 exists in output folder, S0001 will be skipped.*
 
-c) Freesurfer is a reserved folder name under output folder and may be used by Ironsmith. See section #4 on quality of life features below.
+c) Freesurfer is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on quality of life features below.
 
 ## 4) MyInputFile format:  
 
@@ -62,7 +62,7 @@ b) Each row corresponds to a different participant.
 
 ### If MEDI is required to create QSM images/maps:  
 
-**Column1** = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
+**Column1** = Subj (nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
 **Column2** = MEDI_Yes <-- this is case sensitive  
 **Column3** = Absolute path to directory with MPR/MEMPR files  
 *(e.g. /home/subjecs/S01/MPR).*
@@ -93,7 +93,7 @@ All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 
 ### If MEDI is NOT required. That is QSM Maps and GRE Magnitude images are already available:  
 
-**Column1** = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
+**Column1** = Subj (nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
 **Column2** = MEDI_No <-- This is case sensitive  
 **Column3** = Absolute path to directory with MPR/MEMPR files  
 *(e.g. /home/subjecs/S01/MPR)*
@@ -129,7 +129,7 @@ All 5 columns need to be provided, otherwise Ironsmith will exit with errors
 
 If a participant already has a completed freesurfer recon-all -all segmentation folder and you would like Ironsmith to skip the freesurfer segmentation step, do the following:
 
-a) Copy the freesurfer recon-all folder (the one containing the label, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/Freesurfer**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
+a) Copy the freesurfer recon-all folder (the one containing the *label*, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/Freesurfer**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
 
 You can create the /OutputFolder/Freesurfer folder or Ironsmith will create it for you if you have run it at least once previously for OutputFolder.
 
