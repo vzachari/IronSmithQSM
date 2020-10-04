@@ -133,6 +133,6 @@ elif ! command -v singularity &> /dev/null; then
 fi
 
 
-singularity run -e --bind $PathCurr $Path/Functions/QSM_Container.simg afni
+singularity exec --bind $PathCurr $Path/Functions/QSM_Container.simg afni
 
 

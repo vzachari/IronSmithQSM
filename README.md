@@ -15,7 +15,7 @@ Please edit Matlab_Config.txt in IronSmithQSM folder with the path to the matlab
 
 #### b) Singularity
 
-Ironsmith tested on Singularity version 3.5.2 and 3.5.3  
+Ironsmith tested on Singularity versions 3.5.2 and 3.5.3  
 Installation guide:  
 https://sylabs.io/guides/3.5/admin-guide/installation.html
 
