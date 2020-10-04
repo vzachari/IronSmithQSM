@@ -14,7 +14,7 @@ are met:
    (Ironsmith QSM Toolkit) may be used to endorse or promote products derived from this
    software without specific prior written permission.
 4. All software provided by this toolkit within the QSM_Container.simg singularity image 
-   need have their own license and they need to be proberly cited:
+   have their own license and they need to be proberly cited:
 
 
 ### 1.AFNI
