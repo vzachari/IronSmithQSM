@@ -1,43 +1,8 @@
 # Ironsmith QSM Toolkit		       
 
-#### This software has been developed for research purposes only and is not a clinical tool.  
 Copyright (c) 2020 Valentinos Zachariou, University of Kentucky. All rights reserved (see license.txt for more details).
 
-## Ironsmith uses the following software, provided in the form of a singularity image:
-
-### 1.AFNI
-
-RW Cox. AFNI: Software for analysis and visualization of functional magnetic resonance neuroimages. Computers and Biomedical Research, 29:162-173, 1996.
-
-RW Cox and JS Hyde. Software tools for analysis and visualization of FMRI Data. NMR in Biomedicine, 10:171-178, 1997.
-
-S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC Andreasen. Functional MRI statistical software packages: a comparative analysis. Human Brain Mapping, 6:73-84, 1998.
-
-### 2.dcm2niix  
-
-Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIfTI conversion." Journal of neuroscience methods 264 (2016): 47-56.
-
-### 3.Freesurfer  
-
-Dale, A.M., Fischl, B., Sereno, M.I., 1999. Cortical surface-based analysis. I. Segmentation and surface reconstruction. Neuroimage 9, 179-194.
-
-Dale, A.M., Sereno, M.I., 1993. Improved localization of cortical activity by combining EEG and MEG with MRI cortical surface reconstruction: a linear approach. J Cogn Neurosci 5, 162-176.
-
-Desikan, R.S., Segonne, F., Fischl, B., Quinn, B.T., Dickerson, B.C., Blacker, D., Buckner, R.L., Dale, A.M., Maguire, R.P., Hyman, B.T., Albert, M.S., Killiany, R.J., 2006. An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. Neuroimage 31, 968-980.
-
-### 4.FSL
-
-M.W. Woolrich, S. Jbabdi, B. Patenaude, M. Chappell, S. Makni, T. Behrens, C. Beckmann, M. Jenkinson, S.M. Smith. Bayesian analysis of neuroimaging data in FSL. NeuroImage, 45:S173-86, 2009
-
-S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johansen-Berg, P.R. Bannister, M. De Luca, I. Drobnjak, D.E. Flitney, R. Niazy, J. Saunders, J. Vickers, Y. Zhang, N. De Stefano, J.M. Brady, and P.M. Matthews. Advances in functional and structural MR image analysis and implementation as FSL. NeuroImage, 23(S1):208-19, 2004
-
-M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
-
-### 5.MEDI Toolbox  
-
-de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: validation and application to brain imaging. Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
-
-http://pre.weill.cornell.edu/mri/pages/qsm.html
+#### This software has been developed for research purposes only and is not a clinical tool.  
 
 ## 1) Software requirements:
 
@@ -50,17 +15,30 @@ Please edit Matlab_Config.txt in IronSmithQSM folder with the path to the matlab
 
 #### b) Singularity
 
-Ironsmith tested on Singularity version 3.5.3
+Ironsmith tested on Singularity version 3.5.2 and 3.5.3  
 Installation guide:  
 https://sylabs.io/guides/3.5/admin-guide/installation.html
 
-Please download QSM_Container.simg (8.8GB) from: https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing
+#### c) Bash unix shell version 4.2.46(2) or later.
 
-Place QSM_Container.simg in IronSmithQSM/Functions
+## 2) Installation:
 
-#### c) Bash Unix shell version 4.2.46(2) or later.
+a) Download Ironsmith QSM Toolkit
 
-## 2) Syntax:
+Option 1: download from gihub  
+https://github.com/vzachari/IronSmithQSM
+
+Option 2: using git  
+`git clone https://github.com/vzachari/IronSmithQSM.git && cd IronSmithQSM && git checkout v1.0`
+
+b) Download QSM_Container.simg (8.8GB) from:  
+https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing
+
+c) Place QSM_Container.simg in IronSmithQSM/Functions
+
+d) Add the IronSmithQSM directory to $PATH
+
+## 3) Syntax:
 
 **Ironsmith [MyInputFile] [absolute path to output folder]**
 
@@ -74,7 +52,7 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 
 c) Freesurfer is a reserved folder name under output folder and may be used by Ironsmith. See section #4 on quality of life features below.
 
-## 3) MyInputFile format:  
+## 4) MyInputFile format:  
 
 a) MyInputFile has to be CSV formatted (entries separated by commas ',').
 
@@ -113,7 +91,7 @@ Preferably only QSM DICOMS should be present in the QSM_Dicom folder. However, I
 
 All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 
-### If MEDI is NOT required. That is QSM Maps, Phase and Magnitude images are already available:  
+### If MEDI is NOT required. That is QSM Maps and GRE Magnitude images are already available:  
 
 **Column1** = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
 **Column2** = MEDI_No <-- This is case sensitive  
@@ -145,7 +123,9 @@ This can be rms/averaged across echos or just a single echo T1 MPRAGE.
 
 All 5 columns need to be provided, otherwise Ironsmith will exit with errors
 
-## 4) Quality of life features:  
+## 5) Quality of life features:  
+
+### Skipping freesurfer segmentation
 
 If a participant already has a completed freesurfer recon-all -all segmentation folder and you would like Ironsmith to skip the freesurfer segmentation step, do the following:
 
@@ -155,7 +135,14 @@ You can create the /OutputFolder/Freesurfer folder or Ironsmith will create it f
 
 b) Rename the recon-all folder to **Subj_FreeSurfSeg_Skull**. Subj should match the one provided in MyInputFile and should correspond to the participant you want the segmentation step skipped.
 
-## 5) Outputs:
+### Viewing output NIFTI files
+
+If you do not have a NIFTI viewer, AFNI can be launched from within the QSM_Container.simg by using the *Ironsmith_AFNI* command. Just type *Ironsmith_AFNI* from within the folder you would like to view NIFTI files from.
+
+AFNI viewer documentation:  
+https://afni.nimh.nih.gov/pub/dist/edu/latest/afni_handouts/afni03_interactive.pdf
+
+## 6) Outputs:
 
 Each participant processed by Ironsmith will have a corresponding folder in **OutputFolder**. For example, if "**/home/QSM_Analysis**" is the OutputFolder and "**S0001**" is one of the participants processed, then **/home/QSM_Analysis/S0001** will be created and populated with data.
 
@@ -176,12 +163,58 @@ c) All QSM maps warped to MNI space are placed under
 
 d) QSM per ROI means (87 ROIs) are under **/QSM_Analysis/Group** as follows:
 
-**Group_QSM_Mean.csv** <--- Using only positive QSM voxels  
-**Group_QSM_Adj_Mean.csv** <--- Using only positive QSM voxels and adjusting for ROI size  
-**Group_QSM_SNR.csv** <--- Per ROI SNR measures
+**Group_QSM_Mean.csv**  
+**Group_QSM_Mean_CSF.csv**  
+**Group_QSM_Mean_WM.csv**  
+**Group_QSM_ADJ_Mean.csv**  
+**Group_QSM_ADJ_Mean_CSF.csv**  
+**Group_QSM_ADJ_Mean_WM.csv**  
+**Group_QSM_SNR.csv**  
+
+_Mean = Using only positive QSM voxels  
+_ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size  
+_CSF = Lateral ventricles as the QSM reference structure  
+_WM = White matter as the QSM reference structure  
 
 SNR is calculated as follows:  
 mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head.
 
 The outside the head mask can be found here:  
 **/QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
+
+
+## Ironsmith uses the following software, provided in the form of a singularity image:
+
+### 1.AFNI
+
+RW Cox. AFNI: Software for analysis and visualization of functional magnetic resonance neuroimages. Computers and Biomedical Research, 29:162-173, 1996.
+
+RW Cox and JS Hyde. Software tools for analysis and visualization of FMRI Data. NMR in Biomedicine, 10:171-178, 1997.
+
+S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC Andreasen. Functional MRI statistical software packages: a comparative analysis. Human Brain Mapping, 6:73-84, 1998.
+
+### 2.dcm2niix  
+
+Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIfTI conversion." Journal of neuroscience methods 264 (2016): 47-56.
+
+### 3.Freesurfer  
+
+Dale, A.M., Fischl, B., Sereno, M.I., 1999. Cortical surface-based analysis. I. Segmentation and surface reconstruction. Neuroimage 9, 179-194.
+
+Dale, A.M., Sereno, M.I., 1993. Improved localization of cortical activity by combining EEG and MEG with MRI cortical surface reconstruction: a linear approach. J Cogn Neurosci 5, 162-176.
+
+Desikan, R.S., Segonne, F., Fischl, B., Quinn, B.T., Dickerson, B.C., Blacker, D., Buckner, R.L., Dale, A.M., Maguire, R.P., Hyman, B.T., Albert, M.S., Killiany, R.J., 2006. An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. Neuroimage 31, 968-980.
+
+### 4.FSL
+
+M.W. Woolrich, S. Jbabdi, B. Patenaude, M. Chappell, S. Makni, T. Behrens, C. Beckmann, M. Jenkinson, S.M. Smith. Bayesian analysis of neuroimaging data in FSL. NeuroImage, 45:S173-86, 2009
+
+S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johansen-Berg, P.R. Bannister, M. De Luca, I. Drobnjak, D.E. Flitney, R. Niazy, J. Saunders, J. Vickers, Y. Zhang, N. De Stefano, J.M. Brady, and P.M. Matthews. Advances in functional and structural MR image analysis and implementation as FSL. NeuroImage, 23(S1):208-19, 2004
+
+M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
+
+### 5.MEDI Toolbox  
+
+de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: validation and application to brain imaging. Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
+
+http://pre.weill.cornell.edu/mri/pages/qsm.html

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e #Exit on error
+
 #Path=`pwd` #Folder where the container is situated
 
 #Path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
@@ -29,26 +31,6 @@ exec &> >(tee -a "$log_file")
 #                  { }
 #
 #
-
-
-#File.txt format:
-#File has to be CSV
-#Each row corresponds to a different participant
-#File must have 4 columns in each row with MEDI_Yes and 5 Columns in each row with MEDI_No (see below)
-
-#If MEDI is required to create QSM images:
-#Column1 = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)
-#Column2 = MEDI_Yes
-#Column3 = Absolute path to directory with MPRAGE nifti OR DICOM files. Ex. /home/subjecs/S01/MPR
-#Column4 = Absolute path to folder with QSM DICOM files. /home/subjecs/S01/QSM_Dicom
-
-
-#If MEDI is NOT required. That is QSM Maps, Phase and Magnitude images are already available then:
-#Column1 = Subj (Nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)
-#Column2 = MEDI_No
-#Column3 = Absolute path to directory with MPRAGE nifti OR DICOM files
-#Column4 = Absolute path including filename to QSM magnitude image. Ex. /home/subjecs/S01/QSM/QSM_Magnitude.nii.gz
-#Column5 = Absolute path including filename to QSM map. Ex. /home/subjects/S01/QSM/QSM_Map.nii.gz
 
 
 clear
@@ -311,13 +293,22 @@ elif ! command -v singularity &> /dev/null; then
 	fi
 fi
 
-echo "									___/-\___ "
-echo "---------------------------------------------------------------        |---------|"
-echo "*** Cleaning $Path/LogFiles:						| | | | | "
-echo "									| | | | | "
-echo "Log files older than 30 days will be deleted *** 			| | | | | "
-echo "---------------------------------------------------------------		| | | | | "
-echo "									|_______| "
+echo ""
+echo "---------------------------------------------------------------"
+echo "*** Cleaning $Path/LogFiles:"
+echo ""
+echo "Log files older than 30 days will be deleted *** "
+echo ""
+echo -e "\t\t ___/-\___		"	
+echo -e "\t\t|---------|	"
+echo -e "\t\t | | | | |		"
+echo -e "\t\t | | | | |		"
+echo -e "\t\t | | | | |		"
+echo -e "\t\t | | | | |		"
+echo -e "\t\t |_______| 	"
+echo ""
+echo "---------------------------------------------------------------"
+echo ""
 
 echo ""
 echo "Delting log files..."
@@ -1213,7 +1204,7 @@ done
 
 echo ""
 echo "---------------------------------------------------------------"
-echo "Ironsmith.sh finished running on `date`"
+echo "Ironsmith finished running on `date`"
 echo "---------------------------------------------------------------"
 echo ""
 
