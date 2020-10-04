@@ -75,14 +75,16 @@ Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith 
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo.
 
-Each NIFTI file needs to have _e# in the file name, where # is the echo number.  
+To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.
+c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.  
+This single NIFTI file can have any name.
 
 d) Single .nii/nii.gz file with a single echo/timepoint.  
-This can be rms/averaged across echos or just a single echo T1 MPRAGE.
+This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
+This single NIFTI file can have any name.
 
 **Column4** = Absolute path to folder with QSM DICOM files  
 *(e.g. /home/subjecs/S01/QSM_Dicom)*
@@ -106,14 +108,16 @@ Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith 
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo.
 
-Each NIFTI file needs to have _e# in the file name, where # is the echo number.  
+To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.
+c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.  
+This single NIFTI file can have any name.
 
 d) Single .nii/nii.gz file with a single echo/timepoint.  
-This can be rms/averaged across echos or just a single echo T1 MPRAGE.
+This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
+This single NIFTI file can have any name.
 
 **Column4** = Absolute path including filename to QSM magnitude image  
 *(e.g. /home/subjecs/S01/QSM/QSM_Magnitude.nii.gz)*  
@@ -195,7 +199,7 @@ S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC An
 
 ### 2.dcm2niix  
 
-Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIfTI conversion." Journal of neuroscience methods 264 (2016): 47-56.
+Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIFTI conversion." Journal of neuroscience methods 264 (2016): 47-56.
 
 ### 3.Freesurfer  
 

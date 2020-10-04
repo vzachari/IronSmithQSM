@@ -564,7 +564,7 @@ do
 				echo ""
 
 			#elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [[ -n $(find . -mindepth 1 -maxdepth 1 -type f ! -name "*_e*") ]]; then
-			 elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [ $(ls -1 $MPRDir/*.nii* 2>/dev/null | wc -l) -eq 1 ]; then
+			elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [ $(ls -1 $MPRDir/*.nii* 2>/dev/null | wc -l) -eq 1 ]; then
 
 				echo ""
 				echo "Single NIFTI file found, checking if multiple echos exist within file:"
@@ -598,6 +598,9 @@ do
 				echo ""
 				echo -e "\e[31m----------------------------------------------"
 				echo "Unexpected ERROR: Please check $MPRDir, Skipping $Subj..."
+				echo ""
+				echo "Possibly mulitple related NIFTI files found that are not labelled with _e#" 
+				echo "AND/OR unrelated NIFTI files in $MPRDir folder"				
 				echo -e "----------------------------------------------\e[0m"
 				echo ""
 				continue
