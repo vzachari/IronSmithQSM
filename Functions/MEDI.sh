@@ -249,11 +249,11 @@ elif [[ $QSM_Echos_File1 == $QSM_Echos_File2 ]] && (( "$QSM_Echos_File1" >= 8 ))
 elif [[ $QSM_Echos_File1 == $QSM_Echos_File2 ]] && [[ $QSM_Echos_File1 < 8 ]] ; then
 	
 	echo -e "\e[93m"	
-	echo "QSM PHASE scan NOT verifired proceed at own risk! "
+	echo "QSM PHASE scan NOT verifired. Proceed at own risk! "
 	echo "$File1 will be renamed to ${Subj}_QSM_PHASE.nii.gz"
 	mv $File1 ${Subj}_QSM_PHASE.nii.gz
 	echo ""	
-	echo "QSM MAGNITUDE scan NOT verified proceed at own risk! "	
+	echo "QSM MAGNITUDE scan NOT verified. Proceed at own risk! "	
 	echo "$File2 will be renamed to ${Subj}_QSM_Mag.nii.gz"	
 	echo -e "\e[0m"		
 	mv $File2 ${Subj}_QSM_Mag.nii.gz

@@ -56,8 +56,9 @@ echo -e "\t\t                      '\  }            "
 echo -e "\t\t                       { }             "
 echo -e "				            "
 echo -e "\t	  Ironsmith QSM Toolkit V1.0 (09/24/2020)		       "
-echo -e "\t	  Created by Valentinos Zachariou	    		       "
+echo -e "\t	  Valentinos Zachariou	    		  	     	       "
 echo -e "\t	  University of Kentucky 	                               "
+echo -e "\t	  https://github.com/vzachari/IronSmithQSM		       "
 echo -e "-------------------------------------------------------------------------"
 echo ""
 
@@ -158,7 +159,7 @@ fi
 echo ""
 #echo "---------------------------------------------------------------"
 #echo -e "Input CSV File is \e[44m$CSVFile\e[0m"
-echo "Input CSV File is $CSVFile"
+echo "Input CSV file is $CSVFile"
 #echo "---------------------------------------------------------------"
 echo ""
 
@@ -169,7 +170,7 @@ if [ -f "$CSVFile" ]; then
 
 	echo ""
 	#echo -e "\e[44m$CSVFile\e[0m Found"
-	echo "$CSVFile Found"
+	echo "$CSVFile Found! "
 	echo ""
 else
 	echo -e "\e[31m----------------------------------------------"
@@ -184,9 +185,6 @@ PathToOut=$(echo $OutFolder | awk -F '/' '{OFS = FS} {$NF=""; print $0}')
 if [ -d "$PathToOut" ]; then
 
 	echo ""
-	#echo -e "Output folder path \e[44m$PathToOut\e[0m is a valid path!"
-	#echo -e "Output files for each participant will be placed under \e[44m$OutFolder\e[0m in individual folders"
-	#echo -e "\e[44m$OutFolder\e[0m will be created if nescessary"
 	echo "Output folder path $PathToOut is a valid path"
 	echo "Output files for each participant will be placed under $OutFolder in individual folders"
 	echo "$OutFolder will be created if nescessary"
@@ -299,7 +297,7 @@ echo "*** Cleaning $Path/LogFiles:"
 echo ""
 echo "Log files older than 30 days will be deleted *** "
 echo ""
-echo -e "\t\t ___/-\___		"	
+echo -e "\t\t ___/-\___		"
 echo -e "\t\t|---------|	"
 echo -e "\t\t | | | | |		"
 echo -e "\t\t | | | | |		"
@@ -311,12 +309,10 @@ echo "---------------------------------------------------------------"
 echo ""
 
 echo ""
-echo "Delting log files..."
+echo "Deleting log files..."
 echo ""
 
 find $Path/LogFiles -daystart -maxdepth 1 -mtime +30 -type f -name "Output.Ironsmith*.txt" -delete
-
-
 
 echo ""
 echo "---------------------------------------------------------------"
@@ -343,16 +339,16 @@ do
 	echo ""
 
 	RowCheck=$(awk -v r=$Rows 'FNR == r {print}' $CSVFile)
-	
-	if [ -z "$RowCheck" ]; then 
-		
+
+	if [ -z "$RowCheck" ]; then
+
 		echo ""
-		echo "Row $Rows in $CSVFile is empty, skipping..." 
+		echo "Row $Rows in $CSVFile is empty, skipping..."
 		echo ""
 
 		unset RowCheck
 		continue
-	
+
 	fi
 
 
@@ -613,8 +609,8 @@ do
 				echo -e "\e[31m----------------------------------------------"
 				echo "Unexpected ERROR: Please check $MPRDir, Skipping $Subj..."
 				echo ""
-				echo "Possibly mulitple related NIFTI files found that are not labelled with _e#" 
-				echo "AND/OR unrelated NIFTI files in $MPRDir folder"				
+				echo "Possibly multiple related NIFTI files found that are not labelled with _e#"
+				echo "AND/OR unrelated NIFTI files in $MPRDir folder"
 				echo -e "----------------------------------------------\e[0m"
 				echo ""
 				continue
@@ -732,7 +728,7 @@ do
 	fi
 
 	echo ""
-	echo "All files/folders specifed in $CSVFile FOUND in specified paths"
+	echo "All files/folders specified in $CSVFile FOUND in specified paths"
 	echo "Cue the happy dance ♪┏(・o･)┛♪"
 	echo "---------------------------------------------------------------"
 	echo ""

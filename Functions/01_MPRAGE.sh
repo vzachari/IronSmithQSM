@@ -66,7 +66,7 @@ CoreNum=$((`singularity run -e $Path/Functions/QSM_Container.simg lscpu | awk 'F
 
 echo ""
 echo "---------------------------------------------------------------"	
-echo "*** Processing MPR/MEMPR scans for freesurfer segmantation: ***"
+echo "*** Processing MPR/MEMPR scans for freesurfer segmentation: ***"
 echo "---------------------------------------------------------------"	
 echo ""	
 
@@ -135,7 +135,7 @@ if [[ $MPRType == 1 ]]; then
 		
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours"	
+		echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
 		echo ""	
 	
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
@@ -156,9 +156,9 @@ if [[ $MPRType == 1 ]]; then
 	else
 		echo ""		
 		echo -e "\e[31m----------------------------------------------"
-		echo "ERROR: Freesurfer DID NOT semgment MEMPR data properly"
+		echo "ERROR: Freesurfer DID NOT segment MEMPR data properly"
 		echo "Things to do that might help:"
-		echo "1. Visually check the MENPR data for excessive motion or artifcats (e.g. stroke, lesions etc)" 
+		echo "1. Visually check the MEMPR data for excessive motion or artifacts (e.g. stroke, lesions etc)" 
 		echo "Sometimes freesurfer cannot handle these cases."
 		echo -e "----------------------------------------------\e[0m"
 		echo ""		
@@ -228,7 +228,7 @@ elif [[ $MPRType == 2 ]]; then
 		echo -e "\e[31m----------------------------------------------"
 		echo "ERROR: Freesurfer DID NOT segment MEMPR data properly"
 		echo "Things to do that might help:"
-		echo "1. Visually check the MEMPR data for excessive motion or artifcats (e.g. stroke, lesion etc)" 
+		echo "1. Visually check the MEMPR data for excessive motion or artifacts (e.g. stroke, lesion etc)" 
 		echo "Sometimes freesurfer cannot handle these cases."
 		echo -e "----------------------------------------------\e[0m"
 		echo ""		
@@ -269,7 +269,7 @@ elif [[ $MPRType == 3 ]]; then
 	else
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours"	
+		echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
 		echo ""	
 
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr.nii.gz -sd .
@@ -294,7 +294,7 @@ elif [[ $MPRType == 3 ]]; then
 		echo -e "\e[31m----------------------------------------------"
 		echo "ERROR: Freesurfer DID NOT segment MPR data properly"
 		echo "Things to do that might help:"
-		echo "1. Visually check the MPR data for excessive motion or artifcats (e.g. stroke, lesion etc)" 
+		echo "1. Visually check the MPR data for excessive motion or artifacts (e.g. stroke, lesion etc)" 
 		echo "Sometimes freesurfer cannot handle these cases."
 		echo -e "----------------------------------------------\e[0m"
 		echo ""		
@@ -350,7 +350,7 @@ elif [[ $MPRType == 4 ]]; then
 		else
 
 			echo ""	
-			echo "Running freesurfer. This could take up to 8 hours"	
+			echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
 			echo ""			
 
 			singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
@@ -374,7 +374,7 @@ elif [[ $MPRType == 4 ]]; then
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: Freesurfer DID NOT segment MEMPR data properly"
 			echo "Things to do that might help:"
-			echo "1. Visually check the MEMPR data for excessive motion or artifcats (e.g. stroke, lesion etc)" 
+			echo "1. Visually check the MEMPR data for excessive motion or artifacts (e.g. stroke, lesion etc)" 
 			echo "Sometimes freesurfer cannot handle these cases."
 			echo -e "----------------------------------------------\e[0m"
 			echo ""		
@@ -411,7 +411,7 @@ elif [[ $MPRType == 4 ]]; then
 		else
 
 			echo ""	
-			echo "Running freesurfer. This could take up to 8 hours"	
+			echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
 			echo ""	
 
 			singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr.nii.gz -sd .
@@ -436,7 +436,7 @@ elif [[ $MPRType == 4 ]]; then
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: Freesurfer DID NOT segment MPR data properly"
 			echo "Things to do that might help:"
-			echo "1. Visually check the MPR data for excessive motion or artifcats (e.g. stroke, lesion etc)" 
+			echo "1. Visually check the MPR data for excessive motion or artifacts (e.g. stroke, lesion etc)" 
 			echo "Sometimes freesurfer cannot handle these cases."
 			echo -e "----------------------------------------------\e[0m"
 			echo ""		

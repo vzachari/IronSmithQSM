@@ -95,7 +95,7 @@ SD=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fun
 
 	
 echo "---------------------------------------------------------------"	
-echo "*** Extractsing QSM SNR values from cortical/subcortical aligned/resampled freesurfer masks ***"
+echo "*** Extracting QSM SNR values from cortical/subcortical aligned/resampled freesurfer masks ***"
 echo "---------------------------------------------------------------"	
 echo ""
 

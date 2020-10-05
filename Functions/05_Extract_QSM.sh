@@ -200,7 +200,7 @@ fi
 
 echo ""
 echo "---------------------------------------------------------------"	
-echo "*** Extractsing QSM values from cortical/subcortical aligned/resampled freesurfer masks ***"
+echo "*** Extracting QSM values from cortical/subcortical aligned/resampled freesurfer masks ***"
 echo "---------------------------------------------------------------"	
 echo ""
 
