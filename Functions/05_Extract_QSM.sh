@@ -24,9 +24,9 @@ set -e #Exit on error
 #3) Path
 #4) MEDI Flag
 
-#Subj="S1032"
+#Subj="S0090"
 #OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
-#Path="/home/data3/vzachari/QSM_Toolkit/QSM_Std_Scripts"
+#Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #MEDIFlag="MEDI_Yes"
 
 Subj=$1
@@ -207,6 +207,39 @@ echo ""
 for Fold in ${StatsFolder[@]}
 
 do
+
+if [ -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
+
+	echo ""
+	echo "$OutFolder/Group/$Fold" 
+	echo "is currently occupied by another instance of Ironsmith! "
+	echo "Waiting for $(cat $OutFolder/Group/$Fold/CueQSM.txt) to finish processing... "
+	echo ""
+	echo -e "\t\t ((     ___	" 
+	echo -e "\t\t  ))  \___/_ 	"
+	echo -e "\t\t |~~| /~~~\ \	"
+	echo -e "\t\tC|__| \___/	"
+	echo ""
+
+	while [ -f $OutFolder/Group/$Fold/CueQSM.txt ]
+	
+	do
+	 
+		sleep 2
+	
+	done
+	
+	echo ""
+	echo "The wait is over, rejoice! "
+	echo ""
+
+	echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt
+	
+elif [ ! -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
+
+	echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt
+fi
+
 
 echo ""
 echo "Processing: ${MasterQSM[$LoopCounter]}"
@@ -3653,6 +3686,8 @@ cat Group_QSM_Mean_Columns.csv >> $OutFolder/Group/${OutStatFile[$LoopCounter]}
 echo "Participant,L_Accumbens_area,L_Amygdala,L_CaudalAnteriorCingulate,L_CaudalMiddleFrontal,L_Caudate,L_Cuneus,L_DLPFC,L_Entorhinal,L_Frontal,L_Fusiform,L_Hipp,L_InferiorParietal,L_InferiorTemporal,L_Insula,L_IsthmusCingulate,L_LateralOccipital,L_LateralOrbitofrontal,L_Lingual,L_MedialOrbitofrontal,L_MiddleTemporal,L_Occipital,L_Pallidum,L_Parahippocampal,L_Parietal,L_Pericalcarine,L_Postcentral,L_PosteriorCingulate,L_Precentral,L_Precuneus,L_Putamen,L_RostalMiddleFrontal,L_RostralAnteriorCingulate,L_SuperiorFrontal,L_SuperiorParietal,L_SuperiorTemporal,L_Temporal,L_Thalamus_Proper,L_TransverseTemporal,R_Accumbens_area,R_Amygdala,R_CaudalAnteriorCingulate,R_CaudalMiddleFrontal,R_Caudate,R_Cuneus,R_DLPFC,R_Entorhinal,R_Frontal,R_Fusiform,R_Hipp,R_InferiorParietal,R_InferiorTemporal,R_Insula,R_IsthmusCingulate,R_LateralOccipital,R_LateralOrbitofrontal,R_Lingual,R_MedialOrbitofrontal,R_MiddleTemporal,R_Occipital,R_Pallidum,R_Parahippocampal,R_Parietal,R_Pericalcarine,R_Postcentral,R_PosteriorCingulate,R_Precentral,R_Precuneus,R_Putamen,R_RostalMiddleFrontal,R_RostralAnteriorCingulate,R_SuperiorFrontal,R_SuperiorParietal,R_SuperiorTemporal,R_Temporal,R_Thalamus_Proper,R_TransverseTemporal,LR_Accumbens_area,LR_Amygdala,LR_Caudate,LR_Frontal,LR_Hipp,LR_Occipital,LR_Pallidum,LR_Parietal,LR_Putamen,LR_Temporal,LR_Thalamus_Proper" > $OutFolder/Group/${OutStatFileADJ[$LoopCounter]}
 
 cat Group_QSM_ADJ_Mean_Columns.csv >> $OutFolder/Group/${OutStatFileADJ[$LoopCounter]}
+
+rm $OutFolder/Group/$Fold/CueQSM.txt
 
 LoopCounter=$((LoopCounter+1))
 
