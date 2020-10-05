@@ -105,7 +105,7 @@ fi
 
 echo ""
 echo "---------------------------------------------------------------"
-echo "*** Checking arguments provided with Ironsmith commnad: ***"
+echo "*** Checking arguments provided with Ironsmith command: ***"
 echo "---------------------------------------------------------------"
 echo ""
 
