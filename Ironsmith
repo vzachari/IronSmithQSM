@@ -342,6 +342,20 @@ do
 	echo "---------------------------------------------------------------"
 	echo ""
 
+	RowCheck=$(awk -v r=$Rows 'FNR == r {print}' $CSVFile)
+	
+	if [ -z "$RowCheck" ]; then 
+		
+		echo ""
+		echo "Row $Rows in $CSVFile is empty, skipping..." 
+		echo ""
+
+		unset RowCheck
+		continue
+	
+	fi
+
+
 	#Parse CSV file into variables
 	CSVFileColumns=`awk -v r=$Rows -F ',' 'FNR == r {print NF}' $CSVFile`
 
@@ -461,7 +475,7 @@ do
 		echo ""
 		echo -e "\e[31m----------------------------------------------"
 		echo "ERROR: Column 2 needs to be either MEDI_Yes or MEDI_No and is case sensitive."
-		echo "$Subj Column 2 entry is $MEDIFlag which cannot be interepreted, skipping $Subj...."
+		echo "$Subj Column 2 entry is $MEDIFlag which cannot be interpreted, skipping $Subj...."
 		echo -e "----------------------------------------------\e[0m"
 		echo ""
 		continue
