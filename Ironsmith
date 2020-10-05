@@ -99,7 +99,7 @@ else
 	echo "Then place in $Path/Functions"
 	echo -e "----------------------------------------------\e[0m"
 	echo ""
-	exit
+	exit 1
 
 fi
 
@@ -130,7 +130,7 @@ if [ -z "$CSVFile" ]; then
 	echo "Please see $Path/README.md for details"
 	echo -e "----------------------------------------------\e[0m"
 	echo ""
-	exit
+	exit 1
 
 elif [ -z "$OutFolder" ]; then
 
@@ -141,7 +141,7 @@ elif [ -z "$OutFolder" ]; then
 	echo "Please see $Path/README.md for details"
 	echo -e "----------------------------------------------\e[0m"
 	echo ""
-	exit
+	exit 1
 
 elif [ ! -z "$TooManyInputs" ]; then
 	echo ""
@@ -152,7 +152,7 @@ elif [ ! -z "$TooManyInputs" ]; then
 	echo -e "----------------------------------------------\e[0m"
 	echo ""
 	echo $TooManyInputs
-	exit
+	exit 1
 fi
 
 echo ""
@@ -175,7 +175,7 @@ else
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: $CSVFile NOT FOUND! "
 	echo -e "----------------------------------------------\e[0m"
-	exit
+	exit 1
 
 fi
 
@@ -197,12 +197,12 @@ elif [ -z "$PathToOut" ]; then
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: NOT SURE WHAT $OutFolder IS. Check OUTPUT FOLDER INPUT"
 	echo -e "----------------------------------------------\e[0m"
-	exit
+	exit 1
 else
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: $PathToOut NOT FOUND or INVALID. Check OUTPUT FOLDER PATH"
 	echo -e "----------------------------------------------\e[0m"
-	exit
+	exit 1
 
 fi
 
@@ -256,7 +256,7 @@ if command -v singularity &> /dev/null; then
     		echo "https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing"
     		echo -e "----------------------------------------------\e[0m"
     		echo ""
-   		exit
+   		exit 1
 
   	fi
 
@@ -278,7 +278,7 @@ elif ! command -v singularity &> /dev/null; then
 		echo -e "----------------------------------------------\e[0m"
 		echo ""
 		ContainerFlag=2
-    		exit
+    		exit 1
 
 
 	elif ! command -v docker &> /dev/null; then
@@ -289,7 +289,7 @@ elif ! command -v singularity &> /dev/null; then
 		echo "Singularity needs to be installed for this toolkit to work ¯\_(ツ)_/¯"
 		echo -e "----------------------------------------------\e[0m"
 		echo ""
-		exit
+		exit 1
 	fi
 fi
 
@@ -402,7 +402,7 @@ do
 				echo "Matlab versions between R2017b (9.3) and R2019b (9.7) required for this Toolkit"
 				echo -e "----------------------------------------------\e[0m"
 				echo ""
-				exit
+				exit 1
 
 			elif ((  $(echo "$MatVer > 9.7" | bc -l) )); then
 
@@ -412,7 +412,7 @@ do
 				echo "Matlab versions between R2017b (9.3) and R2019b (9.7) required for this Toolkit"
 				echo -e "----------------------------------------------\e[0m"
 				echo ""
-				exit
+				exit 1
 
 			else
 				echo ""
@@ -421,7 +421,7 @@ do
 				echo "Matlab versions between R2017b (9.3) and R2019b (9.7) required for this Toolkit"
 				echo -e "----------------------------------------------\e[0m"
 				echo ""
-				exit
+				exit 1
 			fi
 
 		elif [[ $MatlabFlag == 1 ]]; then

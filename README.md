@@ -90,7 +90,8 @@ This can be rms/averaged across echos or just a single echo T1 MPRAGE.
 This single NIFTI file can have any name.
 
 **Column4** = Absolute path to folder with QSM DICOM files  
-*(e.g. /home/subjecs/S01/QSM_Dicom)*
+*(e.g. /home/subjecs/S01/QSM_Dicom)*  
+QSM DICOM folder must include DICOMS for both GRE magnitude and phase.
 
 Preferably only QSM DICOMS should be present in the QSM_Dicom folder. However, Ironsmith can filter out the following filetypes .nii .json .txt .nii.gz .HEAD .BRIK .hdr .img
 
