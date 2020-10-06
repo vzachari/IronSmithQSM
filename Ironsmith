@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e #Exit on error
+#set -e #Exit on error
 
 #Path=`pwd` #Folder where the container is situated
 
