@@ -1,39 +1,59 @@
+		      GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+### Additional Terms as specified in section 7:
+
 This software has been developed for research purposes only and is not a clinical tool.
 
-All software provided by this toolkit within the QSM_Container.simg singularity image 
-have their own licenses.
+All third party software provided by this toolkit within the QSM_Container.simg singularity image 
+have their own licenses and these are in full effect when using this software.
 
-All software provided by this toolkit within the QSM_Container.simg singularity image need to be proberly cited:
+All software provided by this toolkit within the QSM_Container.simg singularity image need to be proberly cited if Ironsmith is used 
+in articles for publication:
 
 ### 1.AFNI
 
-RW Cox. AFNI: Software for analysis and visualization of functional magnetic resonance neuroimages. Computers and Biomedical Research, 29:162-173, 1996.
+RW Cox. AFNI: Software for analysis and visualization of functional magnetic resonance neuroimages. 
+Computers and Biomedical Research, 29:162-173, 1996.
+
 RW Cox and JS Hyde. Software tools for analysis and visualization of FMRI Data. NMR in Biomedicine, 10:171-178, 1997.
-S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC Andreasen. Functional MRI statistical software packages: a comparative analysis. Human Brain Mapping, 6:73-84, 1998.
+
+S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC Andreasen. 
+Functional MRI statistical software packages: a comparative analysis. Human Brain Mapping, 6:73-84, 1998.
 
 ### 2.dcm2niix  
 
-Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIfTI conversion." Journal of neuroscience methods 264 (2016): 47-56.
+Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIfTI conversion." 
+Journal of neuroscience methods 264 (2016): 47-56.
 
 ### 3.Freesurfer  
 
 Dale, A.M., Fischl, B., Sereno, M.I., 1999. Cortical surface-based analysis. I. Segmentation and surface reconstruction. Neuroimage 9, 179-194.
-Dale, A.M., Sereno, M.I., 1993. Improved localization of cortical activity by combining EEG and MEG with MRI cortical surface reconstruction: a linear approach. J Cogn Neurosci 5, 162-176.
+
+Dale, A.M., Sereno, M.I., 1993. Improved localization of cortical activity by combining EEG and MEG with MRI cortical surface reconstruction: 
+a linear approach. J Cogn Neurosci 5, 162-176.
+
 Desikan, R.S., Segonne, F., Fischl, B., Quinn, B.T., Dickerson, B.C., Blacker, D., Buckner, R.L., Dale, A.M., Maguire, R.P., Hyman, B.T., Albert, M.S., Killiany, R.J., 2006. An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. Neuroimage 31, 968-980.
 
 ### 4.FSL
 
 M.W. Woolrich, S. Jbabdi, B. Patenaude, M. Chappell, S. Makni, T. Behrens, C. Beckmann, M. Jenkinson, S.M. Smith. Bayesian analysis of neuroimaging data in FSL. NeuroImage, 45:S173-86, 2009
+
 S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johansen-Berg, P.R. Bannister, M. De Luca, I. Drobnjak, D.E. Flitney, R. Niazy, J. Saunders, J. Vickers, Y. Zhang, N. De Stefano, J.M. Brady, and P.M. Matthews. Advances in functional and structural MR image analysis and implementation as FSL. NeuroImage, 23(S1):208-19, 2004
+
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
 
 ### 5.MEDI Toolbox  
 
-de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: validation and application to brain imaging. Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
+de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). 
+Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: 
+validation and application to brain imaging. 
+Magnetic Resonance in Medicine: 
+An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
 
 http://pre.weill.cornell.edu/mri/pages/qsm.html
                    
-                   GNU GENERAL PUBLIC LICENSE
+                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
