@@ -5,16 +5,17 @@ Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE fil
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
 #### Description:  
-Ironsmith is a toolkit for processing Quantitative Susceptibility Images (QSM)  
-and extracting QSM based iron concentrations from subcortical and cortical brain regions.
+Ironsmith is a toolkit for creating and processing Quantitative Susceptibility Maps (QSM)  
+and for extracting QSM based iron concentrations from subcortical and cortical brain regions.
 
-Ironsmith can perform the following tasks:
+Ironsmith can perform the following tasks in a fully automated pipeline:
 
 a) Create QSM maps from GRE DICOM images using the MEDI toolbox **(see section 7 for details)** .     
 b) Align MPR/MEMPR T1 images to QSM maps and then segment them into 87 ROIs **(ROI list in section 8)** using freesurfer.  
 c) Extract QSM based iron concentration from these ROIs and format the output into easy to read tables.  
-d) Calculate SNR for each ROI as a measure of quality control in an easy to read table.  
-e) Process single or multiple participants at a time.  
+d) Calculate SNR for each ROI as a measure of quality control for QSM in an easy to read table.  
+e) Warp QSM and aligned MPR/MEMPR to MNI152 1mm space for voxelwise analyses.   
+f) Process single or multiple participants at a time.  
 
 ## 1) Software requirements:
 
