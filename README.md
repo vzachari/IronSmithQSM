@@ -1,6 +1,6 @@
 # Ironsmith QSM Toolkit		       
 
-Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).
+Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).
 
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
