@@ -1,8 +1,20 @@
 # Ironsmith QSM Toolkit		       
 
-Copyright (c) 2020 Valentinos Zachariou, University of Kentucky. All rights reserved (see LICENSE file for more details).
+Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).
 
 #### This software has been developed for research purposes only and is not a clinical tool.  
+
+#### Description:  
+Ironsmith is a toolkit for processing Quantitative Susceptibility Images (QSM)  
+and extracting QSM based iron concentrations from subcortical and cortical brain regions.
+
+Ironsmith can perform the following tasks:
+
+a) Create QSM maps from GRE DICOM images using the MEDI toolbox **(see section 7 for details)** .     
+b) Align MPR/MEMPR T1 images to QSM maps and then segment them into 87 ROIs **(ROI list in section 8)** using freesurfer.  
+c) Extract QSM based iron concentration from these ROIs and format the output into easy to read tables.  
+d) Calculate SNR for each ROI as a measure of quality control in an easy to read table.  
+e) Process single or multiple participants at a time.  
 
 ## 1) Software requirements:
 
@@ -191,9 +203,9 @@ The outside the head mask can be found here:
 **/QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
 
 
-## Ironsmith uses the following software, provided in the form of a singularity image:
+## 7) Ironsmith uses the following software, provided in the form of a singularity image:
 
-### 1.AFNI
+### AFNI
 
 RW Cox. AFNI: Software for analysis and visualization of functional magnetic resonance neuroimages. Computers and Biomedical Research, 29:162-173, 1996.
 
@@ -201,11 +213,11 @@ RW Cox and JS Hyde. Software tools for analysis and visualization of FMRI Data. 
 
 S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC Andreasen. Functional MRI statistical software packages: a comparative analysis. Human Brain Mapping, 6:73-84, 1998.
 
-### 2.dcm2niix  
+### dcm2niix  
 
 Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIFTI conversion." Journal of neuroscience methods 264 (2016): 47-56.
 
-### 3.Freesurfer  
+### Freesurfer  
 
 Dale, A.M., Fischl, B., Sereno, M.I., 1999. Cortical surface-based analysis. I. Segmentation and surface reconstruction. Neuroimage 9, 179-194.
 
@@ -213,7 +225,7 @@ Dale, A.M., Sereno, M.I., 1993. Improved localization of cortical activity by co
 
 Desikan, R.S., Segonne, F., Fischl, B., Quinn, B.T., Dickerson, B.C., Blacker, D., Buckner, R.L., Dale, A.M., Maguire, R.P., Hyman, B.T., Albert, M.S., Killiany, R.J., 2006. An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. Neuroimage 31, 968-980.
 
-### 4.FSL
+### FSL
 
 M.W. Woolrich, S. Jbabdi, B. Patenaude, M. Chappell, S. Makni, T. Behrens, C. Beckmann, M. Jenkinson, S.M. Smith. Bayesian analysis of neuroimaging data in FSL. NeuroImage, 45:S173-86, 2009
 
@@ -221,8 +233,98 @@ S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johan
 
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
 
-### 5.MEDI Toolbox  
+### MEDI Toolbox  
 
 de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: validation and application to brain imaging. Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
 
 http://pre.weill.cornell.edu/mri/pages/qsm.html
+
+## 8) ROI List:
+
+LR_Frontal_Lobe_GM    
+LR_Parietal_Lobe_GM    
+LR_Occipital_Lobe_GM   
+LR_Temporal_Lobe_GM   
+L_CaudalAnteriorCingulate_GM  
+L_CaudalMiddleFrontal_GM  
+L_Cuneus_GM  
+L_DLPFC_GM  
+L_Entorhinal_GM  
+L_Frontal_GM  
+L_Fusiform_GM  
+L_InferiorParietal_GM  
+L_InferiorTemporal_GM  
+L_Insula_GM  
+L_IsthmusCingulate_GM  
+L_LateralOccipital_GM  
+L_LateralOrbitofrontal_GM  
+L_Lingual_GM  
+L_MedialOrbitofrontal_GM  
+L_MiddleTemporal_GM  
+L_Occipital_GM_Mask  
+L_Parietal_GM_Mask  
+L_Temporal_GM_Mask  
+L_Parahippocampal_GM  
+L_Pericalcarine_GM  
+L_Postcentral_GM  
+L_PosteriorCingulate_GM  
+L_Precentral_GM  
+L_Precuneus_GM  
+L_RostalMiddleFrontal_GM  
+L_RostralAnteriorCingulate_GM  
+L_SuperiorFrontal_GM  
+L_SuperiorParietal_GM  
+L_SuperiorTemporal_GM  
+L_TransverseTemporal_GM  
+R_CaudalAnteriorCingulate_GM  
+R_CaudalMiddleFrontal_GM  
+R_Cuneus_GM  
+R_DLPFC_GM  
+R_Entorhinal_GM  
+R_Frontal_GM_Mask  
+R_Fusiform_GM  
+R_InferiorParietal_GM  
+R_InferiorTemporal_GM  
+R_Insula_GM  
+R_IsthmusCingulate_GM  
+R_LateralOccipital_GM  
+R_LateralOrbitofrontal_GM  
+R_Lingual_GM  
+R_MedialOrbitofrontal_GM  
+R_MiddleTemporal_GM  
+R_Occipital_GM_Mask  
+R_Parietal_GM_Mask  
+R_Temporal_GM_Mask  
+R_Parahippocampal_GM  
+R_Pericalcarine_GM  
+R_Postcentral_GM  
+R_PosteriorCingulate_GM  
+R_Precentral_GM  
+R_Precuneus_GM  
+R_RostalMiddleFrontal_GM  
+R_RostralAnteriorCingulate_GM  
+R_SuperiorFrontal_GM  
+R_SuperiorParietal_GM  
+R_SuperiorTemporal_GM  
+R_TransverseTemporal_GM  
+LR_Accumbens_area  
+LR_Amygdala  
+LR_Caudate  
+LR_Hipp  
+LR_Pallidum  
+LR_Putamen  
+LR_Thalamus_Proper  
+L_Accumbens_area  
+L_Amygdala  
+L_Caudate  
+L_Hipp  
+L_Pallidum  
+L_Putamen  
+L_Thalamus_Proper  
+R_Accumbens_area  
+R_Amygdala  
+R_Caudate  
+R_Hipp  
+R_Pallidum  
+R_Putamen  
+R_Thalamus_Proper  
