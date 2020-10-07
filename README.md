@@ -19,18 +19,31 @@ f) Process single or multiple participants at a time.
 
 ## 1) Software requirements:
 
-#### a) MATLAB
+#### a) Operating system
+
+**Unix**  
+Any linux distrubution that supports Signularity (see point c).
+
+Ironsmith tested on:  
+Red Hat Enterprise Linux Workstation release 7.8 (Maipo)
+
+**Windows 10 WSL2**  
+Ironsmith tested on:  
+Ubuntu 18.04 running on Windows 10 Subsystem for Linux V2 (WSL2)  
+Ubuntu 16.04 running on Windows 10 Subsystem for Linux V2 (WSL2)  
+
+#### b) MATLAB
 
 Ironsmith requires Matlab to run MEDI and supports versions R2017b to R2019b.  
 Matlab is not needed if MEDI is not required.  
 
-#### b) Singularity
+#### c) Singularity
 
 Ironsmith tested on Singularity versions 3.5.2 and 3.5.3  
 Installation guide:  
 https://sylabs.io/guides/3.5/admin-guide/installation.html
 
-#### c) Bash unix shell version 4.2.46(2) or later.
+#### d) Bash unix shell version 4.2.46(2) or later.
 
 ## 2) Installation:
 
