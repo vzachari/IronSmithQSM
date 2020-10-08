@@ -79,7 +79,7 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 
 *Ex. if S0001 is specified in MyInputFile and folder S0001 exists in output folder, S0001 will be skipped.*
 
-c) Freesurfer is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on quality of life features below.
+c) Freesurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on quality of life features below.
 
 ## 4) MyInputFile format:  
 
@@ -163,9 +163,9 @@ All 5 columns need to be provided, otherwise Ironsmith will exit with errors
 
 If a participant already has a completed freesurfer recon-all -all segmentation folder and you would like Ironsmith to skip the freesurfer segmentation step, do the following:
 
-a) Copy the freesurfer recon-all folder (the one containing the *label*, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/Freesurfer**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
+a) Copy the freesurfer recon-all folder (the one containing the *label*, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/Freesurfer_Skip**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
 
-You can create the /OutputFolder/Freesurfer folder or Ironsmith will create it for you if you have run it at least once previously for OutputFolder.
+You can create the /OutputFolder/Freesurfer_Skip folder or Ironsmith will create it for you if you have run it at least once previously for OutputFolder.
 
 b) Rename the recon-all folder to **Subj_FreeSurfSeg_Skull**. Subj should match the one provided in MyInputFile and should correspond to the participant you want the segmentation step skipped.
 
