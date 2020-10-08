@@ -867,10 +867,12 @@ do
 		#Error Handling
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
-
+			
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 01_MPRAGE.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
 			continue
 		fi
 
@@ -892,9 +894,11 @@ do
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
 
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 02_Create_QSM_Masks.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
 			continue
 		fi
 
@@ -917,9 +921,11 @@ do
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
 
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 03_AlignQSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
 			continue
 		fi
 
@@ -938,10 +944,11 @@ do
 		#Error Handling
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
-
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 04_Erode_QSM_Masks.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""
 			continue
 		fi
 
@@ -997,9 +1004,53 @@ do
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
 
+			echo ""			
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 05_Extract_QSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
+
+			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueQSM.txt" ]; then
+				
+				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt)
+				
+				if [[ $Suspect == $Subj ]]; then
+
+					rm $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt
+					
+				fi
+				
+				unset Suspect
+			fi
+
+			if [ -f "$OutFolder/Group/QSM_ROI_Stats_CSF_Ref/CueQSM.txt" ]; then
+				
+				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats_CSF_Ref/CueQSM.txt)
+				
+				if [[ $Suspect == $Subj ]]; then
+
+					rm $OutFolder/Group/QSM_ROI_Stats_CSF_Ref/CueQSM.txt
+					
+				fi
+				
+				unset Suspect
+		
+			fi
+
+			if [ -f "$OutFolder/Group/QSM_ROI_Stats_WM_Ref/CueQSM.txt" ]; then
+
+				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats_WM_Ref/CueQSM.txt)
+				
+				if [[ $Suspect == $Subj ]]; then
+
+					rm $OutFolder/Group/QSM_ROI_Stats_WM_Ref/CueQSM.txt
+					
+				fi
+				
+				unset Suspect
+				
+			fi
+
 			continue
 		fi
 
@@ -1021,9 +1072,24 @@ do
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
 
+			echo ""			
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 06_QSM_SNR.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
+
+			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueSNR.txt" ]; then
+
+				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt)
+
+				if [[ $Suspect == $Subj ]]; then
+				
+					rm $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt
+				fi
+			
+				unset Suspect
+			fi
+
 			continue
 		fi
 
@@ -1043,10 +1109,12 @@ do
 		#Error Handling
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
-
+			
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 07_MNI_NL_WarpQSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""
 			continue
 		fi
 
@@ -1072,9 +1140,11 @@ do
 		#echo "The Exit Code is $ExCode"
 		if [[ $ExCode > 0 ]]; then
 
+			echo ""			
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 01_MPRAGE.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
 			continue
 		fi
 
@@ -1095,10 +1165,12 @@ do
 		#Error Handling
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
-
+			
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 02_Create_QSM_Masks.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""
 			continue
 		fi
 
@@ -1120,10 +1192,12 @@ do
 		#Error Handling
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
-
+			
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 03_AlignQSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
 			continue
 		fi
 
@@ -1143,9 +1217,11 @@ do
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
 
+			echo ""			
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 04_Erode_QSM_Masks.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""			
 			continue
 		fi
 
@@ -1167,10 +1243,27 @@ do
 		ExCode=$?
 		#echo "The exit code was $ExCode"
 		if [[ $ExCode > 0 ]]; then
-
+			
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 05_Extract_QSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""
+
+			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueQSM.txt" ]; then
+				
+				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt)
+				
+				if [[ $Suspect == $Subj ]]; then
+
+					rm $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt
+					
+				fi
+				
+				unset Suspect
+
+			fi		
+
 			continue
 		fi
 
@@ -1190,10 +1283,27 @@ do
 		#Error Handling
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
-
+			
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 06_QSM_SNR.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""
+
+			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueSNR.txt" ]; then
+
+				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt)
+				
+				if [[ $Suspect == $Subj ]]; then
+
+					rm $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt
+					
+				fi
+				
+				unset Suspect
+				
+			fi
+
 			continue
 		fi
 
@@ -1213,10 +1323,12 @@ do
 		#Error Handling
 		ExCode=$?
 		if [[ $ExCode > 0 ]]; then
-
+			
+			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 07_MNI_NL_WarpQSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
+			echo ""
 			continue
 		fi
 
