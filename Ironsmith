@@ -110,7 +110,7 @@ echo "*** Checking arguments provided with Ironsmith command: ***"
 echo "---------------------------------------------------------------"
 echo ""
 
-#Check if path to output folder is valid
+#Eliminate last / if given with OutFolder
 
 if [[ `echo $OutFolder | grep -o '.$'` == "/" ]]; then
 
@@ -179,6 +179,8 @@ else
 	exit 1
 
 fi
+
+#Check if path to output folder is valid
 
 PathToOut=$(echo $OutFolder | awk -F '/' '{OFS = FS} {$NF=""; print $0}')
 
