@@ -123,7 +123,7 @@ if [[ $MPRType == 1 ]]; then
 		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 		echo ""			
 
-		cp -r $OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull .
+		cp -r $OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull .
 		#cp -r $OutFolder/S0030/MPR/S0030_FreeSurfSeg_Skull ${Subj}_FreeSurfSeg_Skull
 
 		echo ""		
@@ -193,7 +193,7 @@ elif [[ $MPRType == 2 ]]; then
 		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 		echo ""
 
-		cp -r $OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull .
+		cp -r $OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull .
 		#cp -r $OutFolder/S0030/MPR/S0030_FreeSurfSeg_Skull ${Subj}_FreeSurfSeg_Skull
 
 		echo ""		
@@ -259,7 +259,7 @@ elif [[ $MPRType == 3 ]]; then
 		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 		echo ""
 
-		cp -r $OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull .
+		cp -r $OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull .
 		#cp -r $OutFolder/S0030/MPR/S0030_FreeSurfSeg_Skull ${Subj}_FreeSurfSeg_Skull
 
 		echo ""		
@@ -340,7 +340,7 @@ elif [[ $MPRType == 4 ]]; then
 			echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 			echo ""
 
-			cp -r $OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull .
+			cp -r $OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull .
 
 			echo ""		
 			echo "*** Skipping freesurfer segmentation ☜(ﾟヮﾟ☜) ***"
@@ -401,7 +401,7 @@ elif [[ $MPRType == 4 ]]; then
 			echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 			echo ""
 
-			cp -r $OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull .
+			cp -r $OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull .
 		
 
 			echo ""		
