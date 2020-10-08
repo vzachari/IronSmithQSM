@@ -771,9 +771,12 @@ do
 				mkdir $OutFolder/$Subj
 				mkdir $OutFolder/$Subj/LogFiles
 
-				if [ ! -d "$OutFolder/Freesurfer" ]; then
+				if [ ! -d "$OutFolder/Freesurfer_Skip" ]; then
 
-					mkdir $OutFolder/Freesurfer
+					mkdir $OutFolder/Freesurfer_Skip
+					echo "Copy finished freesurfer recon-all folder here to skip the fressurfer segmentation step." >> $OutFolder/Freesurfer_Skip/README.txt
+					echo "Rename finished freesurfer recon-all folder to Subj_FreeSurfSeg_Skull." >> $OutFolder/Freesurfer_Skip/README.txt
+					echo "Subj should match the participant you want the segmentation step skipped." >> $OutFolder/Freesurfer_Skip/README.txt
 				fi
 
 			fi
@@ -786,7 +789,10 @@ do
 			echo ""
 			mkdir $OutFolder/$Subj
 			mkdir $OutFolder/$Subj/LogFiles
-			mkdir $OutFolder/Freesurfer
+			mkdir $OutFolder/Freesurfer_Skip
+			echo "Copy finished freesurfer recon-all folder here to skip the fressurfer segmentation step." >> $OutFolder/Freesurfer_Skip/README.txt
+			echo "Rename finished freesurfer recon-all folder to Subj_FreeSurfSeg_Skull." >> $OutFolder/Freesurfer_Skip/README.txt
+			echo "Subj should match the participant you want the segmentation step skipped." >> $OutFolder/Freesurfer_Skip/README.txt
 
 		fi
 	else
@@ -796,7 +802,10 @@ do
 		mkdir $OutFolder
 		mkdir $OutFolder/$Subj
 		mkdir $OutFolder/$Subj/LogFiles
-		mkdir $OutFolder/Freesurfer
+		mkdir $OutFolder/Freesurfer_Skip
+		echo "Copy finished freesurfer recon-all folder here to skip the fressurfer segmentation step." >> $OutFolder/Freesurfer_Skip/README.txt
+		echo "Rename finished freesurfer recon-all folder to Subj_FreeSurfSeg_Skull." >> $OutFolder/Freesurfer_Skip/README.txt
+		echo "Subj should match the participant you want the segmentation step skipped." >> $OutFolder/Freesurfer_Skip/README.txt
 
 	fi
 

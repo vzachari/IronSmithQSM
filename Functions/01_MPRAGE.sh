@@ -115,10 +115,10 @@ if [[ $MPRType == 1 ]]; then
 	
 
 
-	if [ -d "$OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull" ]; then
+	if [ -d "$OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull" ]; then
 
 		echo ""	
-		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer"	
+		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer_Skip"	
 		echo ""		
 		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 		echo ""			
@@ -185,10 +185,10 @@ elif [[ $MPRType == 2 ]]; then
 
 	singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg mri_concat *.nii* --o $Subj'_'mempr_rms.nii.gz --rms
 
-	if [ -d "$OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull" ]; then
+	if [ -d "$OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull" ]; then
 
 		echo ""	
-		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer"	
+		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer_Skip"	
 		echo ""		
 		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 		echo ""
@@ -204,7 +204,7 @@ elif [[ $MPRType == 2 ]]; then
 	else
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours"	
+		echo "Running freesurfer. This could take up to 8 hours (´∀｀；)"	
 		echo ""			
 
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
@@ -251,10 +251,10 @@ elif [[ $MPRType == 3 ]]; then
 	cp $MPRDir/*.nii* $Subj'_'mempr.nii.gz
 	
 	
-	if [ -d "$OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull" ]; then
+	if [ -d "$OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull" ]; then
 
 		echo ""	
-		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer"	
+		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer_Skip"	
 		echo ""		
 		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 		echo ""
@@ -332,10 +332,10 @@ elif [[ $MPRType == 4 ]]; then
 	
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg mri_concat ${Subj}_MPR_File*.nii* --o $Subj'_'mempr_rms.nii.gz --rms
 		
-		if [ -d "$OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull" ]; then
+		if [ -d "$OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull" ]; then
 
 			echo ""	
-			echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer"	
+			echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer_Skip"	
 			echo ""		
 			echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 			echo ""
@@ -393,10 +393,10 @@ elif [[ $MPRType == 4 ]]; then
 	
 		mv ${Subj}_MPR_File*.nii.gz ${Subj}_mempr.nii.gz
 
-		if [ -d "$OutFolder/Freesurfer/${Subj}_FreeSurfSeg_Skull" ]; then
+		if [ -d "$OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull" ]; then
 
 			echo ""	
-			echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer"	
+			echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer_Skip"	
 			echo ""		
 			echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
 			echo ""
