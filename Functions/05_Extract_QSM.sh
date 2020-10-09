@@ -240,6 +240,61 @@ elif [ ! -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
 	echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt
 fi
 
+#####Check if failure has occured in the past####
+
+cd $OutFolder/Group/$Fold
+
+echo ""
+echo "Checking file consistency..."
+echo ""
+
+if [ -f "Subjects.txt" ]; then
+
+	FileList=($(ls -I "CueQSM.txt" -I "CueSNR.txt" -I "*_SNR.txt"))
+	SubjectLines=$(wc -l Subjects.txt | awk '{print $1}')
+
+	for i in $FileList 
+	do 
+		FileLines=$(wc -l $i | awk '{print $1}')
+		
+		if [[ $FileLines != $SubjectLines ]]; then
+		
+			echo ""
+			echo "Inconsistency in $OutFolder/Group/$Fold/$i, Fixing..."
+			echo "" 			
+				
+
+			while [[ $FileLines != $SubjectLines ]]
+			do
+				sed '$d' $i
+			done
+		fi
+
+		unset FileLines
+		
+	done
+	
+	echo ""
+	echo "File consistency check complete! "
+	echo ""
+
+	unset FileList SubjectLines
+
+else
+	echo ""
+	echo "Previous run failed miserably, cleaning $Fold... "
+	echo ""
+
+	find . -maxdepth 1 ! -name "*_SNR.txt" ! -name "CueQSM.txt" -type f -delete
+
+	echo ""
+	echo "File consistency check complete! "
+	echo ""
+
+fi
+
+#####Check if failure has occured in the past####	
+
 set +e #Turn OFF exit on error
 
 echo ""
