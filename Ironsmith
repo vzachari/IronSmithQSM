@@ -555,8 +555,9 @@ do
 					DicomID1=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0010 $First_DICOM)
 					DicomID2=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
 			
-					if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
-					
+					#if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
+					 if [ ! $(echo $DicomID1 | grep $Subj) ] && [ ! $(echo $DicomID2 | grep $Subj ]; then
+
 						echo ""
 						echo -e "\e[93m------------------------------------------------------"
 						echo "WARNING: $Subj in $CSVFile DOES NOT match"
@@ -797,8 +798,9 @@ do
 					DicomID1=$(singularity run -e --bind $QSM_Dicom_Dir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0010 $First_DICOM)
 					DicomID2=$(singularity run -e --bind $QSM_Dicom_Dir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
 			
-					if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
-					
+					#if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
+					 if [ ! $(echo $DicomID1 | grep $Subj) ] && [ ! $(echo $DicomID2 | grep $Subj ]; then  					
+
 						echo ""
 						echo -e "\e[93m------------------------------------------------------"
 						echo "WARNING: $Subj in $CSVFile DOES NOT match"
