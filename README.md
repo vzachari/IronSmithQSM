@@ -12,10 +12,10 @@ Ironsmith can perform the following tasks in a fully automated pipeline:
 
 a) Create QSM maps from GRE DICOM images using the MEDI toolbox **(see section 7 for details)** .     
 b) Align MPR/MEMPR T1 images to QSM maps and then segment them into 87 ROIs **(ROI list in section 8)** using freesurfer.  
-c) Extract QSM based iron concentration from these ROIs and format the output into easy to read tables.  
-d) Calculate SNR for each ROI as a measure of quality control for QSM in an easy to read table.  
-e) Warp QSM and aligned MPR/MEMPR to MNI152 1mm space for voxelwise analyses.   
-f) Process single or multiple participants at a time.  
+c) Filter outlier voxels from these ROIs, extract QSM based iron concentration, and format the output into easy to read tables.  
+d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM in an easy to read table.  
+e) Warp QSM and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
+f) Process single or multiple participants at a time.
 
 ## 1) Software requirements:
 
@@ -34,7 +34,7 @@ Ubuntu 16.04 running on Windows 10 Subsystem for Linux V2 (WSL2)
 
 #### b) MATLAB
 
-Ironsmith requires Matlab to run MEDI and supports versions R2017b to R2019b.  
+Ironsmith requires Matlab to run MEDI Toolbox and supports versions R2017b to R2019b.  
 Matlab is not needed if MEDI is not required.  
 
 #### c) Singularity
@@ -216,7 +216,6 @@ mean signal intensity of magnitude image within an ROI / standard deviation of m
 The outside the head mask can be found here:  
 **/QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
 
-
 ## 7) Ironsmith uses the following software, provided in the form of a singularity image:
 
 ### AFNI
@@ -341,4 +340,4 @@ R_Caudate
 R_Hipp  
 R_Pallidum  
 R_Putamen  
-R_Thalamus_Proper  
+R_Thalamus_Proper
