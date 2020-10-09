@@ -487,7 +487,6 @@ do
 	echo "---------------------------------------------------------------"
 	echo ""
 
-
 	# MPR Check
 
 	if [ ! -d "$MPRDir" ]; then
@@ -544,12 +543,38 @@ do
 					echo -e "----------------------------------------------\e[0m"
 					echo ""
 					continue
+
 				elif [[ $Dicom_Err == "type:" ]]; then
 
 					echo ""
 					echo "DICOMS FOUND in $MPRDir. They will be processed by 01_MPRAGE.sh ! ( •̀ᴗ•́ )و ̑̑"
 					echo ""
 					MPRType=4
+					
+					#Check if $Subj matched Patient name or Patient ID from DICOM headier of $First_DICOM
+					DicomID1=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0010 $First_DICOM)
+					DicomID2=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
+			
+					if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
+					
+						echo ""
+						echo -e "\e[93m------------------------------------------------------"
+						echo "WARNING: $Subj in $CSVFile DOES NOT match"
+						echo ""
+						echo "Patient Name:$DicomID1"
+						echo "and/or" 						
+						echo "Patient ID:$DicomID2"
+						echo ""						
+						echo "of DICOM headers in $MPRDir "
+						echo ""
+						echo "Are these the correct DICOMs? (ㆆ _ ㆆ) "						
+						echo -e "------------------------------------------------------\e[0m"
+						echo ""
+						
+					fi
+					
+					unset DicomID1 DicomID2
+
 				else
 					echo ""
 					echo -e "\e[31m----------------------------------------------"
@@ -557,7 +582,6 @@ do
 					echo -e "----------------------------------------------\e[0m"
 					echo ""
 					continue
-
 
 				fi
 
@@ -575,6 +599,21 @@ do
 				MPRType=1 # Multiple echos as separate _e files
 				echo ""
 
+				if ! ls $MPRDir/*_e*nii* | grep $Subj 1> /dev/null 2>&1; then
+					
+					echo ""
+					echo -e "\e[93m------------------------------------------------------"
+					echo "WARNING: $Subj in $CSVFile NOT part of filename of:"
+					echo ""
+					echo "`ls -l $MPRDir/*_e*nii* | awk -F '[/]' '{print $NF}'`"
+					echo ""
+					echo "Are these the correct files? (ㆆ _ ㆆ) "
+					echo -e "------------------------------------------------------\e[0m"
+					echo ""				
+
+				fi  
+				
+
 			#elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [[ -n $(find . -mindepth 1 -maxdepth 1 -type f ! -name "*_e*") ]]; then
 			elif ls $MPRDir/*.nii* 1> /dev/null 2>&1 && [ $(ls -1 $MPRDir/*.nii* 2>/dev/null | wc -l) -eq 1 ]; then
 
@@ -583,6 +622,21 @@ do
 				echo ""
 				echo "`ls $MPRDir/*nii* | awk -F '[/]' '{print $NF}'`"
 				echo ""
+
+				if ! ls $MPRDir/*nii* | grep $Subj 1> /dev/null 2>&1; then
+					
+					echo ""
+					echo -e "\e[93m------------------------------------------------------"
+					echo "WARNING: $Subj in $CSVFile NOT part of filename of:"
+					echo ""
+					echo "`ls -l $MPRDir/*nii* | awk -F '[/]' '{print $NF}'`"
+					echo ""
+					echo "Is this the correct file? (ㆆ _ ㆆ) "
+					echo -e "------------------------------------------------------\e[0m"
+					echo ""				
+
+				fi  
+
 
 				TimePoints=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg 3dinfo -nv /mnt/*.nii*)
 
@@ -594,9 +648,8 @@ do
 					echo "Will calculate RMS across echos for `ls $MPRDir/*nii* | awk -F '[/]' '{print $NF}'`"
 					MPRType=2 # Multiple echos in a single file
 					echo ""
-
+						
 				elif [[ $TimePoints == 1 ]]; then
-
 
 					echo ""
 					echo "$TimePoints echo found in `ls $MPRDir/*nii* | awk -F '[/]' '{print $NF}'`"
@@ -624,6 +677,7 @@ do
 
 
 	if [[ $MEDIFlag == "MEDI_No" ]]; then
+		
 		# MAG File
 		if [ ! -f "$MAG" ]; then
 
@@ -639,6 +693,21 @@ do
 			#echo -e "\e[44m$MAG\e[0m Found in specified path!"
 			echo "QSM Magnitude image: $MAG found in specified path"
 			echo ""
+
+			if ! ls $MAG | awk -F '[/]' '{print $NF}' | grep $Subj 1> /dev/null 2>&1; then
+					
+				echo ""
+				echo -e "\e[93m------------------------------------------------------"
+				echo "WARNING: $Subj in $CSVFile NOT part of filename of:"
+				echo ""
+				echo " $(ls $MAG | awk -F '[/]' '{print $NF}') "
+				echo ""
+				echo "Is this the correct file? (ㆆ _ ㆆ) "
+				echo -e "------------------------------------------------------\e[0m"
+				echo ""				
+
+			fi  
+			
 		fi
 
 		# QSM File
@@ -656,6 +725,21 @@ do
 			#echo -e "\e[44m$QSMFile\e[0m Found in specified path!"
 			echo "QSM Map: $QSMFile Found in specified path"
 			echo ""
+
+			if ! ls $QSMFile | awk -F '[/]' '{print $NF}' | grep $Subj 1> /dev/null 2>&1; then
+					
+				echo ""
+				echo -e "\e[93m------------------------------------------------------"
+				echo "WARNING: $Subj in $CSVFile NOT part of filename of:"
+				echo ""
+				echo " $(ls $QSMFile | awk -F '[/]' '{print $NF}') "
+				echo ""
+				echo "Is this the correct file? (ㆆ _ ㆆ) "
+				echo -e "------------------------------------------------------\e[0m"
+				echo ""				
+
+			fi  
+
 		fi
 
 
@@ -679,6 +763,8 @@ do
 				continue
 
 			else
+				unset First_DICOM Dicom_Err
+								
 				First_DICOM=$(singularity run -e --bind $QSM_Dicom_Dir:/mnt $Path/Functions/QSM_Container.simg find /mnt -mindepth 1 \
 						-maxdepth 1 -type f ! -regex '.*\(nii\|json\|txt\|nii.gz\|HEAD\|BRIK\|hdr\|img\)$' | awk -F '/' 'FNR == 1')
 
@@ -706,6 +792,31 @@ do
 					echo ""
 					echo "DICOMS FOUND in $QSM_Dicom_Dir. They will be processed by MEDI! ( •̀ᴗ•́ )و ̑̑"
 					echo ""
+
+					#Check if $Subj matched Patient name or Patient ID from DICOM headier of $First_DICOM
+					DicomID1=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0010 $First_DICOM)
+					DicomID2=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
+			
+					if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
+					
+						echo ""
+						echo -e "\e[93m------------------------------------------------------"
+						echo "WARNING: $Subj in $CSVFile DOES NOT match"
+						echo ""
+						echo "Patient Name:$DicomID1"
+						echo "and/or" 						
+						echo "Patient ID:$DicomID2"
+						echo ""										
+						echo "of DICOM headers in $QSM_Dicom_Dir"
+						echo ""
+						echo "Are these the correct DICOMs? (ㆆ _ ㆆ) "						
+						echo -e "------------------------------------------------------\e[0m"
+						echo ""
+						
+					fi
+					
+					unset DicomID1 DicomID2
+
 				else
 
 					echo ""
@@ -716,7 +827,8 @@ do
 					continue
 
 				fi
-
+				
+				unset First_DICOM Dicom_Err
 			fi
 		else
 			echo ""
