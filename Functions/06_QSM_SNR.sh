@@ -24,7 +24,7 @@ set -e #Exit on error
 #2) Output folder
 #3) Path
 
-#Subj="S0090"
+#Subj="S1090"
 #OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
 #Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 
@@ -99,43 +99,149 @@ echo "*** Extracting QSM SNR values from cortical/subcortical aligned/resampled 
 echo "---------------------------------------------------------------"	
 echo ""
 
+
 if [ -f "$OutFolder/Group/$Fold/CueSNR.txt" ]; then
 
-	echo ""
-	echo "$OutFolder/Group/$Fold" 
-	echo "is currently occupied by another instance of Ironsmith! "
-	echo "Waiting for $(cat $OutFolder/Group/$Fold/CueSNR.txt) to finish processing... "
-	echo ""
-	echo -e "\t\t ((     ___	" 
-	echo -e "\t\t  ))  \___/_ 	"
-	echo -e "\t\t |~~| /~~~\ \	"
-	echo -e "\t\tC|__| \___/	"
-	echo ""
+	####1) Check for prior failure since CueSNR.txt exists in folder#####
 
-	while [ -f $OutFolder/Group/$Fold/CueSNR.txt ]
-	
-	do
-	 
-		sleep 2
-	
-	done
-	
-	echo ""
-	echo "The wait is over, rejoice! "
-	echo ""
+	#Start/update LifeLine
+	echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
-	echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt	
+	unset LifeLine
+	LifeLine=$(cat $OutFolder/Group/$Fold/LifeLineSNR.txt)
+
+	sleep 4 #Allow time for LifeLineSNR.txt to update if controlled by another Ironsmith isnstance
+
+	if [[ $LifeLine == $(cat $OutFolder/Group/$Fold/LifeLineSNR.txt) ]]; then
+ 
+		#LifeLine is not updating, Ironsmith has crashed recently and folder needs to be fixed
+		echo ""
+		echo -e "\e[93m----------------------------------------------"	
+		echo "WARNING: Past Ironsmith failure/crash detected in $Fold for participant: $(cat $OutFolder/Group/$Fold/CueSNR.txt)"
+		echo ""	
+		echo "Initiating recovery procedure! DAMAGED SNR entries for participant: $(cat $OutFolder/Group/$Fold/CueSNR.txt) will be removed from Group! "
+		echo -e "----------------------------------------------\e[0m"	
+		echo ""
+
+		#####Fix Failure####
+
+		cd $OutFolder/Group/$Fold
+
+		echo ""
+		echo "Checking file consistency..."
+		echo ""
+
+		if [ -f "SubjectsSNR.txt" ]; then
+
+			FileList=($(find . -maxdepth 1 -name "*_SNR*" -type f | awk -F'/' '{print $2}'))
+			SubjectLines=$(wc -l SubjectsSNR.txt | awk '{print $1}')
+
+			for i in ${FileList[@]} 
+			do 
+				FileLines=$(wc -l $i | awk '{print $1}')
+			
+				if [[ $FileLines > $SubjectLines ]]; then
+		
+					#echo ""
+					echo "Inconsistency in $OutFolder/Group/$Fold/$i, Fixing..."
+					#echo "" 			
+				
+
+					while [[ $FileLines > $SubjectLines ]]
+					do
+						sed -i '$d' $i
+						FileLines=$(wc -l $i | awk '{print $1}')
+					done
+				
+				elif [[ $FileLines < $SubjectLines ]]; then
+
+					echo ""		
+					echo -e "\e[31m----------------------------------------------"
+					echo "ERROR: $OutFolder/Group is completely corrupt and beyond repair! "
+					echo "Please manually delete $OutFolder/Group and start over"
+					echo -e "----------------------------------------------\e[0m"
+					echo ""	
+					exit 20
+				fi
+
+				unset FileLines
+		
+			done
+	
+			echo ""
+			echo "File consistency check complete! "
+			echo ""
+
+			unset FileList SubjectLines
+
+		else
+	
+			echo ""
+			echo "Previous run/s failed miserably! Cleaning $OutFolder/Group/$Fold... "
+			echo ""
+
+			find . -maxdepth 1 -name "*_SNR*" -type f -delete
+
+			echo ""
+			echo "File consistency check complete! "
+			echo ""
+
+		fi
+
+
+		rm $OutFolder/Group/$Fold/CueSNR.txt
+		echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt		
+
+	else
+		#All good, folder just occupied by another instance of ironsmith
+
+		echo ""
+		echo "$OutFolder/Group/$Fold" 
+		echo "is currently occupied by another instance of Ironsmith! "
+		echo "Waiting for $(cat $OutFolder/Group/$Fold/CueSNR.txt) to finish processing... "
+		echo ""
+		echo -e "\t\t ((     ___	" 
+		echo -e "\t\t  ))  \___/_ 	"
+		echo -e "\t\t |~~| /~~~\ \	"
+		echo -e "\t\tC|__| \___/	"
+		echo ""
+	
+		while [ -f $OutFolder/Group/$Fold/CueSNR.txt ]
+	
+		do
+	 	
+			sleep 2
+		
+		done
+	
+		echo ""
+		echo "The wait is over, rejoice! "
+		echo ""
+
+		echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt
+
+	fi
+	
+	unset LifeLine
 	
 elif [ ! -f "$OutFolder/Group/$Fold/CueSNR.txt" ]; then
 
 	echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt
 fi
 
+
 set +e #Turn OFF exit on error
+
+cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks
+
+SNR=9999
 
 #Cortical 
 
 #BILATERAL
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
 
 echo "LR_Frontal_GM_Mask"	
 
@@ -149,6 +255,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Frontal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -165,6 +274,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Parietal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "LR_Occipital_GM_Mask"	
@@ -180,6 +292,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Occipital_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "LR_Temporal_GM_Mask"	
@@ -194,6 +309,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Temporal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -218,6 +336,9 @@ unset Eval Mean SNR
 
 #echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_BanksSTS_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 #unset Eval Mean SNR
 
 echo "L_CaudalAnteriorCingulate_GM"	
@@ -232,6 +353,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_CaudalAnteriorCingulate_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -248,6 +372,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_CaudalMiddleFrontal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Cuneus_GM"	
@@ -262,6 +389,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Cuneus_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -278,6 +408,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_DLPFC_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Entorhinal_GM"	
@@ -292,6 +425,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Entorhinal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -308,6 +444,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Frontal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Fusiform_GM"	
@@ -322,6 +461,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Fusiform_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -338,6 +480,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_InferiorParietal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_InferiorTemporal_GM"	
@@ -352,6 +497,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_InferiorTemporal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -368,6 +516,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Insula_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_IsthmusCingulate_GM"	
@@ -382,6 +533,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_IsthmusCingulate_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -398,6 +552,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_LateralOccipital_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_LateralOrbitofrontal_GM"	
@@ -412,6 +569,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_LateralOrbitofrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -428,6 +588,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Lingual_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_MedialOrbitofrontal_GM"	
@@ -442,6 +605,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_MedialOrbitofrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -458,6 +624,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_MiddleTemporal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Occipital_GM_Mask"	
@@ -472,6 +641,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Occipital_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -489,6 +661,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Parietal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Temporal_GM_Mask"	
@@ -503,6 +678,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Temporal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -519,6 +697,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Parahippocampal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Pericalcarine_GM"	
@@ -533,6 +714,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Pericalcarine_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -549,6 +733,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Postcentral_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_PosteriorCingulate_GM"	
@@ -563,6 +750,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_PosteriorCingulate_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -579,6 +769,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Precentral_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Precuneus_GM"	
@@ -594,6 +787,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Precuneus_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_RostalMiddleFrontal_GM"	
@@ -608,6 +804,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_RostalMiddleFrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -625,6 +824,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_RostralAnteriorCingulate_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_SuperiorFrontal_GM"	
@@ -639,6 +841,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_SuperiorFrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -655,6 +860,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_SuperiorParietal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_SuperiorTemporal_GM"	
@@ -670,6 +878,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_SuperiorTemporal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_TransverseTemporal_GM"	
@@ -684,6 +895,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_TransverseTemporal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -708,6 +922,9 @@ unset Eval Mean SNR
 
 #echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_BanksSTS_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 #unset Eval Mean SNR
 
 echo "R_CaudalAnteriorCingulate_GM"	
@@ -722,6 +939,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_CaudalAnteriorCingulate_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -738,6 +958,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_CaudalMiddleFrontal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Cuneus_GM"	
@@ -752,6 +975,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Cuneus_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -768,6 +994,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_DLPFC_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Entorhinal_GM"	
@@ -782,6 +1011,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Entorhinal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -798,6 +1030,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Frontal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Fusiform_GM"	
@@ -812,6 +1047,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Fusiform_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -828,6 +1066,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_InferiorParietal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_InferiorTemporal_GM"	
@@ -842,6 +1083,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_InferiorTemporal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -858,6 +1102,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Insula_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_IsthmusCingulate_GM"	
@@ -872,6 +1119,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_IsthmusCingulate_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -888,6 +1138,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_LateralOccipital_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_LateralOrbitofrontal_GM"	
@@ -902,6 +1155,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_LateralOrbitofrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -918,6 +1174,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Lingual_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_MedialOrbitofrontal_GM"	
@@ -932,6 +1191,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_MedialOrbitofrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -948,6 +1210,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_MiddleTemporal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Occipital_GM_Mask"	
@@ -962,6 +1227,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Occipital_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -979,6 +1247,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Parietal_GM_Mask_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Temporal_GM_Mask"	
@@ -993,6 +1264,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Temporal_GM_Mask_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1009,6 +1283,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Parahippocampal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Pericalcarine_GM"	
@@ -1023,6 +1300,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Pericalcarine_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1039,6 +1319,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Postcentral_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_PosteriorCingulate_GM"	
@@ -1053,6 +1336,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_PosteriorCingulate_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1069,6 +1355,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Precentral_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Precuneus_GM"	
@@ -1084,6 +1373,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Precuneus_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_RostalMiddleFrontal_GM"	
@@ -1098,6 +1390,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_RostalMiddleFrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1115,6 +1410,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_RostralAnteriorCingulate_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_SuperiorFrontal_GM"	
@@ -1129,6 +1427,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_SuperiorFrontal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1145,6 +1446,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_SuperiorParietal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_SuperiorTemporal_GM"	
@@ -1160,6 +1464,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_SuperiorTemporal_GM_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_TransverseTemporal_GM"	
@@ -1174,6 +1481,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_TransverseTemporal_GM_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1196,6 +1506,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Accumbens_area_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "LR_Amygdala"	
@@ -1210,6 +1523,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Amygdala_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1226,6 +1542,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Caudate_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "LR_Hipp"	
@@ -1240,6 +1559,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Hipp_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1257,6 +1579,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Pallidum_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "LR_Putamen"	
@@ -1272,6 +1597,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Putamen_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "LR_Thalamus_Proper"	
@@ -1286,6 +1614,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Thalamus_Proper_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1306,6 +1637,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Accumbens_area_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Amygdala"	
@@ -1320,6 +1654,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Amygdala_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1336,6 +1673,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Caudate_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Hipp"	
@@ -1350,6 +1690,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Hipp_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1367,6 +1710,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Pallidum_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Putamen"	
@@ -1382,6 +1728,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Putamen_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "L_Thalamus_Proper"	
@@ -1396,6 +1745,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Thalamus_Proper_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1415,6 +1767,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Accumbens_area_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Amygdala"	
@@ -1429,6 +1784,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Amygdala_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1445,6 +1803,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Caudate_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Hipp"	
@@ -1459,6 +1820,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Hipp_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1476,6 +1840,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Pallidum_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
 
 echo "R_Putamen"
@@ -1490,6 +1857,9 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 	echo "scale=2; $Mean / $SD " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Putamen_SNR.txt
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
@@ -1506,20 +1876,34 @@ SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Fu
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Thalamus_Proper_SNR.txt
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 unset Eval Mean SNR
+
+echo "$Subj" >> $OutFolder/Group/$Fold/SubjectsSNR.txt
 
 cd $OutFolder/Group/$Fold
 
 #List of files that should exist under $Fold
 
-QSMSNRFileList="Group_LR_Frontal_GM_Mask_SNR.txt Group_L_DLPFC_GM_Mask_SNR.txt Group_L_InferiorTemporal_GM_Mask_SNR.txt Group_L_MedialOrbitofrontal_GM_SNR.txt Group_L_MiddleTemporal_GM_SNR.txt Group_L_Parietal_GM_Mask_SNR.txt Group_R_Postcentral_GM_SNR.txt Group_R_Precentral_GM_SNR.txt Group_R_Precuneus_GM_SNR.txt Group_R_RostralAnteriorCingulate_GM_SNR.txt Group_R_SuperiorParietal_GM_SNR.txt Group_LR_Accumbens_area_SNR.txt Group_LR_Thalamus_Proper_SNR.txt Group_L_Pallidum_SNR.txt Group_L_Putamen_SNR.txt Group_R_Accumbens_area_SNR.txt Group_R_Amygdala_SNR.txt Group_R_Caudate_SNR.txt Group_R_Putamen_SNR.txt Group_LR_Temporal_GM_Mask_SNR.txt Group_L_RostalMiddleFrontal_GM_SNR.txt Group_R_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_R_Cuneus_GM_Mask_SNR.txt Group_R_Fusiform_GM_Mask_SNR.txt Group_R_IsthmusCingulate_GM_SNR.txt Group_R_LateralOccipital_GM_SNR.txt Group_R_Occipital_GM_Mask_SNR.txt Group_LR_Amygdala_SNR.txt Group_L_Accumbens_area_SNR.txt Group_R_Pallidum_SNR.txt Group_L_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_L_Cuneus_GM_Mask_SNR.txt Group_L_IsthmusCingulate_GM_SNR.txt Group_L_LateralOccipital_GM_SNR.txt Group_L_Temporal_GM_Mask_SNR.txt Group_L_SuperiorFrontal_GM_SNR.txt Group_R_Entorhinal_GM_Mask_SNR.txt Group_R_Lingual_GM_SNR.txt Group_R_PosteriorCingulate_GM_SNR.txt Group_R_SuperiorFrontal_GM_SNR.txt Group_R_TransverseTemporal_GM_SNR.txt Group_LR_Putamen_SNR.txt Group_L_Amygdala_SNR.txt Group_L_Caudate_SNR.txt Group_L_Hipp_SNR.txt Group_L_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_L_Entorhinal_GM_Mask_SNR.txt Group_L_InferiorParietal_GM_Mask_SNR.txt Group_L_Occipital_GM_Mask_SNR.txt Group_L_Parahippocampal_GM_SNR.txt Group_L_Precentral_GM_SNR.txt Group_L_SuperiorParietal_GM_SNR.txt Group_L_SuperiorTemporal_GM_SNR.txt Group_R_DLPFC_GM_Mask_SNR.txt Group_R_InferiorTemporal_GM_Mask_SNR.txt Group_R_Insula_GM_SNR.txt Group_R_MedialOrbitofrontal_GM_SNR.txt Group_R_Temporal_GM_Mask_SNR.txt Group_R_Parahippocampal_GM_SNR.txt Group_R_Pericalcarine_GM_SNR.txt Group_R_RostalMiddleFrontal_GM_SNR.txt Group_R_SuperiorTemporal_GM_SNR.txt Group_LR_Caudate_SNR.txt Group_LR_Pallidum_SNR.txt Group_L_Thalamus_Proper_SNR.txt Group_R_Hipp_SNR.txt Group_R_Thalamus_Proper_SNR.txt Group_LR_Parietal_GM_Mask_SNR.txt Group_LR_Occipital_GM_Mask_SNR.txt Group_L_LateralOrbitofrontal_GM_SNR.txt Group_L_Lingual_GM_SNR.txt Group_L_Pericalcarine_GM_SNR.txt Group_L_Postcentral_GM_SNR.txt Group_L_PosteriorCingulate_GM_SNR.txt Group_L_RostralAnteriorCingulate_GM_SNR.txt Group_R_Frontal_GM_Mask_SNR.txt Group_R_InferiorParietal_GM_Mask_SNR.txt Group_R_LateralOrbitofrontal_GM_SNR.txt Group_R_MiddleTemporal_GM_SNR.txt Group_L_Frontal_GM_Mask_SNR.txt Group_L_Fusiform_GM_Mask_SNR.txt Group_L_Insula_GM_SNR.txt Group_L_Precuneus_GM_SNR.txt Group_L_TransverseTemporal_GM_SNR.txt Group_R_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_R_Parietal_GM_Mask_SNR.txt Group_LR_Hipp_SNR.txt"
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
+
+QSMSNRFileList="Group_LR_Frontal_GM_Mask_SNR.txt Group_L_DLPFC_GM_Mask_SNR.txt Group_L_InferiorTemporal_GM_Mask_SNR.txt Group_L_MedialOrbitofrontal_GM_SNR.txt Group_L_MiddleTemporal_GM_SNR.txt Group_L_Parietal_GM_Mask_SNR.txt Group_R_Postcentral_GM_SNR.txt Group_R_Precentral_GM_SNR.txt Group_R_Precuneus_GM_SNR.txt Group_R_RostralAnteriorCingulate_GM_SNR.txt Group_R_SuperiorParietal_GM_SNR.txt Group_LR_Accumbens_area_SNR.txt Group_LR_Thalamus_Proper_SNR.txt Group_L_Pallidum_SNR.txt Group_L_Putamen_SNR.txt Group_R_Accumbens_area_SNR.txt Group_R_Amygdala_SNR.txt Group_R_Caudate_SNR.txt Group_R_Putamen_SNR.txt Group_LR_Temporal_GM_Mask_SNR.txt Group_L_RostalMiddleFrontal_GM_SNR.txt Group_R_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_R_Cuneus_GM_Mask_SNR.txt Group_R_Fusiform_GM_Mask_SNR.txt Group_R_IsthmusCingulate_GM_SNR.txt Group_R_LateralOccipital_GM_SNR.txt Group_R_Occipital_GM_Mask_SNR.txt Group_LR_Amygdala_SNR.txt Group_L_Accumbens_area_SNR.txt Group_R_Pallidum_SNR.txt Group_L_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_L_Cuneus_GM_Mask_SNR.txt Group_L_IsthmusCingulate_GM_SNR.txt Group_L_LateralOccipital_GM_SNR.txt Group_L_Temporal_GM_Mask_SNR.txt Group_L_SuperiorFrontal_GM_SNR.txt Group_R_Entorhinal_GM_Mask_SNR.txt Group_R_Lingual_GM_SNR.txt Group_R_PosteriorCingulate_GM_SNR.txt Group_R_SuperiorFrontal_GM_SNR.txt Group_R_TransverseTemporal_GM_SNR.txt Group_LR_Putamen_SNR.txt Group_L_Amygdala_SNR.txt Group_L_Caudate_SNR.txt Group_L_Hipp_SNR.txt Group_L_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_L_Entorhinal_GM_Mask_SNR.txt Group_L_InferiorParietal_GM_Mask_SNR.txt Group_L_Occipital_GM_Mask_SNR.txt Group_L_Parahippocampal_GM_SNR.txt Group_L_Precentral_GM_SNR.txt Group_L_SuperiorParietal_GM_SNR.txt Group_L_SuperiorTemporal_GM_SNR.txt Group_R_DLPFC_GM_Mask_SNR.txt Group_R_InferiorTemporal_GM_Mask_SNR.txt Group_R_Insula_GM_SNR.txt Group_R_MedialOrbitofrontal_GM_SNR.txt Group_R_Temporal_GM_Mask_SNR.txt Group_R_Parahippocampal_GM_SNR.txt Group_R_Pericalcarine_GM_SNR.txt Group_R_RostalMiddleFrontal_GM_SNR.txt Group_R_SuperiorTemporal_GM_SNR.txt Group_LR_Caudate_SNR.txt Group_LR_Pallidum_SNR.txt Group_L_Thalamus_Proper_SNR.txt Group_R_Hipp_SNR.txt Group_R_Thalamus_Proper_SNR.txt Group_LR_Parietal_GM_Mask_SNR.txt Group_LR_Occipital_GM_Mask_SNR.txt Group_L_LateralOrbitofrontal_GM_SNR.txt Group_L_Lingual_GM_SNR.txt Group_L_Pericalcarine_GM_SNR.txt Group_L_Postcentral_GM_SNR.txt Group_L_PosteriorCingulate_GM_SNR.txt Group_L_RostralAnteriorCingulate_GM_SNR.txt Group_R_Frontal_GM_Mask_SNR.txt Group_R_InferiorParietal_GM_Mask_SNR.txt Group_R_LateralOrbitofrontal_GM_SNR.txt Group_R_MiddleTemporal_GM_SNR.txt Group_L_Frontal_GM_Mask_SNR.txt Group_L_Fusiform_GM_Mask_SNR.txt Group_L_Insula_GM_SNR.txt Group_L_Precuneus_GM_SNR.txt Group_L_TransverseTemporal_GM_SNR.txt Group_R_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_R_Parietal_GM_Mask_SNR.txt Group_LR_Hipp_SNR.txt SubjectsSNR.txt"
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
 
 for i in $QSMSNRFileList; do ! test -f "$i" && echo "*FAIL*" >> $i && echo "$i NOT FOUND"; done
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
 
 unset QSMSNRFileList
 
 
-paste -d "," Subjects.txt \
+paste -d "," SubjectsSNR.txt \
 	Group_L_Accumbens_area_SNR.txt \
 	Group_L_Amygdala_SNR.txt \
 	Group_L_CaudalAnteriorCingulate_GM_Mask_SNR.txt \
@@ -1608,10 +1992,17 @@ paste -d "," Subjects.txt \
 	Group_LR_Temporal_GM_Mask_SNR.txt \
 	Group_LR_Thalamus_Proper_SNR.txt | pr -t > Group_QSM_SNR_Columns.csv
 
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
+
 
 echo "Participant,L_Accumbens_area,L_Amygdala,L_CaudalAnteriorCingulate,L_CaudalMiddleFrontal,L_Caudate,L_Cuneus,L_DLPFC,L_Entorhinal,L_Frontal,L_Fusiform,L_Hipp,L_InferiorParietal,L_InferiorTemporal,L_Insula,L_IsthmusCingulate,L_LateralOccipital,L_LateralOrbitofrontal,L_Lingual,L_MedialOrbitofrontal,L_MiddleTemporal,L_Occipital,L_Pallidum,L_Parahippocampal,L_Parietal,L_Pericalcarine,L_Postcentral,L_PosteriorCingulate,L_Precentral,L_Precuneus,L_Putamen,L_RostalMiddleFrontal,L_RostralAnteriorCingulate,L_SuperiorFrontal,L_SuperiorParietal,L_SuperiorTemporal,L_Temporal,L_Thalamus_Proper,L_TransverseTemporal,R_Accumbens_area,R_Amygdala,R_CaudalAnteriorCingulate,R_CaudalMiddleFrontal,R_Caudate,R_Cuneus,R_DLPFC,R_Entorhinal,R_Frontal,R_Fusiform,R_Hipp,R_InferiorParietal,R_InferiorTemporal,R_Insula,R_IsthmusCingulate,R_LateralOccipital,R_LateralOrbitofrontal,R_Lingual,R_MedialOrbitofrontal,R_MiddleTemporal,R_Occipital,R_Pallidum,R_Parahippocampal,R_Parietal,R_Pericalcarine,R_Postcentral,R_PosteriorCingulate,R_Precentral,R_Precuneus,R_Putamen,R_RostalMiddleFrontal,R_RostralAnteriorCingulate,R_SuperiorFrontal,R_SuperiorParietal,R_SuperiorTemporal,R_Temporal,R_Thalamus_Proper,R_TransverseTemporal,LR_Accumbens_area,LR_Amygdala,LR_Caudate,LR_Frontal,LR_Hipp,LR_Occipital,LR_Pallidum,LR_Parietal,LR_Putamen,LR_Temporal,LR_Thalamus_Proper" > $OutFolder/Group/Group_QSM_SNR.csv
 
 cat Group_QSM_SNR_Columns.csv >> $OutFolder/Group/Group_QSM_SNR.csv
+
+#Update LifeLineSNR.txt
+echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
+
 
 set -e #Turn ON exit on error
 

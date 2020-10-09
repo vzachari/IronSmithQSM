@@ -1116,56 +1116,24 @@ do
 
 		#Error Handling
 		ExCode=$?
-		if [[ $ExCode > 0 ]]; then
+		if [[ $ExCode == 1 ]] || [[ $ExCode == 5 ]]; then
 
 			echo ""			
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 05_Extract_QSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
 			echo ""			
-
-			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueQSM.txt" ]; then
-				
-				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt)
-				
-				if [[ $Suspect == $Subj ]]; then
-
-					rm $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt
-					
-				fi
-				
-				unset Suspect
-			fi
-
-			if [ -f "$OutFolder/Group/QSM_ROI_Stats_CSF_Ref/CueQSM.txt" ]; then
-				
-				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats_CSF_Ref/CueQSM.txt)
-				
-				if [[ $Suspect == $Subj ]]; then
-
-					rm $OutFolder/Group/QSM_ROI_Stats_CSF_Ref/CueQSM.txt
-					
-				fi
-				
-				unset Suspect
-		
-			fi
-
-			if [ -f "$OutFolder/Group/QSM_ROI_Stats_WM_Ref/CueQSM.txt" ]; then
-
-				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats_WM_Ref/CueQSM.txt)
-				
-				if [[ $Suspect == $Subj ]]; then
-
-					rm $OutFolder/Group/QSM_ROI_Stats_WM_Ref/CueQSM.txt
-					
-				fi
-				
-				unset Suspect
-				
-			fi
-
 			continue
+
+		elif [[ $ExCode == 20 ]]; then
+	
+			echo ""			
+			echo -e "\e[31m----------------------------------------------"
+			echo "FATAL ERROR: $OutFolder/Group is DAMAGED beyond repair. Please delete $OutFolder/Group and start over"
+			echo -e "----------------------------------------------\e[0m"
+			echo ""			
+			exit 1				
+
 		fi
 
 
@@ -1184,27 +1152,24 @@ do
 
 		#Error Handling
 		ExCode=$?
-		if [[ $ExCode > 0 ]]; then
+		if [[ $ExCode == 1 ]] || [[ $ExCode == 5 ]]; then
 
 			echo ""			
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 06_QSM_SNR.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
 			echo ""			
-
-			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueSNR.txt" ]; then
-
-				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt)
-
-				if [[ $Suspect == $Subj ]]; then
-				
-					rm $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt
-				fi
-			
-				unset Suspect
-			fi
-
 			continue
+
+		elif [[ $ExCode == 20 ]]; then
+	
+			echo ""			
+			echo -e "\e[31m----------------------------------------------"
+			echo "FATAL ERROR: $OutFolder/Group is DAMAGED beyond repair. Please delete $OutFolder/Group and start over"
+			echo -e "----------------------------------------------\e[0m"
+			echo ""			
+			exit 1			
+
 		fi
 
 		#****************************************************
@@ -1356,29 +1321,24 @@ do
 		#Error Handling
 		ExCode=$?
 		#echo "The exit code was $ExCode"
-		if [[ $ExCode > 0 ]]; then
+		if [[ $ExCode == 1 ]] || [[ $ExCode == 5 ]]; then
 			
 			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 05_Extract_QSM.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
 			echo ""
-
-			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueQSM.txt" ]; then
-				
-				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt)
-				
-				if [[ $Suspect == $Subj ]]; then
-
-					rm $OutFolder/Group/QSM_ROI_Stats/CueQSM.txt
-					
-				fi
-				
-				unset Suspect
-
-			fi		
-
 			continue
+
+		elif [[ $ExCode == 20 ]]; then 
+	
+			echo ""			
+			echo -e "\e[31m----------------------------------------------"
+			echo "FATAL ERROR: $OutFolder/Group is DAMAGED beyond repair. Please delete $OutFolder/Group and start over"
+			echo -e "----------------------------------------------\e[0m"
+			echo ""			
+			exit 1			
+
 		fi
 
 
@@ -1396,29 +1356,25 @@ do
 
 		#Error Handling
 		ExCode=$?
-		if [[ $ExCode > 0 ]]; then
+		if [[ $ExCode == 1 ]] || [[ $ExCode == 5 ]]; then
 			
 			echo ""
 			echo -e "\e[31m----------------------------------------------"
 			echo "ERROR: 06_QSM_SNR.sh FAILED! Skipping $Subj..."
 			echo -e "----------------------------------------------\e[0m"
 			echo ""
-
-			if [ -f "$OutFolder/Group/QSM_ROI_Stats/CueSNR.txt" ]; then
-
-				Suspect=$(cat $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt)
-				
-				if [[ $Suspect == $Subj ]]; then
-
-					rm $OutFolder/Group/QSM_ROI_Stats/CueSNR.txt
-					
-				fi
-				
-				unset Suspect
-				
-			fi
-
 			continue
+
+		elif [[ $ExCode == 20 ]]; then 
+	
+			echo ""			
+			echo -e "\e[31m----------------------------------------------"
+			echo "FATAL ERROR: $OutFolder/Group is DAMAGED beyond repair. Please delete $OutFolder/Group and start over"
+			echo -e "----------------------------------------------\e[0m"
+			echo ""			
+			exit 1	
+
+			
 		fi
 
 		#****************************************************
