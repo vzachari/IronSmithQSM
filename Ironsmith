@@ -794,8 +794,8 @@ do
 					echo ""
 
 					#Check if $Subj matched Patient name or Patient ID from DICOM headier of $First_DICOM
-					DicomID1=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0010 $First_DICOM)
-					DicomID2=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
+					DicomID1=$(singularity run -e --bind $QSM_Dicom_Dir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0010 $First_DICOM)
+					DicomID2=$(singularity run -e --bind $QSM_Dicom_Dir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
 			
 					if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
 					
