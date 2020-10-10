@@ -56,7 +56,9 @@ Option 2: using git
 `git clone https://github.com/vzachari/IronSmithQSM.git && cd IronSmithQSM && git checkout v1.0`
 
 b) Download QSM_Container.simg (8.8GB) from:  
-https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing
+https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing  
+Or  
+https://tinyurl.com/QSMContainer
 
 c) Place QSM_Container.simg in IronSmithQSM/Functions
 
@@ -89,7 +91,7 @@ b) Each row corresponds to a different participant.
 
 *see Example_File.csv in IronSmithQSM folder:*  
 
-### If MEDI is required to create QSM images/maps:  
+### If MEDI Toolbox is required to create QSM images/maps:  
 
 **Column1** = Subj (nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
 **Column2** = MEDI_Yes <-- this is case sensitive  
@@ -123,7 +125,7 @@ Preferably only QSM DICOMS should be present in the QSM_Dicom folder. However, I
 
 All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 
-### If MEDI is NOT required. That is QSM Maps and GRE Magnitude images are already available:  
+### If QSM maps and GRE magnitude images are already available:  
 
 **Column1** = Subj (nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
 **Column2** = MEDI_No <-- This is case sensitive  
