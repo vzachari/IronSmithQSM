@@ -556,7 +556,7 @@ do
 					DicomID2=$(singularity run -e --bind $MPRDir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
 			
 					#if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
-					 if [ ! $(echo $DicomID1 | grep $Subj) ] && [ ! $(echo $DicomID2 | grep $Subj ]; then
+					 if [ ! $(echo $DicomID1 | grep $Subj) ] && [ ! $(echo $DicomID2 | grep $Subj) ]; then
 
 						echo ""
 						echo -e "\e[93m------------------------------------------------------"
@@ -799,7 +799,7 @@ do
 					DicomID2=$(singularity run -e --bind $QSM_Dicom_Dir:/mnt $Path/Functions/QSM_Container.simg dicom_hinfo -no_name -tag 0010,0020 $First_DICOM)
 			
 					#if [[ $Subj != $DicomID1 && $Subj != $DicomID2 ]]; then
-					 if [ ! $(echo $DicomID1 | grep $Subj) ] && [ ! $(echo $DicomID2 | grep $Subj ]; then  					
+					 if [ ! $(echo $DicomID1 | grep $Subj) ] && [ ! $(echo $DicomID2 | grep $Subj) ]; then  					
 
 						echo ""
 						echo -e "\e[93m------------------------------------------------------"
@@ -1411,6 +1411,10 @@ done
 echo ""
 echo "---------------------------------------------------------------"
 echo "Ironsmith finished running on `date`"
+echo ""
+echo "Special Thank You To:"
+shuf -n 1 $Path/Functions/SpecialThankYou.txt
+echo ""
 echo "---------------------------------------------------------------"
 echo ""
 
