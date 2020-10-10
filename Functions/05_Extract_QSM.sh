@@ -350,8 +350,7 @@ cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks
 
 #echo "LoopCounter is: $LoopCounter"
 
-Sum=9999
-ROISize=9999
+unset Eval ROISize Sum OutFilter
 
 #Cortical 
 
@@ -359,25 +358,31 @@ ROISize=9999
 
 echo "LR_Frontal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Frontal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Frontal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -385,6 +390,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Frontal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -398,32 +404,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Frontal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Parietal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Parietal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Parietal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -431,6 +444,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Parietal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -444,32 +458,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Parietal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Occipital_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Occipital_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Occipital_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -477,6 +498,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Occipital_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -490,32 +512,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Occipital_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Temporal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Temporal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Temporal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -523,6 +552,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Temporal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -536,34 +566,41 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Temporal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 #LEFT HEMISPHERE
 
 #echo "L_BanksSTS_GM	(Mask does not exist at the moment)"
 
+#OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+#	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
+#	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
-#	${MasterQSM[$LoopCounter]}) 
+#	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_BanksSTS_GM_Mask_Mean.txt
 
+#unset Eval
 
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
-#	${MasterQSM[$LoopCounter]}) 
+#	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_BanksSTS_GM_Mask_Sum.txt
 
+#unset Eval
 #Update LifeLineQSM.txt
 #echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 #Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
-#	${MasterQSM[$LoopCounter]})
+#	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -571,6 +608,7 @@ unset ROISize Sum
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_BanksSTS_GM_Mask_Count.txt
 
+#unset Eval
 #Update LifeLineQSM.txt
 #echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -584,32 +622,39 @@ unset ROISize Sum
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_BanksSTS_GM_Mask_ADJ.txt
 
+#unset Eval
 #Update LifeLineQSM.txt
 #echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-#unset ROISize Sum
+#unset ROISize Sum OutFilter
 
 echo "L_CaudalAnteriorCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalAnteriorCingulate_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalAnteriorCingulate_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -617,6 +662,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalAnteriorCingulate_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -630,32 +676,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalAnteriorCingulate_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_CaudalMiddleFrontal_GM"
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalMiddleFrontal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalMiddleFrontal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -663,6 +716,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalMiddleFrontal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -676,32 +730,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_CaudalMiddleFrontal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Cuneus_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Cuneus_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Cuneus_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -709,6 +770,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Cuneus_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -722,32 +784,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Cuneus_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_DLPFC_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_DLPFC_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_DLPFC_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -755,6 +824,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_DLPFC_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -768,32 +838,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_DLPFC_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Entorhinal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Entorhinal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Entorhinal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -801,6 +878,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Entorhinal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -814,32 +892,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Entorhinal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Frontal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Frontal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Frontal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -847,6 +932,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Frontal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -860,32 +946,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Frontal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Fusiform_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Fusiform_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Fusiform_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -893,6 +986,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Fusiform_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -906,32 +1000,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Fusiform_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_InferiorParietal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorParietal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorParietal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -939,6 +1040,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorParietal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -952,32 +1054,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorParietal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_InferiorTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorTemporal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorTemporal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -985,6 +1094,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorTemporal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -998,32 +1108,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_InferiorTemporal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Insula_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Insula_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Insula_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1031,6 +1148,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Insula_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1044,32 +1162,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Insula_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_IsthmusCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_IsthmusCingulate_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_IsthmusCingulate_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1077,6 +1202,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_IsthmusCingulate_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1090,32 +1216,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_IsthmusCingulate_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_LateralOccipital_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOccipital_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOccipital_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1123,6 +1256,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOccipital_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1136,32 +1270,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOccipital_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_LateralOrbitofrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOrbitofrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOrbitofrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1169,6 +1310,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOrbitofrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1182,32 +1324,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_LateralOrbitofrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Lingual_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Lingual_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Lingual_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1215,6 +1364,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Lingual_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1228,32 +1378,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Lingual_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_MedialOrbitofrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MedialOrbitofrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MedialOrbitofrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1261,6 +1418,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MedialOrbitofrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1274,32 +1432,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MedialOrbitofrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_MiddleTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MiddleTemporal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MiddleTemporal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1307,6 +1472,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MiddleTemporal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1320,32 +1486,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_MiddleTemporal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Occipital_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Occipital_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Occipital_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -1353,6 +1526,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Occipital_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1366,33 +1540,40 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Occipital_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 echo "L_Parietal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parietal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parietal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -1400,6 +1581,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parietal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1413,32 +1595,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parietal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Temporal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Temporal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Temporal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -1446,6 +1635,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Temporal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1459,32 +1649,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Temporal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Parahippocampal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parahippocampal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parahippocampal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1492,6 +1689,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parahippocampal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1505,32 +1703,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Parahippocampal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Pericalcarine_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pericalcarine_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pericalcarine_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1538,6 +1743,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pericalcarine_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1551,32 +1757,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pericalcarine_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Postcentral_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Postcentral_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Postcentral_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1584,6 +1797,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Postcentral_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1597,32 +1811,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Postcentral_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_PosteriorCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_PosteriorCingulate_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_PosteriorCingulate_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1630,6 +1851,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_PosteriorCingulate_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1643,32 +1865,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_PosteriorCingulate_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Precentral_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precentral_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precentral_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1676,6 +1905,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precentral_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1689,32 +1919,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precentral_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Precuneus_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precuneus_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precuneus_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1722,6 +1959,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precuneus_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1735,32 +1973,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Precuneus_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_RostalMiddleFrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostalMiddleFrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostalMiddleFrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1768,6 +2013,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostalMiddleFrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1781,33 +2027,40 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostalMiddleFrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 echo "L_RostralAnteriorCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostralAnteriorCingulate_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostralAnteriorCingulate_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1815,6 +2068,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostralAnteriorCingulate_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1828,32 +2082,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_RostralAnteriorCingulate_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_SuperiorFrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorFrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorFrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1861,6 +2122,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorFrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1874,32 +2136,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorFrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_SuperiorParietal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorParietal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorParietal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1907,6 +2176,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorParietal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1920,32 +2190,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorParietal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_SuperiorTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorTemporal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorTemporal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1953,6 +2230,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorTemporal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -1966,32 +2244,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_SuperiorTemporal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_TransverseTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_TransverseTemporal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_TransverseTemporal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -1999,6 +2284,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_TransverseTemporal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2012,34 +2298,41 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_TransverseTemporal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 #RIGHT HEMISPHERE
 
 #echo "R_BanksSTS_GM (Mask does not exist at the moment)"
 
+#OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+#	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
+#	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
-#	${MasterQSM[$LoopCounter]}) 
+#	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_BanksSTS_GM_Mask_Mean.txt
 
+#unset Eval
 
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
-#	${MasterQSM[$LoopCounter]}) 
+#	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_BanksSTS_GM_Mask_Sum.txt
 
+#unset Eval
 #Update LifeLineQSM.txt
 #echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 #Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
-#	${MasterQSM[$LoopCounter]})
+#	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 #	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2047,6 +2340,7 @@ unset ROISize Sum
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_BanksSTS_GM_Mask_Count.txt
 
+#unset Eval
 #Update LifeLineQSM.txt
 #echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2060,32 +2354,39 @@ unset ROISize Sum
 
 #echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_BanksSTS_GM_Mask_ADJ.txt
 
+#unset Eval
 #Update LifeLineQSM.txt
 #echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-#unset ROISize Sum
+#unset ROISize Sum OutFilter
 
 echo "R_CaudalAnteriorCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalAnteriorCingulate_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalAnteriorCingulate_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2093,6 +2394,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalAnteriorCingulate_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2106,32 +2408,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalAnteriorCingulate_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_CaudalMiddleFrontal_GM"
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalMiddleFrontal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalMiddleFrontal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2139,6 +2448,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalMiddleFrontal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2152,32 +2462,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_CaudalMiddleFrontal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Cuneus_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Cuneus_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Cuneus_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2185,6 +2502,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Cuneus_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2198,32 +2516,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Cuneus_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_DLPFC_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_DLPFC_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_DLPFC_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2231,6 +2556,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_DLPFC_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2244,32 +2570,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_DLPFC_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Entorhinal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Entorhinal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Entorhinal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2277,6 +2610,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Entorhinal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2290,32 +2624,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Entorhinal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Frontal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Frontal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Frontal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -2323,6 +2664,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Frontal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2336,32 +2678,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Frontal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Fusiform_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Fusiform_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Fusiform_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2369,6 +2718,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Fusiform_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2382,32 +2732,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Fusiform_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_InferiorParietal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorParietal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorParietal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2415,6 +2772,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorParietal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2428,32 +2786,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorParietal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_InferiorTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorTemporal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorTemporal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2461,6 +2826,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorTemporal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2474,32 +2840,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_InferiorTemporal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Insula_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Insula_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Insula_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2507,6 +2880,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Insula_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2520,32 +2894,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Insula_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_IsthmusCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_IsthmusCingulate_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_IsthmusCingulate_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2553,6 +2934,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_IsthmusCingulate_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2566,32 +2948,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_IsthmusCingulate_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_LateralOccipital_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOccipital_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOccipital_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2599,6 +2988,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOccipital_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2612,32 +3002,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOccipital_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_LateralOrbitofrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOrbitofrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOrbitofrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2645,6 +3042,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOrbitofrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2658,32 +3056,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_LateralOrbitofrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Lingual_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Lingual_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Lingual_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2691,6 +3096,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Lingual_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2704,32 +3110,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Lingual_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_MedialOrbitofrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MedialOrbitofrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MedialOrbitofrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2737,6 +3150,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MedialOrbitofrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2750,32 +3164,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MedialOrbitofrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_MiddleTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MiddleTemporal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MiddleTemporal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2783,6 +3204,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MiddleTemporal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2796,32 +3218,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_MiddleTemporal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Occipital_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Occipital_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Occipital_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -2829,6 +3258,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Occipital_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2842,33 +3272,40 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Occipital_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 echo "R_Parietal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parietal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parietal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -2876,6 +3313,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parietal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2889,32 +3327,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parietal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Temporal_GM_Mask"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Temporal_GM_Mask_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Temporal_GM_Mask_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
@@ -2922,6 +3367,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Temporal_GM_Mask_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2935,32 +3381,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Temporal_GM_Mask_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Parahippocampal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parahippocampal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parahippocampal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -2968,6 +3421,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parahippocampal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -2981,32 +3435,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Parahippocampal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Pericalcarine_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pericalcarine_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pericalcarine_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3014,6 +3475,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pericalcarine_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3027,32 +3489,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pericalcarine_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Postcentral_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Postcentral_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Postcentral_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3060,6 +3529,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Postcentral_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3073,32 +3543,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Postcentral_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_PosteriorCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_PosteriorCingulate_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_PosteriorCingulate_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3106,6 +3583,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_PosteriorCingulate_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3119,32 +3597,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_PosteriorCingulate_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Precentral_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precentral_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precentral_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3152,6 +3637,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precentral_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3165,32 +3651,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precentral_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Precuneus_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precuneus_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precuneus_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3198,6 +3691,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precuneus_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3211,32 +3705,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Precuneus_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_RostalMiddleFrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostalMiddleFrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostalMiddleFrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3244,6 +3745,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostalMiddleFrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3257,33 +3759,40 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostalMiddleFrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 echo "R_RostralAnteriorCingulate_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostralAnteriorCingulate_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostralAnteriorCingulate_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3291,6 +3800,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostralAnteriorCingulate_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3304,32 +3814,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_RostralAnteriorCingulate_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_SuperiorFrontal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorFrontal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorFrontal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3337,6 +3854,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorFrontal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3350,32 +3868,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorFrontal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_SuperiorParietal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorParietal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorParietal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3383,6 +3908,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorParietal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3396,32 +3922,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorParietal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_SuperiorTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorTemporal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorTemporal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3429,6 +3962,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorTemporal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3442,32 +3976,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_SuperiorTemporal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_TransverseTemporal_GM"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_TransverseTemporal_GM_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_TransverseTemporal_GM_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
@@ -3475,6 +4016,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_TransverseTemporal_GM_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3488,10 +4030,11 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_TransverseTemporal_GM_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 #Subcortical Masks
@@ -3501,25 +4044,31 @@ unset ROISize Sum
 
 echo "LR_Accumbens_area"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Accumbens_area_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Accumbens_area_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
@@ -3527,6 +4076,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Accumbens_area_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3540,32 +4090,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Accumbens_area_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Amygdala"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Amygdala_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Amygdala_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Amygdala_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Amygdala_AL_QSM_RS_Erx1.nii.gz \
@@ -3573,6 +4130,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Amygdala_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3586,32 +4144,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Amygdala_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Caudate"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Caudate_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Caudate_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Caudate_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Caudate_AL_QSM_RS_Erx1.nii.gz \
@@ -3619,6 +4184,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Caudate_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3632,32 +4198,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Caudate_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Hipp"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Hipp_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Hipp_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Hipp_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Hipp_AL_QSM_RS_Erx1.nii.gz \
@@ -3665,6 +4238,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Hipp_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3678,33 +4252,40 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Hipp_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 echo "LR_Pallidum"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Pallidum_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Pallidum_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Pallidum_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Pallidum_AL_QSM_RS_Erx1.nii.gz \
@@ -3712,6 +4293,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Pallidum_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3725,32 +4307,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Pallidum_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Putamen"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Putamen_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Putamen_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Putamen_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Putamen_AL_QSM_RS_Erx1.nii.gz \
@@ -3758,6 +4347,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Putamen_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3771,32 +4361,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Putamen_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "LR_Thalamus_Proper"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Thalamus_Proper_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Thalamus_Proper_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
@@ -3804,6 +4401,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Thalamus_Proper_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3817,10 +4415,11 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_LR_Thalamus_Proper_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 #Subcortical LEFT HEMISPHERE
@@ -3828,25 +4427,31 @@ unset ROISize Sum
 
 echo "L_Accumbens_area"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Accumbens_area_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Accumbens_area_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
@@ -3854,6 +4459,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Accumbens_area_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3867,32 +4473,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Accumbens_area_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Amygdala"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Amygdala_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Amygdala_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Amygdala_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Amygdala_AL_QSM_RS_Erx1.nii.gz \
@@ -3900,6 +4513,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Amygdala_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3913,32 +4527,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Amygdala_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Caudate"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Caudate_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Caudate_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Caudate_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Caudate_AL_QSM_RS_Erx1.nii.gz \
@@ -3946,6 +4567,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Caudate_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -3959,32 +4581,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Caudate_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Hipp"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Hipp_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Hipp_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Hipp_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Hipp_AL_QSM_RS_Erx1.nii.gz \
@@ -3992,6 +4621,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Hipp_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4005,33 +4635,40 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Hipp_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 echo "L_Pallidum"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pallidum_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pallidum_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pallidum_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pallidum_AL_QSM_RS_Erx1.nii.gz \
@@ -4039,6 +4676,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pallidum_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4052,32 +4690,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Pallidum_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Putamen"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Putamen_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Putamen_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Putamen_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Putamen_AL_QSM_RS_Erx1.nii.gz \
@@ -4085,6 +4730,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Putamen_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4098,32 +4744,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Putamen_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "L_Thalamus_Proper"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Thalamus_Proper_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Thalamus_Proper_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
@@ -4131,6 +4784,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Thalamus_Proper_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4144,35 +4798,42 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_L_Thalamus_Proper_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 #Subcortical ROIs RIGHT HEMISPHERE
 
 
 echo "R_Accumbens_area"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Accumbens_area_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Accumbens_area_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
@@ -4180,6 +4841,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Accumbens_area_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4193,32 +4855,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Accumbens_area_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Amygdala"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Amygdala_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Amygdala_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Amygdala_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Amygdala_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Amygdala_AL_QSM_RS_Erx1.nii.gz \
@@ -4226,6 +4895,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Amygdala_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4239,32 +4909,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Amygdala_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Caudate"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Caudate_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Caudate_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Caudate_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Caudate_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Caudate_AL_QSM_RS_Erx1.nii.gz \
@@ -4272,6 +4949,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Caudate_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4285,32 +4963,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Caudate_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Hipp"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Hipp_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Hipp_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Hipp_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Hipp_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Hipp_AL_QSM_RS_Erx1.nii.gz \
@@ -4318,6 +5003,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Hipp_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4331,33 +5017,40 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Hipp_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 
 echo "R_Pallidum"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pallidum_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pallidum_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pallidum_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pallidum_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pallidum_AL_QSM_RS_Erx1.nii.gz \
@@ -4365,6 +5058,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pallidum_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4378,32 +5072,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Pallidum_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Putamen"
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Putamen_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Putamen_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Putamen_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Putamen_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Putamen_AL_QSM_RS_Erx1.nii.gz \
@@ -4411,6 +5112,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Putamen_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4424,32 +5126,39 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Putamen_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "R_Thalamus_Proper"	
 
+OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
+	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
+
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -mean -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Thalamus_Proper_Mean.txt
 
+unset Eval
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]}) 
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>") 
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Thalamus_Proper_Sum.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
 Sum=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -positive -sum -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
-	${MasterQSM[$LoopCounter]})
+	${MasterQSM[$LoopCounter]}"<0..$OutFilter>")
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	3dBrickStat -count -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
@@ -4457,6 +5166,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Thalamus_Proper_Count.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
@@ -4470,10 +5180,11 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 
 echo "${Eval:-FAIL}"  >> $OutFolder/Group/$Fold/Group_R_Thalamus_Proper_ADJ.txt
 
+unset Eval
 #Update LifeLineQSM.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineQSM.txt
 
-unset ROISize Sum
+unset ROISize Sum OutFilter
 
 echo "$Subj" >> $OutFolder/Group/$Fold/SubjectsQSM.txt
 

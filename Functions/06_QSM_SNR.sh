@@ -55,7 +55,6 @@ echo ""
 echo "---------------------------------------------------------------"                                        
 echo ""
 
-SD=""
 Fold="QSM_ROI_Stats"
 
 cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks
@@ -90,6 +89,8 @@ echo ""
 echo "Extracting StdDeV from outside-the-head MASK for ${Subj}... "
 echo ""
 
+unset SD
+
 SD=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	fslstats ${Subj}_QSM_Mag_FSL_rms.nii.gz -k ${Subj}_QSM_Mag_FSL_rms_OH_Mask.nii.gz -s)
 
@@ -110,7 +111,7 @@ if [ -f "$OutFolder/Group/$Fold/CueSNR.txt" ]; then
 	unset LifeLine
 	LifeLine=$(cat $OutFolder/Group/$Fold/LifeLineSNR.txt)
 
-	sleep 4 #Allow time for LifeLineSNR.txt to update if controlled by another Ironsmith isnstance
+	sleep 4 #Allow time for LifeLineSNR.txt to update if controlled by another Ironsmith instance
 
 	if [[ $LifeLine == $(cat $OutFolder/Group/$Fold/LifeLineSNR.txt) ]]; then
  
@@ -234,7 +235,7 @@ set +e #Turn OFF exit on error
 
 cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks
 
-SNR=9999
+unset Eval Mean SNR
 
 #Cortical 
 
