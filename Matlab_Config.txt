@@ -1,4 +1,5 @@
-#Change the path within the quotes to the path of the MATLAB executalbe on your system (supported versions between R2017b to R2019b)
-#in this example, running /usr/local/MATLAB/R2019b/bin/matlab from the command line launches matlab
+#Change the path within the quotes to the path of the MATLAB executalbe on your system (supported versions between R2017b to R2019b).
+#In this example, running /usr/local/MATLAB/R2019b/bin/matlab from the command line launches matlab.
+#For MacOS the path to matlab is /Applications/MATLAB_release.app/bin/matlab where release is the version of matlab installed (ex. R2019b)
 
 MATLAB_Path="/usr/local/MATLAB/R2019b/bin/matlab"

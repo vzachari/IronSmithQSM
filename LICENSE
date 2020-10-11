@@ -1,36 +1,35 @@
-		      GNU GENERAL PUBLIC LICENSE
+		      						GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
 ### Additional Terms as specified in section 7:
 
 This software has been developed for research purposes only and is not a clinical tool.
 
-All third party software provided by this toolkit within the QSM_Container.simg singularity image 
-have their own licenses and these are in full effect when using this software.
+All third party software provided by this toolkit have their own licenses and these are in full effect when using this software.
 
-All software provided by this toolkit within the QSM_Container.simg singularity image need to be proberly cited if Ironsmith is used 
+All software provided by this toolkit need to be properly cited if Ironsmith is used
 in articles for publication:
 
 ### 1.AFNI
 
-RW Cox. AFNI: Software for analysis and visualization of functional magnetic resonance neuroimages. 
+RW Cox. AFNI: Software for analysis and visualization of functional magnetic resonance neuroimages.
 Computers and Biomedical Research, 29:162-173, 1996.
 
 RW Cox and JS Hyde. Software tools for analysis and visualization of FMRI Data. NMR in Biomedicine, 10:171-178, 1997.
 
-S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC Andreasen. 
+S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC Andreasen.
 Functional MRI statistical software packages: a comparative analysis. Human Brain Mapping, 6:73-84, 1998.
 
-### 2.dcm2niix  
+### 2.dcm2niix
 
-Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIfTI conversion." 
+Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIfTI conversion."
 Journal of neuroscience methods 264 (2016): 47-56.
 
-### 3.Freesurfer  
+### 3.Freesurfer
 
 Dale, A.M., Fischl, B., Sereno, M.I., 1999. Cortical surface-based analysis. I. Segmentation and surface reconstruction. Neuroimage 9, 179-194.
 
-Dale, A.M., Sereno, M.I., 1993. Improved localization of cortical activity by combining EEG and MEG with MRI cortical surface reconstruction: 
+Dale, A.M., Sereno, M.I., 1993. Improved localization of cortical activity by combining EEG and MEG with MRI cortical surface reconstruction:
 a linear approach. J Cogn Neurosci 5, 162-176.
 
 Desikan, R.S., Segonne, F., Fischl, B., Quinn, B.T., Dickerson, B.C., Blacker, D., Buckner, R.L., Dale, A.M., Maguire, R.P., Hyman, B.T., Albert, M.S., Killiany, R.J., 2006. An automated labeling system for subdividing the human cerebral cortex on MRI scans into gyral based regions of interest. Neuroimage 31, 968-980.
@@ -43,16 +42,20 @@ S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johan
 
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
 
-### 5.MEDI Toolbox  
+### 5.MEDI Toolbox
 
-de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). 
-Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: 
-validation and application to brain imaging. 
-Magnetic Resonance in Medicine: 
+de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010).
+Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization:
+validation and application to brain imaging.
+Magnetic Resonance in Medicine:
 An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
 
+Liu J, Liu T, De Rochefort L, Ledoux J, Khalidov I, Chen W, Tsiouris AJ, Wisnieff C, Spincemaille P, Prince MR, Wang Y (2012)
+Morphology enabled dipole inversion for quantitative susceptibility mapping using structural consistency between
+the magnitude image and the susceptibility map. Neuroimage 59:2560-2568.
+
 http://pre.weill.cornell.edu/mri/pages/qsm.html
-                   
+
                      GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 

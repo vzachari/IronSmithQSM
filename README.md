@@ -14,8 +14,8 @@ a) Create QSM maps from GRE DICOM images using the MEDI toolbox **(see section 7
 b) Align MPR/MEMPR T1 images to QSM maps and then segment them into 87 ROIs **(ROI list in section 8)** using freesurfer.  
 c) Filter outlier voxels from these ROIs, extract QSM based iron concentration, and format the output into easy to read tables.  
 d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM in an easy to read table.  
-e) Warp QSM and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
-f) Process single or multiple participants at a time.
+e) Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
+f) Process single or multiple participants at a time (multiple instances and nohup supported).
 
 ## 1) Software requirements:
 
@@ -218,7 +218,7 @@ mean signal intensity of magnitude image within an ROI / standard deviation of m
 The outside the head mask can be found here:  
 **/QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
 
-## 7) Ironsmith uses the following software, provided in the form of a singularity image:
+## 7) Ironsmith uses the following software, provided in the form of a Singularity image:
 
 ### AFNI
 
@@ -248,9 +248,13 @@ S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johan
 
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
 
-### MEDI Toolbox  
+### MEDI Toolbox  (outside Singularity, in IronSmithQSM/Functions folder)
 
 de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: validation and application to brain imaging. Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
+
+Liu J, Liu T, De Rochefort L, Ledoux J, Khalidov I, Chen W, Tsiouris AJ, Wisnieff C, Spincemaille P, Prince MR, Wang Y (2012)
+Morphology enabled dipole inversion for quantitative susceptibility mapping using structural consistency between
+the magnitude image and the susceptibility map. Neuroimage 59, 2560-2568.
 
 http://pre.weill.cornell.edu/mri/pages/qsm.html
 
