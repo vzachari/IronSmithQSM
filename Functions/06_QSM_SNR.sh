@@ -211,7 +211,7 @@ if [ -f "$OutFolder/Group/$Fold/CueSNR.txt" ]; then
 	
 		do
 	 	
-			sleep 2
+			sleep $(( $RANDOM % 9 + 2 ))
 		
 		done
 	

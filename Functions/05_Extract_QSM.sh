@@ -318,8 +318,8 @@ if [ -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
 		while [ -f $OutFolder/Group/$Fold/CueQSM.txt ]
 	
 		do
-	 	
-			sleep 2
+			
+			sleep $(( $RANDOM % 9 + 2 ))
 		
 		done
 	
