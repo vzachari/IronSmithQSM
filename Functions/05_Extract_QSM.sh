@@ -298,8 +298,8 @@ if [ -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
 		fi
 
 
-		rm $OutFolder/Group/$Fold/CueQSM.txt
-		echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt		
+		#rm $OutFolder/Group/$Fold/CueQSM.txt
+		echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt	
 
 	else
 		#All good, folder just occupied by another instance of ironsmith
@@ -307,28 +307,30 @@ if [ -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
 		echo ""
 		echo "$OutFolder/Group/$Fold" 
 		echo "is currently occupied by another instance of Ironsmith! "
-		echo "Waiting for $(cat $OutFolder/Group/$Fold/CueQSM.txt) to finish processing... "
+		#echo "Waiting for $(cat $OutFolder/Group/$Fold/CueQSM.txt) to finish processing... "
 		echo ""
 		echo -e "\t\t ((     ___	" 
 		echo -e "\t\t  ))  \___/_ 	"
 		echo -e "\t\t |~~| /~~~\ \	"
 		echo -e "\t\tC|__| \___/	"
 		echo ""
-	
+		echo ""
+		
 		while [ -f $OutFolder/Group/$Fold/CueQSM.txt ]
 	
 		do
-			
+			echo -ne "Waiting for $(cat $OutFolder/Group/$Fold/CueQSM.txt) to finish processing...\\r"
 			sleep $(( $RANDOM % 9 + 2 ))
-		
+			
 		done
-	
+		
+		echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt
+		
+		echo ""
 		echo ""
 		echo "The wait is over, rejoice! "
 		echo ""
-
-		echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt
-
+		
 	fi
 	
 	unset LifeLine
@@ -337,7 +339,6 @@ elif [ ! -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
 
 	echo "$Subj" > $OutFolder/Group/$Fold/CueQSM.txt
 fi
-
 
 set +e #Turn OFF exit on error
 

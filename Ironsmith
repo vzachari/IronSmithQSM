@@ -324,10 +324,10 @@ echo ""
 
 #Figure out how many rows the CSVFile has
 CSVFileRows=`awk 'END{print NR}' $CSVFile`
+CSVFileTRows=$(cat $CSVFile | sed '/^\s*$/d' | wc -l)
 
 echo ""
-#echo -e "$CSVFile has \e[44m$CSVFileRows\e[0m Rows, \e[44m$CSVFileRows\e[0m participants will be processed."
-echo "$CSVFile has $CSVFileRows Rows ---> $CSVFileRows participants will be processed."
+echo "$CSVFile has $CSVFileTRows non-empty Rows ---> $CSVFileTRows participants will be processed."
 echo ""
 
 for Rows in `seq $CSVFileRows`

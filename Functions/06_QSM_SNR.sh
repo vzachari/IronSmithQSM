@@ -190,7 +190,7 @@ if [ -f "$OutFolder/Group/$Fold/CueSNR.txt" ]; then
 		fi
 
 
-		rm $OutFolder/Group/$Fold/CueSNR.txt
+		#rm $OutFolder/Group/$Fold/CueSNR.txt
 		echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt		
 
 	else
@@ -199,37 +199,39 @@ if [ -f "$OutFolder/Group/$Fold/CueSNR.txt" ]; then
 		echo ""
 		echo "$OutFolder/Group/$Fold" 
 		echo "is currently occupied by another instance of Ironsmith! "
-		echo "Waiting for $(cat $OutFolder/Group/$Fold/CueSNR.txt) to finish processing... "
+		#echo "Waiting for $(cat $OutFolder/Group/$Fold/CueSNR.txt) to finish processing... "
 		echo ""
 		echo -e "\t\t ((     ___	" 
 		echo -e "\t\t  ))  \___/_ 	"
 		echo -e "\t\t |~~| /~~~\ \	"
 		echo -e "\t\tC|__| \___/	"
 		echo ""
+		echo ""	
 	
 		while [ -f $OutFolder/Group/$Fold/CueSNR.txt ]
 	
 		do
-	 	
+			 		
+			echo -ne "Waiting for $(cat $OutFolder/Group/$Fold/CueSNR.txt) to finish processing...\\r"
 			sleep $(( $RANDOM % 9 + 2 ))
-		
+			
 		done
-	
+
+		echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt	
+		
+		echo ""
 		echo ""
 		echo "The wait is over, rejoice! "
-		echo ""
-
-		echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt
+		echo ""	
 
 	fi
-	
+
 	unset LifeLine
 	
 elif [ ! -f "$OutFolder/Group/$Fold/CueSNR.txt" ]; then
 
 	echo "$Subj" > $OutFolder/Group/$Fold/CueSNR.txt
 fi
-
 
 set +e #Turn OFF exit on error
 
