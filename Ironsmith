@@ -579,15 +579,49 @@ do
 
 	# MPR Check
 
-	if [ ! -d "$MPRDir" ]; then
+	if [ -f "$MPRDir" ] && ls $MPRDir | grep ".nii" 1> /dev/null 2>&1; then
+
+		echo ""
+		echo "Provided NIFTI file $MPRDir found! checking if multiple echos exist within file:"
+		echo "" 
+
+		MPRDirPath=$(echo $MPRDir | awk -F '/' '{OFS = FS} {$NF=""; print $0}')
+		MPRDirFile=$(echo $MPRDir | awk -F '/' '{print $NF}')
+		
+		unset TimePoints
+		TimePoints=$(singularity run -e --bind $MPRDirPath:/mnt $Path/Functions/QSM_Container.simg 3dinfo -nv /mnt/$MPRDirFile)
+
+		if [[ $TimePoints > 1 ]]; then
+
+			echo ""
+			echo "$TimePoints echos found in $MPRDirFile"
+			echo ""
+			echo "Will calculate RMS across echos for $MPRDirFile"
+			MPRType=5 # Multiple echos in a single file
+			echo ""
+						
+		elif [[ $TimePoints == 1 ]]; then
+
+			echo ""
+			echo "$TimePoints echo found in $MPRDirFile"
+			echo ""
+			echo "$MPRDirFile will be used as is"
+			MPRType=6 #Single file, single echo
+			echo ""
+		fi
+
+		unset TimePoints MPRDirPath MPRDirFile
+
+
+	elif [ ! -d "$MPRDir" ] && [ ! -f "$MPRDir" ]; then
 		echo ""
 		echo -e "\e[31m----------------------------------------------"
-		echo "ERROR: MPR/MEMPR Directory: $MPRDir NOT FOUND! Skipping $Subj..."
+		echo "ERROR: MPR/MEMPR Directory/File: $MPRDir NOT FOUND! Skipping $Subj..."
 		echo -e "----------------------------------------------\e[0m"
 		echo ""
 		continue
 
-	else
+	elif [ -d "$MPRDir" ]; then
 		echo ""
 		#echo -e "\e[44m$MPRDir\e[0m FOUND! Checking folder contents"
 		echo "MPR/MEMPR Directory: $MPRDir FOUND! Checking folder contents..."
@@ -750,6 +784,7 @@ do
 					echo ""
 				fi
 
+				unset TimePoints
 			else
 				echo ""
 				echo -e "\e[31m----------------------------------------------"
@@ -763,7 +798,14 @@ do
 
 			fi
 		fi
-
+	else
+		echo ""
+		echo -e "\e[31m----------------------------------------------"
+		echo "Unexpected MPR/MEMPR ERROR with Directory/File: $MPRDir ! Skipping $Subj..."
+		echo -e "----------------------------------------------\e[0m"
+		echo ""
+		continue
+		
 	fi
 
 
@@ -913,7 +955,7 @@ do
 
 					echo ""
 					echo -e "\e[31m----------------------------------------------"
-					echo "Unexpected dicom_hdr ERROR in $MPRDir! Skipping $Subj..."
+					echo "Unexpected dicom_hdr ERROR in $QSM_Dicom_Dir! Skipping $Subj..."
 					echo -e "----------------------------------------------\e[0m"
 					echo ""
 					continue

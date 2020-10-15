@@ -301,6 +301,150 @@ elif [[ $MPRType == 3 ]]; then
 		exit 5
 	fi
 	
+elif [[ $MPRType == 5 ]]; then
+
+	echo ""		
+	echo "Processing multiple echos in single NIFTI file:"
+	echo ""	
+
+	MPRDirPath=$(echo $MPRDir | awk -F '/' '{OFS = FS} {$NF=""; print $0}')
+	MPRDirFile=$(echo $MPRDir | awk -F '/' '{print $NF}')
+
+	echo ""	
+	echo "Copying $MPRDirFile from $MPRDirPath to $OutFolder/$Subj/MPR"	
+	echo ""	
+
+	cp $MPRDir .
+	
+	echo ""	
+	echo "Calculating RMS. Output file will be ----> ${Subj}_mempr_rms.nii.gz"	
+	echo ""	
+
+
+	singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg mri_concat *.nii* --o $Subj'_'mempr_rms.nii.gz --rms
+
+	if [ -d "$OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull" ]; then
+
+		echo ""	
+		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer_Skip"	
+		echo ""		
+		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
+		echo ""
+
+		cp -r $OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull .
+		#cp -r $OutFolder/S0030/MPR/S0030_FreeSurfSeg_Skull ${Subj}_FreeSurfSeg_Skull
+
+		echo ""		
+		echo "*** Skipping freesurfer segmentation ☜(ﾟヮﾟ☜) ***"
+		echo "---------------------------------------------------------------"			
+		echo ""
+		
+	else
+
+		echo ""	
+		echo "Running freesurfer. This could take up to 8 hours (´∀｀；)"	
+		echo ""			
+
+		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
+
+	fi
+
+	echo ""		
+	echo "---------------------------------------------------------------"		
+	echo "*** Evaluating freesurfer segmentation... ***"	
+	echo "---------------------------------------------------------------"	
+	echo ""
+
+
+	#check if freesurfer finished correctly:	
+	if [ -f "${Subj}_FreeSurfSeg_Skull/mri/aseg.mgz" ] &&  [ -f "${Subj}_FreeSurfSeg_Skull/mri/brain.mgz" ] && [ -f "${Subj}_FreeSurfSeg_Skull/mri/brainmask.mgz" ] && [ -f "${Subj}_FreeSurfSeg_Skull/mri/aparc.DKTatlas+aseg.mgz" ] && [ -f "${Subj}_FreeSurfSeg_Skull/mri/wmparc.mgz" ]; then
+		
+		echo ""			
+		echo "Freesurfer finished successfully on `date` d(-_^)"	
+		echo ""	
+	else
+		echo -e "\e[31m----------------------------------------------"
+		echo "ERROR: Freesurfer DID NOT segment MEMPR data properly"
+		echo "Things to do that might help:"
+		echo "1. Visually check the MEMPR data for excessive motion or artifacts (e.g. stroke, lesion etc)" 
+		echo "Sometimes freesurfer cannot handle these cases."
+		echo -e "----------------------------------------------\e[0m"
+		echo ""		
+		exit 5
+	fi
+
+	unset MPRDirPath MPRDirFile
+
+elif [[ $MPRType == 6 ]]; then
+
+	echo ""
+	echo "Single echo in single NIFTI file, NO RMS PROCESSING"
+	echo ""
+
+	MPRDirPath=$(echo $MPRDir | awk -F '/' '{OFS = FS} {$NF=""; print $0}')
+	MPRDirFile=$(echo $MPRDir | awk -F '/' '{print $NF}')
+
+	echo ""	
+	echo "Copying $MPRDirFile from $MPRDirPath to $OutFolder/$Subj/MPR"
+	echo "$MPRDirFile will be renamed to ${Subj}_mempr.nii.gz" 	
+	echo ""	
+
+	cp $MPRDir $Subj'_'mempr.nii.gz
+	
+	
+	if [ -d "$OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull" ]; then
+
+		echo ""	
+		echo "${Subj}_FreeSurfSeg_Skull folder found under $OutFolder/Freesurfer_Skip"	
+		echo ""		
+		echo "Copying ${Subj}_FreeSurfSeg_Skull to $OutFolder/$Subj/MPR..."
+		echo ""
+
+		cp -r $OutFolder/Freesurfer_Skip/${Subj}_FreeSurfSeg_Skull .
+		#cp -r $OutFolder/S0030/MPR/S0030_FreeSurfSeg_Skull ${Subj}_FreeSurfSeg_Skull
+
+		echo ""		
+		echo "*** Skipping freesurfer segmentation ☜(ﾟヮﾟ☜) ***"
+		echo "---------------------------------------------------------------"			
+		echo ""
+	else
+
+		echo ""	
+		echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
+		echo ""	
+
+		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr.nii.gz -sd .
+
+	fi
+
+
+	echo ""		
+	echo "---------------------------------------------------------------"		
+	echo "*** Evaluating freesurfer segmentation... ***"	
+	echo "---------------------------------------------------------------"	
+	echo ""
+	
+	
+	#check if freesurfer finished correctly:	
+	if [ -f "${Subj}_FreeSurfSeg_Skull/mri/aseg.mgz" ] &&  [ -f "${Subj}_FreeSurfSeg_Skull/mri/brain.mgz" ] && [ -f "${Subj}_FreeSurfSeg_Skull/mri/brainmask.mgz" ] && [ -f "${Subj}_FreeSurfSeg_Skull/mri/aparc.DKTatlas+aseg.mgz" ] && [ -f "${Subj}_FreeSurfSeg_Skull/mri/wmparc.mgz" ]; then
+		
+		echo ""			
+		echo "Freesurfer finished successfully on `date` d(-_^)"	
+		echo ""	
+	else
+		echo -e "\e[31m----------------------------------------------"
+		echo "ERROR: Freesurfer DID NOT segment MPR data properly"
+		echo "Things to do that might help:"
+		echo "1. Visually check the MPR data for excessive motion or artifacts (e.g. stroke, lesion etc)" 
+		echo "Sometimes freesurfer cannot handle these cases."
+		echo -e "----------------------------------------------\e[0m"
+		echo ""		
+		exit 5
+	fi
+
+	unset MPRDirPath MPRDirFile
+
+
 elif [[ $MPRType == 4 ]]; then
 
 	echo ""
