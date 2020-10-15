@@ -77,6 +77,7 @@ First_DICOM=0
 DICOM_Error=0
 ContainerFlag=0 #1 = Singularity, 2 = Docker
 MatlabFlag=0
+MEDIInstFlag=0
 MatPath="MATLAB PATH NOT SET"
 
 #Check if QSM_Container.simg is in /Functions
@@ -383,9 +384,19 @@ do
 		MPRDir=`awk -v r=$Rows -F ',' 'FNR == r {print $3}' $CSVFile`
 		QSM_Dicom_Dir=`awk -v r=$Rows -F ',' 'FNR == r {print $4}' $CSVFile`
 
+		echo ""		
 		echo "Participant $Subj requires MEDI processing! "
-
+		echo ""
+		
+		#Check if Matlab is installed
+		
 		if [[ $MatlabFlag == 0 ]]; then
+
+			echo ""
+			echo "---------------------------------------------------------------"
+			echo "*** Checking if Matlab is installed ***"
+			echo "---------------------------------------------------------------"
+			echo ""			
 
 			# First check for Matlab
 			unset MatVer
@@ -439,10 +450,89 @@ do
 		elif [[ $MatlabFlag == 1 ]]; then
 
 			echo ""
-			echo "Skipping Matlab test. Matlab Ver $MatVer already found"
+			echo "*** Skipping Matlab test. Matlab Ver $MatVer already found ***"
 			echo ""
 		fi
+		
+		#Check if MEDI_toolbox is in Functions
 
+		
+		if [[ $MEDIInstFlag == 0 ]]; then
+
+			echo ""
+			echo "---------------------------------------------------------------"
+			echo "*** Checking if MEDI Toolbox is installed  ***"
+			echo "---------------------------------------------------------------"
+			echo ""
+
+			if [ -d "$Path/Functions/MEDI_toolbox" ]; then
+
+				if [[ $(du -ha $Path/Functions/MEDI_toolbox | wc | awk '{print $1}') == 210 ]] && [ -f "$Path/Functions/MEDI_toolbox/UPDATES.m" ] && (( $(echo "$(du -sh $Path/Functions/MEDI_toolbox | awk -F'M' '{print $1}') == 7.2" | bc -l) )); then
+
+					echo ""
+					echo "MEDI_toolbox folder FOUND in $Path/Functions"
+					echo "Checking MEDI_toolbox version..."
+					echo ""
+
+					if [ $(grep -m1 "% Updates" $Path/Functions/MEDI_toolbox/UPDATES.m | awk '{print $4}')="01/15/2020" ]; then
+
+						MEDIVer=$(grep -m1 "% Updates" $Path/Functions/MEDI_toolbox/UPDATES.m | awk '{print $4}')
+						
+						echo ""
+						echo "FOUND MEDI_toolbox ver $MEDIVer"
+						echo "All good! "				
+						echo ""
+						MEDIInstFlag=1
+				
+					else
+						echo ""
+						echo -e "\e[31m----------------------------------------------"
+						echo "ERROR: MEDI_toolbox ver $MEDIVer"			
+						echo "is not currently supported! " 
+						echo ""
+						echo "Please download ver 01/15/2020 (Jan 15 2020) from: "
+						echo "http://pre.weill.cornell.edu/mri/pages/qsm.html and place unzipped folder in $Path/Functions/"		
+						echo -e "----------------------------------------------\e[0m"
+						echo ""
+						exit 1
+					fi
+				else
+
+					echo ""
+					echo -e "\e[31m----------------------------------------------"
+					echo "ERROR: MEDI_toolbox folder found in $Path/Functions but it's missing files and/or is corrupted!  "
+					echo ""
+					echo "Please re-download ver 01/15/2020 (Jan 15 2020) from: "
+					echo "http://pre.weill.cornell.edu/mri/pages/qsm.html and place unzipped folder in $Path/Functions/"		
+					echo -e "----------------------------------------------\e[0m"
+					echo ""
+					exit 1
+				fi				
+
+
+			else
+
+				echo ""
+				echo -e "\e[31m----------------------------------------------"
+				echo "ERROR: MEDI_toolbox folder not found in $Path/Functions/"
+				echo ""
+				echo "Please download ver 01/15/2020 (Jan 15 2020) from: "
+				echo "http://pre.weill.cornell.edu/mri/pages/qsm.html and place unzipped folder in $Path/Functions/"		
+				echo -e "----------------------------------------------\e[0m"
+				echo ""
+				exit 1
+			fi
+
+		elif [[ $MEDIInstFlag == 1 ]]; then
+
+			echo ""
+			echo "*** Skipping MEDI Toolbox test"
+			echo "MEDI Toolbox Ver: $MEDIVer"			
+			echo "already found ***"			
+			echo ""
+
+		fi
+				
 
 	elif [[	$MEDIFlag == "MEDI_No" ]]; then
 
