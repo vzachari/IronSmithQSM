@@ -10,7 +10,7 @@ and for extracting QSM based iron concentrations from subcortical and cortical b
 
 Ironsmith can perform the following tasks in a fully automated pipeline:
 
-a) Create QSM maps from GRE DICOM images using the MEDI toolbox **(see section 7 for details)** .     
+a) Create QSM maps from GRE DICOM images using the MEDI Toolbox **(see section 7 for details)** .     
 b) Align MPR/MEMPR T1 images to QSM maps and then segment them into 87 ROIs **(ROI list in section 8)** using freesurfer.  
 c) Filter outlier voxels from these ROIs, extract QSM based iron concentration, and format the output into easy to read tables.  
 d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM in an easy to read table.  
@@ -22,7 +22,7 @@ f) Process single or multiple participants at a time (multiple instances and noh
 #### a) Operating system
 
 **Unix**  
-Any linux distrubution that supports Signularity (see point c).
+Any Linux distribution that supports Singularity (see point c).
 
 Ironsmith tested on:  
 Red Hat Enterprise Linux Workstation release 7.8 (Maipo)
@@ -43,11 +43,18 @@ Ironsmith tested on Singularity versions 3.5.2 and 3.5.3
 Installation guide:  
 https://sylabs.io/guides/3.5/admin-guide/installation.html
 
-#### d) Bash unix shell version 4.2.46(2) or later.
+#### d) Bash UNIX shell version 4.2.46(2) or later.  
+
+#### e) MEDI Toolbox version 01/15/2020
+Ironsmith requires MEDI Toolbox if QSM maps need to be generated  
+Download from:  
+http://pre.weill.cornell.edu/mri/pages/qsm.html  
+MEDI Toolbox is not required if QSM maps already available  
+Currently only MEDI Toolbox version 01/15/2020 is supported
 
 ## 2) Installation:
 
-a) Download Ironsmith QSM Toolkit
+##### a) Download Ironsmith QSM Toolkit
 
 Option 1: download from github  
 https://github.com/vzachari/IronSmithQSM
@@ -55,18 +62,26 @@ https://github.com/vzachari/IronSmithQSM
 Option 2: using git  
 `git clone https://github.com/vzachari/IronSmithQSM.git && cd IronSmithQSM && git checkout v1.0`
 
-b) Download QSM_Container.simg (8.8GB) from:  
-https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing  
+##### b) Download QSM_Container.simg (8.8GB)
+from: https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing  
 Or  
-https://tinyurl.com/QSMContainer
+from: https://tinyurl.com/QSMContainer
 
-c) Place QSM_Container.simg in IronSmithQSM/Functions
+##### c) Place QSM_Container.simg in IronSmithQSM/Functions
 
-d) Edit IronSmithQSM/Matlab_Config.txt with the path to the matlab executable on your system.  
+##### d) Download MEDI Toolbox version 01/15/2020 (~7MB)  
+From: http://pre.weill.cornell.edu/mri/pages/qsm.html
+
+##### e) Unzip MEDI Toolbox (typically MEDI_toolbox.zip)  
+
+##### f) Place MEDI_toolbox folder (folder with README.m, UPDATES.m etc) into IronSmithQSM/Functions  
+NOTE: Make sure the MEDI_toolbox folder in IronSmithQSM/Functions does not have another MEDI_toolbox folder in it (e.g MEDI_toolbox/MEDI_toolbox)
+
+##### g) Edit IronSmithQSM/Matlab_Config.txt with the path to the matlab executable on your system.  
 *(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*  
 Supported versions R2017b to R2019b.  
 
-e) Add the IronSmithQSM directory to $PATH  
+#### h) Add the IronSmithQSM directory to $PATH  
 Guide: https://opensource.com/article/17/6/set-path-linux
 
 ## 3) Syntax:
@@ -95,27 +110,35 @@ b) Each row corresponds to a different participant.
 
 **Column1** = Subj (nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
 **Column2** = MEDI_Yes <-- this is case sensitive  
-**Column3** = Absolute path to directory with MPR/MEMPR files  
-*(e.g. /home/subjecs/S01/MPR).*
+**Column3** =
+**Either** absolute path to directory with MPR/MEMPR files **OR** absolute path to a single NIFTI (.nii or .nii.gz) MPR/MEMPR file  
+*(e.g. /home/subjects/S01/MPR **OR** /home/subjects/S01/MPR/S01_MEMPR.nii.gz)*
 
-**MPR/MEMPR files can be:**  
+**If a single NIFTI (.nii or .nii.gz) MPR/MEMPR file is provided:**  
+File can have any name.  
+File can have multiple time-points, each corresponding to a different echo (RMS will be calculated).  
+File can have a single echo/time-point.
+
+**If path to directory with MPR/MEMPR files is provided:**   
+
+*MPR/MEMPR files in provided folder can be:*  
 
 a) DICOMS
 
 Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith to process DICOMS. If NIFTI files exist together with DICOMS, they will be selected instead (see "b" below).
 
-b) Multiple .nii/.nii.gz files each corresponding to a different echo.
+b) Multiple .nii/.nii.gz files each corresponding to a different echo (will be catenated and RMS will be calculated).
 
 To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.  
+c) Single .nii/nii.gz file with multiple time-points, each corresponding to a different echo (RMS will be calculated).  
 This single NIFTI file can have any name.
 
-d) Single .nii/nii.gz file with a single echo/timepoint.  
+d) Single .nii/nii.gz file with a single echo/time-point.  
 This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
-This single NIFTI file can have any name.
+This single NIFTI file can have any name and will be used as is.
 
 **Column4** = Absolute path to folder with QSM DICOM files  
 *(e.g. /home/subjecs/S01/QSM_Dicom)*  
@@ -129,27 +152,35 @@ All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 
 **Column1** = Subj (nominal subject variable e.g. S0001 or 01 or Xanthar_The_Destroyer)  
 **Column2** = MEDI_No <-- This is case sensitive  
-**Column3** = Absolute path to directory with MPR/MEMPR files  
-*(e.g. /home/subjecs/S01/MPR)*
+**Column3** =
+**Either** absolute path to directory with MPR/MEMPR files **OR** absolute path to a single NIFTI (.nii or .nii.gz) MPR/MEMPR file  
+*(e.g. /home/subjects/S01/MPR **OR** /home/subjects/S01/MPR/S01_MEMPR.nii.gz)*
 
-**MPR/MEMPR files can be:**  
+**If a single NIFTI (.nii or .nii.gz) MPR/MEMPR file is provided:**  
+File can have any name.  
+File can have multiple time-points, each corresponding to a different echo (RMS will be calculated).  
+File can have a single echo/time-point.
+
+**If path to directory with MPR/MEMPR files is provided:**   
+
+*MPR/MEMPR files in provided folder can be:*  
 
 a) DICOMS
 
 Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith to process DICOMS. If NIFTI files exist together with DICOMS, they will be selected instead (see "b" below).
 
-b) Multiple .nii/.nii.gz files each corresponding to a different echo.
+b) Multiple .nii/.nii.gz files each corresponding to a different echo (will be catenated and RMS will be calculated).
 
 To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple timepoints, each corresponding to a different echo.  
+c) Single .nii/nii.gz file with multiple time-points, each corresponding to a different echo (RMS will be calculated).  
 This single NIFTI file can have any name.
 
-d) Single .nii/nii.gz file with a single echo/timepoint.  
+d) Single .nii/nii.gz file with a single echo/time-point.  
 This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
-This single NIFTI file can have any name.
+This single NIFTI file can have any name and will be used as is.
 
 **Column4** = Absolute path including filename to QSM magnitude image  
 *(e.g. /home/subjecs/S01/QSM/QSM_Magnitude.nii.gz)*  
@@ -249,16 +280,6 @@ M.W. Woolrich, S. Jbabdi, B. Patenaude, M. Chappell, S. Makni, T. Behrens, C. Be
 S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johansen-Berg, P.R. Bannister, M. De Luca, I. Drobnjak, D.E. Flitney, R. Niazy, J. Saunders, J. Vickers, Y. Zhang, N. De Stefano, J.M. Brady, and P.M. Matthews. Advances in functional and structural MR image analysis and implementation as FSL. NeuroImage, 23(S1):208-19, 2004
 
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
-
-### MEDI Toolbox  (outside Singularity, in IronSmithQSM/Functions folder)
-
-de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010). Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization: validation and application to brain imaging. Magnetic Resonance in Medicine: An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
-
-Liu J, Liu T, De Rochefort L, Ledoux J, Khalidov I, Chen W, Tsiouris AJ, Wisnieff C, Spincemaille P, Prince MR, Wang Y (2012)
-Morphology enabled dipole inversion for quantitative susceptibility mapping using structural consistency between
-the magnitude image and the susceptibility map. Neuroimage 59, 2560-2568.
-
-http://pre.weill.cornell.edu/mri/pages/qsm.html
 
 ## 8) ROI List:
 

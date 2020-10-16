@@ -42,19 +42,6 @@ S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johan
 
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
 
-### 5.MEDI Toolbox
-
-de Rochefort, L., Liu, T., Kressler, B., Liu, J., Spincemaille, P., Lebon, V., ... & Wang, Y. (2010).
-Quantitative susceptibility map reconstruction from MR phase data using bayesian regularization:
-validation and application to brain imaging.
-Magnetic Resonance in Medicine:
-An Official Journal of the International Society for Magnetic Resonance in Medicine, 63(1), 194-206.
-
-Liu J, Liu T, De Rochefort L, Ledoux J, Khalidov I, Chen W, Tsiouris AJ, Wisnieff C, Spincemaille P, Prince MR, Wang Y (2012)
-Morphology enabled dipole inversion for quantitative susceptibility mapping using structural consistency between
-the magnitude image and the susceptibility map. Neuroimage 59:2560-2568.
-
-http://pre.weill.cornell.edu/mri/pages/qsm.html
 
                      GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

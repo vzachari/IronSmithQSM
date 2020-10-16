@@ -467,7 +467,7 @@ do
 
 			if [ -d "$Path/Functions/MEDI_toolbox" ]; then
 
-				if [[ $(du -ha $Path/Functions/MEDI_toolbox | wc | awk '{print $1}') == 210 ]] && [ -f "$Path/Functions/MEDI_toolbox/UPDATES.m" ] && (( $(echo "$(du -sh $Path/Functions/MEDI_toolbox | awk -F'M' '{print $1}') == 7.2" | bc -l) )); then
+				if (( $(du -ha $Path/Functions/MEDI_toolbox | wc | awk '{print $1}') >= 200 )) && [ -f "$Path/Functions/MEDI_toolbox/UPDATES.m" ] && (( $(echo "$(du -sh $Path/Functions/MEDI_toolbox | awk -F'M' '{print $1}') >= 7.0" | bc -l) )); then
 
 					echo ""
 					echo "MEDI_toolbox folder FOUND in $Path/Functions"
