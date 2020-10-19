@@ -63,9 +63,9 @@ Option 2: using git
 `git clone https://github.com/vzachari/IronSmithQSM.git && cd IronSmithQSM && git checkout v1.0`
 
 ##### b) Download QSM_Container.simg (8.8GB)
-from: https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing  
+From: https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing  
 Or  
-from: https://tinyurl.com/QSMContainer
+From: https://tinyurl.com/QSMContainer
 
 ##### c) Place QSM_Container.simg in IronSmithQSM/Functions
 
@@ -112,7 +112,7 @@ b) Each row corresponds to a different participant.
 **Column2** = MEDI_Yes <-- this is case sensitive  
 **Column3** =
 **Either** absolute path to directory with MPR/MEMPR files **OR** absolute path to a single NIFTI (.nii or .nii.gz) MPR/MEMPR file  
-*(e.g. /home/subjects/S01/MPR **OR** /home/subjects/S01/MPR/S01_MEMPR.nii.gz)*
+*(e.g. /home/subjects/S01/MPR **OR** /home/subjects/S01/MPR/S01_MPR.nii.gz)*
 
 **If a single NIFTI (.nii or .nii.gz) MPR/MEMPR file is provided:**  
 File can have any name.  
@@ -154,7 +154,7 @@ All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 **Column2** = MEDI_No <-- This is case sensitive  
 **Column3** =
 **Either** absolute path to directory with MPR/MEMPR files **OR** absolute path to a single NIFTI (.nii or .nii.gz) MPR/MEMPR file  
-*(e.g. /home/subjects/S01/MPR **OR** /home/subjects/S01/MPR/S01_MEMPR.nii.gz)*
+*(e.g. /home/subjects/S01/MPR **OR** /home/subjects/S01/MPR/S01_MPR.nii.gz)*
 
 **If a single NIFTI (.nii or .nii.gz) MPR/MEMPR file is provided:**  
 File can have any name.  
@@ -188,7 +188,7 @@ This single NIFTI file can have any name and will be used as is.
 **Column5** = Absolute path including filename to QSM map  
 *(e.g. /home/subjects/S01/QSM/QSM_Map.nii.gz)*  
 
-All 5 columns need to be provided, otherwise Ironsmith will exit with errors
+All 5 columns need to be provided, otherwise Ironsmith will exit with errors.
 
 ## 5) Quality of life features:  
 
