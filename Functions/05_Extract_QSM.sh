@@ -218,7 +218,7 @@ if [ -f "$OutFolder/Group/$Fold/CueQSM.txt" ]; then
 	unset LifeLine
 	LifeLine=$(cat $OutFolder/Group/$Fold/LifeLineQSM.txt)
 
-	sleep 4 #Allow time for LifeLineQSM.txt to update if controlled by another Ironsmith instance
+	sleep 6 #Allow time for LifeLineQSM.txt to update if controlled by another Ironsmith instance
 
 	if [[ $LifeLine == $(cat $OutFolder/Group/$Fold/LifeLineQSM.txt) ]]; then
  

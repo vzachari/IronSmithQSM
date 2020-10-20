@@ -34,6 +34,7 @@ OutFolder=$2
 Path=$3
 QSM_Dicom_Dir=$4
 MatPath=$5
+MEDIVer=$6
 
 log_file=$(echo "$OutFolder/$Subj/LogFiles/$Subj.Output.MEDI.QSM.New.Ref.txt")
 exec &> >(tee -a "$log_file")
@@ -58,7 +59,7 @@ echo "| | |   ||   |___ |   _   |  |   |  | ||   |___ |   |    "
 echo "|_|  |__||_______||__| |__|  |___|  |_||_______||___|    "
 echo ""
 echo "MEDI processing with new CSF and WM masks as QSM reference structures"
-echo "Using MEDI Toolbox version: Jan 15 2020"
+echo "Using MEDI Toolbox version: $MEDIVer"
 echo "http://pre.weill.cornell.edu/mri/pages/qsm.html"
 echo ""
 echo "For further information, please contact Dr. Yi Wang" 

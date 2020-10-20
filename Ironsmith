@@ -1073,9 +1073,10 @@ do
 		#3) Path
 		#4) QSM_Dicom_Dir
 		#5) Matlab path
+		#6) MEDIVer
 
 		#Command
-		bash $Path/Functions/MEDI.sh $Subj $OutFolder $Path $QSM_Dicom_Dir $MatPath < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI.txt
+		bash $Path/Functions/MEDI.sh $Subj $OutFolder $Path $QSM_Dicom_Dir $MatPath $MEDIVer < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI.txt
 
 		#Error Handling
 		ExCode=$?
@@ -1210,9 +1211,10 @@ do
 		#3) Path
 		#4) QSM DICOM Dir
 		#5) Matlab path
+		#6) MEDIVer
 
 		#Command
-		bash $Path/Functions/MEDI_QSM_New_Ref.sh $Subj $OutFolder $Path $QSM_Dicom_Dir $MatPath < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI_QSM_New_Ref.txt
+		bash $Path/Functions/MEDI_QSM_New_Ref.sh $Subj $OutFolder $Path $QSM_Dicom_Dir $MatPath $MEDIVer < /dev/null #|& tee $OutFolder/$Subj/$Subj.Output.MEDI_QSM_New_Ref.txt
 
 		#Error Handling
 		ExCode=$?
