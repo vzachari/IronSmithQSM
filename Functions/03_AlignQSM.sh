@@ -19,7 +19,7 @@ set -e #Exit on error
 #                  { }
 
 #Passed varialbes to 03_Align_QSM.sh 
-#1) Suject
+#1) Subject
 #2) Output Folder
 #3) Path
 #4) QSM File
@@ -28,7 +28,7 @@ set -e #Exit on error
 
 #Subj="S0030"
 #OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
-#Path="/home/data3/vzachari/QSM_Toolkit/QSM_Std_Scripts"
+#Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #QSMFile="/home/data3/vzachari/QSM_Toolkit/S0030/QSM/QSM_Final_Map_New_CSF/S0030_QSM_Final_Map_New_CSF.nii.gz"
 #MAG="/home/data3/vzachari/QSM_Toolkit/S0030/QSM/QSM_nii/20190218_142131UKYT2QSMUSCs010a1001.nii.gz"
 #MEDIFlag="MEDI_No"

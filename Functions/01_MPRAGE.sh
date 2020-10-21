@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 08/24/2020
 #
-# Script creates MPR folder in output path. 
+# Script creates MPR folder in output path 
 # Script creates RMS MPRAGE .nii.gz file if multi-echos exist
 # Script runs freesurfer segmentation and evaluates outputs for correctness
 #
@@ -24,7 +24,7 @@ set -e #Exit on error
 
 
 #Passed varialbes to 01_MPRAGE.sh 
-#1) Suject
+#1) Subject
 #2) Output Folder
 #3) MPRAGE Directory
 #4) MPRAGE Type
@@ -34,7 +34,7 @@ set -e #Exit on error
 #OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
 #MPRDir="/home/data3/vzachari/QSM_Toolkit/S0030/MPR"
 #MPRType=2
-#Path="/home/data3/vzachari/QSM_Toolkit/QSM_Std_Scripts"
+#Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 
 Subj=$1
 OutFolder=$2

@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 08/24/2020
 #
-# Script creates QSM masks from the freesurfer segmentations created in the previous script.
+# Script creates QSM masks from the freesurfer segmentations created in 01_MPRAGE.sh previous script.
 #
 #
 #       _---~~(~~-_.			
@@ -20,13 +20,13 @@ set -e #Exit on error
 #
 
 #Passed varialbes to 02_Create_QSM_Masks.sh
-#1) Suject
+#1) Subject
 #2) Output Folder
 #3) Path
 #4) MEDI Flag
 
 #Subj="S0030"
-#OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
+#OutFolder="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #Path="/home/data3/vzachari/QSM_Toolkit/QSM_Std_Scripts"
 #MEDIFlag="MEDI_No"
 

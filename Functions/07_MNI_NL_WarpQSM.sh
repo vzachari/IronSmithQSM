@@ -4,8 +4,8 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-# Script non-linearly warps anatomical data and QSM maps to the MNI152 1mm template
-#
+# Script non-linearly warps anatomical data and QSM maps to the MNI152 1mm template.
+# Useful for voxelwise QSM analyses
 #
 #       _---~~(~~-_.			
 #     _{        )   )
@@ -19,11 +19,10 @@ set -e #Exit on error
 #                  { }
 
 #Passed varialbes to 07_MNI_NL_WarpQSM.sh 
-#1) Suject
+#1) Subject
 #2) Output Folder
 #3) Path
 #4) MEDI Flag
-
 
 #Subj="S0030"
 #OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"

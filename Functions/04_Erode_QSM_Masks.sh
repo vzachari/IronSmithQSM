@@ -24,7 +24,7 @@ set -e #Exit on error
 #3) Path
 
 #Subj="S0030"
-#OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
+#OutFolder="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #Path="/home/data3/vzachari/QSM_Toolkit/QSM_Std_Scripts"
 
 Subj=$1

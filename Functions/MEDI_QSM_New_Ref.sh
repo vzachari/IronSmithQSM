@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-# Script aligns QSM masks to MAG image
+# Script runs MEDI with eroded WM and lateral ventricles as the QSM reference
 #
 #
 #       _---~~(~~-_.			
@@ -19,15 +19,19 @@ set -e #Exit on error
 #                  { }
 
 #Passed varialbes to 04_MNI_NL_WarpQSM.sh 
-#1) Suject
+#1) Subject
 #2) Output folder
 #3) Path
 #4) QSM DICOM Dir
+#5) Matlab path
+#6) MEDIVer
 
 #Subj="S0031"
 #OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
-#Path="/home/data3/vzachari/QSM_Toolkit/QSM_Std_Scripts"
+#Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #QSM_Dicom_Dir="/home/data3/vzachari/QSM_Toolkit/S0030/QSM/QSM_Dicom"
+#MatPath="Same path as one used in Matlab_Config.txt"
+#MEDIVer="This just a label. It should match the version of MEDI toolbox you have"
 
 Subj=$1
 OutFolder=$2

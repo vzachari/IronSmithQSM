@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-# Script aligns QSM masks to MAG image
+# Script calculates SNR (magnitude image based) for each structural ROI used for QSM
 #
 #
 #       _---~~(~~-_.			
