@@ -102,7 +102,9 @@ File2=$(singularity run -e $Path/Functions/QSM_Container.simg find ${Subj}_QSM_F
 
 echo ""
 echo "Largest .nii.gz file in `pwd` is $File1, possibly the PHASE Scan"
+echo ""
 echo "Second largest .nii.gz file in `pwd` is $File2, possibly the MAGNITUDE Scan" 	
+echo ""
 echo "Evaluating files..."
 echo ""
 

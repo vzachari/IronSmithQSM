@@ -7,3 +7,4 @@ Beverly Meacham for bringing doughnuts!
 Dr. Anders Andersen for helpful discussions and for somehow always being reviewer #2!
 Dr. Ahmed Bahrani for help with building singularity containers!
 Dr. Yuha Jung for being AWESOME!
+Dr. Pascal Spincemaille for MEDI Toolbox support and helpful discussions!
