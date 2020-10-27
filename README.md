@@ -1,21 +1,22 @@
-# Ironsmith QSM Toolkit		       
+# Ironsmith QSM		       
 
-Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).
+Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).  
+Third party software provided by this toolkit are subject to their own licenses and copyrights.
 
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
 #### Description:  
-Ironsmith is a toolkit for creating and processing Quantitative Susceptibility Maps (QSM)  
+Ironsmith is an automated pipeline for creating Quantitative Susceptibility Maps (QSM)  
 and for extracting QSM based iron concentrations from subcortical and cortical brain regions.
 
-Ironsmith can perform the following tasks in a fully automated pipeline:
+Ironsmith can perform the following tasks:
 
 a) Create QSM maps from GRE DICOM images using the MEDI Toolbox **(see section 7 for details)** .     
-b) Align MPR/MEMPR T1 images to QSM maps and then segment them into 87 ROIs **(ROI list in section 8)** using freesurfer.  
-c) Filter outlier voxels from these ROIs, extract QSM based iron concentration, and format the output into easy to read tables.  
-d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM in an easy to read table.  
+b) Align MPR/MEMPR T1 images to QSM maps and then segment these into 87 ROIs **(ROI list in section 8)** using freesurfer.  
+c) Filter outlier voxels from these ROIs, extract QSM based iron concentration, and format the output into CSV tables (MS Excel compatible).  
+d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM and output SNR values in CSV tables (MS Excel compatible).  
 e) Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
-f) Process single or multiple participants at a time (multiple instances and nohup supported).
+f) Process single or multiple participants in parallel (multiple instances and nohup supported).
 
 ## 1) Software requirements:
 
@@ -43,7 +44,7 @@ Ironsmith tested on Singularity versions 3.5.2 and 3.5.3
 Installation guide:  
 https://sylabs.io/guides/3.5/admin-guide/installation.html
 
-#### d) Bash UNIX shell version 4.2.46(2) or later.  
+#### d) Bash UNIX shell version 4.2.46(2) or later  
 
 #### e) MEDI Toolbox version 01/15/2020
 Ironsmith requires MEDI Toolbox if QSM maps need to be generated  
@@ -204,6 +205,23 @@ b) Rename the recon-all folder to **Subj_FreeSurfSeg_Skull**. Subj should match 
 
 **Note:** if Ironsmith runs freesurfer it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/Freesurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
 
+### Processing participants in parallel
+
+Running the same Ironsmith command with the same MyInputFile and output folder in mulitiple terminal windows allows for parallel processing of participants in MyInputFile.  
+
+*For example, running three instances of Ironsmith:*
+
+Terminal 1:   
+**Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis**  
+
+Terminal 2:  
+**Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis**  
+
+Terminal 3:  
+**Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis**
+
+Terminals 1-3 will each be running a different instance of Ironsmith (each working on a different set of participants) but all instances will be working on the same group/list of participants (from **File.csv**) and in the same output folder (**/home/data/MyAmazingExp/QSM_Analysis output folder**) and will only create a single set of group output files (see section #6 below).
+
 ### Viewing output NIFTI files
 
 If you do not have a NIFTI viewer, AFNI can be launched from within the QSM_Container.simg by using the *Ironsmith_AFNI* command. Just type *Ironsmith_AFNI* from within the folder you would like to view NIFTI files from.
@@ -246,7 +264,8 @@ _CSF = Lateral ventricles as the QSM reference structure
 _WM = White matter as the QSM reference structure  
 
 SNR is calculated as follows:  
-mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head.
+mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).  
+Lastly, SNR is multiplied by the Rayleigh distribution correction factor *√(2−π/2)*.  
 
 The outside the head mask can be found here:  
 **/QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**

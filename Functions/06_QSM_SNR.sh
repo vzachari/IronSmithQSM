@@ -5,6 +5,9 @@ set -e #Exit on error
 #Authored by Valentinos Zachariou on 09/9/2020
 #
 # Script calculates SNR (magnitude image based) for each structural ROI used for QSM
+# SNR= [ average signal intensity of GRE magnitude image within an ROI / average standard deviation of pixel intensity from air outside the head (away from the frequency and phase axes) ] 
+# SNR is then multiplied by the Rayleigh constant (0.655)
+#
 #
 #
 #       _---~~(~~-_.			
@@ -255,7 +258,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Frontal_GM_Mask_SNR.txt
 
@@ -273,7 +276,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Parietal_GM_Mask_SNR.txt
 
@@ -291,7 +294,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Occipital_GM_Mask_SNR.txt
 
@@ -309,7 +312,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Temporal_GM_Mask_SNR.txt
 
@@ -335,7 +338,7 @@ unset Eval Mean SNR
 
 #
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-#	echo "scale=2; $Mean / $SD " | bc -l) 
+#	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 #echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_BanksSTS_GM_Mask_SNR.txt
 
@@ -353,7 +356,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_CaudalAnteriorCingulate_GM_Mask_SNR.txt
 
@@ -371,7 +374,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_CaudalMiddleFrontal_GM_Mask_SNR.txt
 
@@ -389,7 +392,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Cuneus_GM_Mask_SNR.txt
 
@@ -407,7 +410,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_DLPFC_GM_Mask_SNR.txt
 
@@ -425,7 +428,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Entorhinal_GM_Mask_SNR.txt
 
@@ -443,7 +446,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Frontal_GM_Mask_SNR.txt
 
@@ -461,7 +464,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Fusiform_GM_Mask_SNR.txt
 
@@ -479,7 +482,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_InferiorParietal_GM_Mask_SNR.txt
 
@@ -497,7 +500,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_InferiorTemporal_GM_Mask_SNR.txt
 
@@ -515,7 +518,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Insula_GM_SNR.txt
 
@@ -533,7 +536,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_IsthmusCingulate_GM_SNR.txt
 
@@ -551,7 +554,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_LateralOccipital_GM_SNR.txt
 
@@ -569,7 +572,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_LateralOrbitofrontal_GM_SNR.txt
 
@@ -587,7 +590,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Lingual_GM_SNR.txt
 
@@ -605,7 +608,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_MedialOrbitofrontal_GM_SNR.txt
 
@@ -623,7 +626,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_MiddleTemporal_GM_SNR.txt
 
@@ -641,7 +644,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Occipital_GM_Mask_SNR.txt
 
@@ -660,7 +663,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Parietal_GM_Mask_SNR.txt
 
@@ -678,7 +681,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Temporal_GM_Mask_SNR.txt
 
@@ -696,7 +699,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Parahippocampal_GM_SNR.txt
 
@@ -714,7 +717,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Pericalcarine_GM_SNR.txt
 
@@ -732,7 +735,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Postcentral_GM_SNR.txt
 
@@ -750,7 +753,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_PosteriorCingulate_GM_SNR.txt
 
@@ -768,7 +771,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Precentral_GM_SNR.txt
 
@@ -786,7 +789,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Precuneus_GM_SNR.txt
 
@@ -804,7 +807,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_RostalMiddleFrontal_GM_SNR.txt
 
@@ -823,7 +826,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_RostralAnteriorCingulate_GM_SNR.txt
 
@@ -841,7 +844,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_SuperiorFrontal_GM_SNR.txt
 
@@ -859,7 +862,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_SuperiorParietal_GM_SNR.txt
 
@@ -877,7 +880,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_SuperiorTemporal_GM_SNR.txt
 
@@ -895,7 +898,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_TransverseTemporal_GM_SNR.txt
 
@@ -921,7 +924,7 @@ unset Eval Mean SNR
 
 #
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-#	echo "scale=2; $Mean / $SD " | bc -l) 
+#	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 #echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_BanksSTS_GM_Mask_SNR.txt
 
@@ -939,7 +942,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_CaudalAnteriorCingulate_GM_Mask_SNR.txt
 
@@ -957,7 +960,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_CaudalMiddleFrontal_GM_Mask_SNR.txt
 
@@ -975,7 +978,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Cuneus_GM_Mask_SNR.txt
 
@@ -993,7 +996,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_DLPFC_GM_Mask_SNR.txt
 
@@ -1011,7 +1014,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Entorhinal_GM_Mask_SNR.txt
 
@@ -1029,7 +1032,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Frontal_GM_Mask_SNR.txt
 
@@ -1047,7 +1050,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Fusiform_GM_Mask_SNR.txt
 
@@ -1065,7 +1068,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_InferiorParietal_GM_Mask_SNR.txt
 
@@ -1083,7 +1086,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_InferiorTemporal_GM_Mask_SNR.txt
 
@@ -1101,7 +1104,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Insula_GM_SNR.txt
 
@@ -1119,7 +1122,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_IsthmusCingulate_GM_SNR.txt
 
@@ -1137,7 +1140,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_LateralOccipital_GM_SNR.txt
 
@@ -1155,7 +1158,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_LateralOrbitofrontal_GM_SNR.txt
 
@@ -1173,7 +1176,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Lingual_GM_SNR.txt
 
@@ -1191,7 +1194,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_MedialOrbitofrontal_GM_SNR.txt
 
@@ -1209,7 +1212,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_MiddleTemporal_GM_SNR.txt
 
@@ -1227,7 +1230,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Occipital_GM_Mask_SNR.txt
 
@@ -1246,7 +1249,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Parietal_GM_Mask_SNR.txt
 
@@ -1264,7 +1267,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Temporal_GM_Mask_SNR.txt
 
@@ -1282,7 +1285,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Parahippocampal_GM_SNR.txt
 
@@ -1300,7 +1303,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Pericalcarine_GM_SNR.txt
 
@@ -1318,7 +1321,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Postcentral_GM_SNR.txt
 
@@ -1336,7 +1339,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_PosteriorCingulate_GM_SNR.txt
 
@@ -1354,7 +1357,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Precentral_GM_SNR.txt
 
@@ -1372,7 +1375,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Precuneus_GM_SNR.txt
 
@@ -1390,7 +1393,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_RostalMiddleFrontal_GM_SNR.txt
 
@@ -1409,7 +1412,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_RostralAnteriorCingulate_GM_SNR.txt
 
@@ -1427,7 +1430,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_SuperiorFrontal_GM_SNR.txt
 
@@ -1445,7 +1448,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_SuperiorParietal_GM_SNR.txt
 
@@ -1463,7 +1466,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_SuperiorTemporal_GM_SNR.txt
 
@@ -1481,7 +1484,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_TransverseTemporal_GM_SNR.txt
 
@@ -1505,7 +1508,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Accumbens_area_SNR.txt
 
@@ -1523,7 +1526,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Amygdala_SNR.txt
 
@@ -1541,7 +1544,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Caudate_SNR.txt
 
@@ -1559,7 +1562,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Hipp_SNR.txt
 
@@ -1578,7 +1581,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Pallidum_SNR.txt
 
@@ -1596,7 +1599,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Putamen_SNR.txt
 
@@ -1614,7 +1617,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_LR_Thalamus_Proper_SNR.txt
 
@@ -1636,7 +1639,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Accumbens_area_SNR.txt
 
@@ -1654,7 +1657,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Amygdala_SNR.txt
 
@@ -1672,7 +1675,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Caudate_SNR.txt
 
@@ -1690,7 +1693,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Hipp_SNR.txt
 
@@ -1709,7 +1712,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Pallidum_SNR.txt
 
@@ -1727,7 +1730,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Putamen_SNR.txt
 
@@ -1745,7 +1748,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_Thalamus_Proper_SNR.txt
 
@@ -1766,7 +1769,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Accumbens_area_SNR.txt
 
@@ -1784,7 +1787,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Amygdala_SNR.txt
 
@@ -1802,7 +1805,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Caudate_SNR.txt
 
@@ -1820,7 +1823,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Hipp_SNR.txt
 
@@ -1839,7 +1842,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Pallidum_SNR.txt
 
@@ -1857,7 +1860,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Putamen_SNR.txt
 
@@ -1875,7 +1878,7 @@ Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/F
 Mean=$(echo "${Eval:-FAIL}") 
 
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	echo "scale=2; $Mean / $SD " | bc -l) 
+	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
 echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_Thalamus_Proper_SNR.txt
 
