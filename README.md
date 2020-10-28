@@ -142,7 +142,7 @@ This can be rms/averaged across echos or just a single echo T1 MPRAGE.
 This single NIFTI file can have any name and will be used as is.
 
 **Column4** = Absolute path to folder with QSM DICOM files  
-*(e.g. /home/subjecs/S01/QSM_Dicom)*  
+*(e.g. /home/subjects/S01/QSM_Dicom)*  
 QSM DICOM folder must include DICOMS for both GRE magnitude and phase.
 
 Preferably only QSM DICOMS should be present in the QSM_Dicom folder. However, Ironsmith can filter out the following filetypes .nii .json .txt .nii.gz .HEAD .BRIK .hdr .img
@@ -184,7 +184,7 @@ This can be rms/averaged across echos or just a single echo T1 MPRAGE.
 This single NIFTI file can have any name and will be used as is.
 
 **Column4** = Absolute path including filename to QSM magnitude image  
-*(e.g. /home/subjecs/S01/QSM/QSM_Magnitude.nii.gz)*  
+*(e.g. /home/subjects/S01/QSM/QSM_Magnitude.nii.gz)*  
 
 **Column5** = Absolute path including filename to QSM map  
 *(e.g. /home/subjects/S01/QSM/QSM_Map.nii.gz)*  
@@ -220,7 +220,7 @@ Terminal 2:
 Terminal 3:  
 **Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis**
 
-Terminals 1-3 will each be running a different instance of Ironsmith (each working on a different set of participants) but all instances will be working on the same group/list of participants (from **File.csv**) and in the same output folder (**/home/data/MyAmazingExp/QSM_Analysis output folder**) and will only create a single set of group output files (see section #6 below).
+Terminals 1-3 will each be running a different instance of Ironsmith (each working on a different set of participants) but all instances will be working on the same group/list of participants (from **File.csv**) and in the same output folder (**/home/data/MyAmazingExp/QSM_Analysis**) and will only create a single set of group output files (see section #6 below).
 
 ### Viewing output NIFTI files
 
