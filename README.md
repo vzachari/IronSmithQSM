@@ -82,14 +82,14 @@ NOTE: Make sure the MEDI_toolbox folder in IronSmithQSM/Functions does not have 
 *(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*  
 Supported versions R2017b to R2019b.  
 
-#### h) Add the IronSmithQSM directory to $PATH  
+##### h) Add the IronSmithQSM directory to $PATH  
 Guide: https://opensource.com/article/17/6/set-path-linux
 
 ## 3) Syntax:
 
 **Ironsmith [MyInputFile] [absolute path to output folder]**
 
-*Example: Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis"*
+*Example: "Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis"*
 
 a) The output folder does not need to exist.
 
