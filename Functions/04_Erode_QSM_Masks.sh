@@ -220,7 +220,24 @@ cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS/
 		-expr a-b -prefix ${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Step1.nii.gz
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Step1.nii.gz \
-		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz	
+		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz
+
+	#Left Angular Gyrus
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM_RS.nii.gz -b \
+		${Subj}_freesurfer_LR_Parietal_WM_Mask_AL_QSM_RS_Dilated.nii.gz \
+		-expr a-b -prefix ${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM_RS_Step1.nii.gz
+
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM_RS_Step1.nii.gz \
+		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM_RS_Erx1.nii.gz
+
+	#Right Angular Gyrus
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM_RS.nii.gz -b \
+		${Subj}_freesurfer_LR_Parietal_WM_Mask_AL_QSM_RS_Dilated.nii.gz \
+		-expr a-b -prefix ${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM_RS_Step1.nii.gz
+
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM_RS_Step1.nii.gz \
+		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM_RS_Erx1.nii.gz
+	
 
 # Erodes the Occipital lobe	
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_LR_Occipital_WM_Mask_AL_QSM_RS.nii.gz \
@@ -407,6 +424,7 @@ cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS/
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Step1.nii.gz \
 		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz
+
 
 
 # Erodes InferiorTemporal

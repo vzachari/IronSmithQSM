@@ -97,6 +97,7 @@ cp $OutFolder/$Subj/MPR/${Subj}_FreeSurfSeg_Skull/mri/aparc.DKTatlas+aseg.mgz .
 cp $OutFolder/$Subj/MPR/${Subj}_FreeSurfSeg_Skull/mri/brain.mgz .
 cp $OutFolder/$Subj/MPR/${Subj}_FreeSurfSeg_Skull/mri/brainmask.mgz .
 cp $OutFolder/$Subj/MPR/${Subj}_FreeSurfSeg_Skull/mri/wmparc.mgz .
+cp $OutFolder/$Subj/MPR/${Subj}_FreeSurfSeg_Skull/mri/aparc.a2009s+aseg.mgz .
 
 echo ""	
 echo "Converting freesurfer files to NIFTI and orienting to FSL view"
@@ -109,6 +110,7 @@ singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Function
 singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg mri_convert --out_orientation RAS aseg.mgz ${Subj}_freesurfer_aseg.nii.gz
 singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg mri_convert --out_orientation RAS aparc.DKTatlas+aseg.mgz ${Subj}_freesurfer_aseg_DKTatlas.nii.gz
 singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg mri_convert --out_orientation RAS wmparc.mgz ${Subj}_freesurfer_aseg_WM.nii.gz
+singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg mri_convert --out_orientation RAS aparc.a2009s+aseg.mgz ${Subj}_freesurfer_aseg_a2009s.nii.gz
 
 echo ""
 echo "---------------------------------------------------------------"	
@@ -517,6 +519,11 @@ echo ""
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 1009.9 -uthr 1010.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_IsthmusCingulate_GM.nii.gz
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 2009.9 -uthr 2010.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_IsthmusCingulate_GM.nii.gz
+
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_a2009s.nii.gz -thr 11124.9 -uthr 11125.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_AngularGyrus_GM.nii.gz
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_a2009s.nii.gz -thr 12124.9 -uthr 12125.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_AngularGyrus_GM.nii.gz
+
+
 	
 
 	#Combine structures together (with no overlap) to create Parietal Lobar Mask	

@@ -503,6 +503,13 @@ singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Function
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dAllineate -master ${Subj}_freesurfer_brain_AL_Mag+orig -1Dmatrix_apply ${Subj}_freesurfer_brain_AL_Mag_mat.aff12.1D \
 		-input Cort_Mask_Orig/${Subj}_freesurfer_R_IsthmusCingulate_GM.nii.gz -final NN -prefix Cort_Mask_AL_QSM/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM.nii.gz
 
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dAllineate -master ${Subj}_freesurfer_brain_AL_Mag+orig -1Dmatrix_apply ${Subj}_freesurfer_brain_AL_Mag_mat.aff12.1D \
+		-input Cort_Mask_Orig/${Subj}_freesurfer_L_AngularGyrus_GM.nii.gz -final NN -prefix Cort_Mask_AL_QSM/${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM.nii.gz
+
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dAllineate -master ${Subj}_freesurfer_brain_AL_Mag+orig -1Dmatrix_apply ${Subj}_freesurfer_brain_AL_Mag_mat.aff12.1D \
+		-input Cort_Mask_Orig/${Subj}_freesurfer_R_AngularGyrus_GM.nii.gz -final NN -prefix Cort_Mask_AL_QSM/${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM.nii.gz
+
+
 	#WM
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dAllineate -master ${Subj}_freesurfer_brain_AL_Mag+orig -1Dmatrix_apply ${Subj}_freesurfer_brain_AL_Mag_mat.aff12.1D \
 		-input Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorParietal_WM.nii.gz -final NN -prefix Cort_Mask_AL_QSM/${Subj}_freesurfer_L_SuperiorParietal_WM_AL_QSM.nii.gz
@@ -958,6 +965,8 @@ singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Function
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dresample -master ${Subj}_QSM_Map_FSL.nii.gz -prefix Cort_Mask_AL_QSM_RS/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS.nii.gz -input Cort_Mask_AL_QSM/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM.nii.gz
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dresample -master ${Subj}_QSM_Map_FSL.nii.gz -prefix Cort_Mask_AL_QSM_RS/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS.nii.gz -input Cort_Mask_AL_QSM/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM.nii.gz
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dresample -master ${Subj}_QSM_Map_FSL.nii.gz -prefix Cort_Mask_AL_QSM_RS/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS.nii.gz -input Cort_Mask_AL_QSM/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM.nii.gz
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dresample -master ${Subj}_QSM_Map_FSL.nii.gz -prefix Cort_Mask_AL_QSM_RS/${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM_RS.nii.gz -input Cort_Mask_AL_QSM/${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM.nii.gz
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dresample -master ${Subj}_QSM_Map_FSL.nii.gz -prefix Cort_Mask_AL_QSM_RS/${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM_RS.nii.gz -input Cort_Mask_AL_QSM/${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM.nii.gz
 
 	#WM
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dresample -master ${Subj}_QSM_Map_FSL.nii.gz -prefix Cort_Mask_AL_QSM_RS/${Subj}_freesurfer_L_SuperiorParietal_WM_AL_QSM_RS.nii.gz -input Cort_Mask_AL_QSM/${Subj}_freesurfer_L_SuperiorParietal_WM_AL_QSM.nii.gz

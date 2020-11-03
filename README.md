@@ -12,7 +12,7 @@ and for extracting QSM based iron concentrations from subcortical and cortical b
 Ironsmith can perform the following tasks:
 
 a) Create QSM maps from GRE DICOM images using the MEDI Toolbox **(see section 7 for details)** .     
-b) Align MPR/MEMPR T1 images to QSM maps and then segment these into 87 ROIs **(ROI list in section 8)** using freesurfer.  
+b) Align MPR/MEMPR T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using freesurfer.  
 c) Filter outlier voxels from these ROIs, extract QSM based iron concentration, and format the output into CSV tables (MS Excel compatible).  
 d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM and output SNR values in CSV tables (MS Excel compatible).  
 e) Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
@@ -248,7 +248,7 @@ c) All QSM maps warped to MNI space are placed under
 
 **S0001/QSM/Freesurf_QSM_Masks/MNI152_QSM**
 
-d) QSM per ROI means (87 ROIs) are under **/QSM_Analysis/Group** as follows:
+d) QSM per ROI means (89 ROIs) are under **/QSM_Analysis/Group** as follows:
 
 **Group_QSM_Mean.csv**  
 **Group_QSM_Mean_CSF.csv**  
@@ -314,6 +314,7 @@ L_Entorhinal_GM
 L_Frontal_GM  
 L_Fusiform_GM  
 L_InferiorParietal_GM  
+L_AngularGyrus_GM    
 L_InferiorTemporal_GM  
 L_Insula_GM  
 L_IsthmusCingulate_GM  
@@ -344,7 +345,8 @@ R_DLPFC_GM
 R_Entorhinal_GM  
 R_Frontal_GM_Mask  
 R_Fusiform_GM  
-R_InferiorParietal_GM  
+R_InferiorParietal_GM    
+R_AngularGyrus_GM  
 R_InferiorTemporal_GM  
 R_Insula_GM  
 R_IsthmusCingulate_GM  
