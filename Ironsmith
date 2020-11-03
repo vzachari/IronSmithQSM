@@ -1045,14 +1045,16 @@ do
 		fi
 	else
 		echo ""
-		echo -e "\e[44m$OutFolder\e[0m does not exist, it will be created."
+		echo "$OutFolder does not exist, it will be created."
 		echo ""
+
 		mkdir $OutFolder
 		mkdir $OutFolder/$Subj
 		mkdir $OutFolder/$Subj/LogFiles
 		mkdir $OutFolder/Freesurfer_Skip
-		echo "Copy finished freesurfer recon-all folder here to skip the fressurfer segmentation step." >> $OutFolder/Freesurfer_Skip/README.txt
-		echo "Rename finished freesurfer recon-all folder to Subj_FreeSurfSeg_Skull." >> $OutFolder/Freesurfer_Skip/README.txt
+
+		echo "Copy freesurfer recon-all -all folder here to skip the fressurfer segmentation step." >> $OutFolder/Freesurfer_Skip/README.txt
+		echo "Rename freesurfer recon-all -all folder to Subj_FreeSurfSeg_Skull." >> $OutFolder/Freesurfer_Skip/README.txt
 		echo "Subj should match the participant you want the segmentation step skipped." >> $OutFolder/Freesurfer_Skip/README.txt
 
 	fi
