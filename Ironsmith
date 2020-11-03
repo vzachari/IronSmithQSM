@@ -1246,9 +1246,10 @@ do
 		#2) Output folder
 		#3) Path
 		#4) MEDI Flag
+		#5) Rows
 
 		#Command
-		bash $Path/Functions/05_Extract_QSM.sh $Subj $OutFolder $Path $MEDIFlag #|& tee $OutFolder/$Subj/$Subj.Output.05_Extract_QSM.txt
+		bash $Path/Functions/05_Extract_QSM.sh $Subj $OutFolder $Path $MEDIFlag $Rows #|& tee $OutFolder/$Subj/$Subj.Output.05_Extract_QSM.txt
 
 		#Error Handling
 		ExCode=$?
@@ -1281,10 +1282,11 @@ do
 		#1) Subject
 		#2) Output folder
 		#3) Path
+		#4) Rows
 
 
 		#Command
-		bash $Path/Functions/06_QSM_SNR.sh $Subj $OutFolder $Path #|& tee $OutFolder/$Subj/$Subj.Output.06_QSM_SNR.txt
+		bash $Path/Functions/06_QSM_SNR.sh $Subj $OutFolder $Path $Rows #|& tee $OutFolder/$Subj/$Subj.Output.06_QSM_SNR.txt
 
 		#Error Handling
 		ExCode=$?
@@ -1450,9 +1452,10 @@ do
 		#2) Output folder
 		#3) Path
 		#4) MEDI Flag
+		#5) Rows
 
 		#Command
-		bash $Path/Functions/05_Extract_QSM.sh $Subj $OutFolder $Path $MEDIFlag #|& tee $OutFolder/$Subj/$Subj.Output.05_Extract_QSM.txt
+		bash $Path/Functions/05_Extract_QSM.sh $Subj $OutFolder $Path $MEDIFlag $Rows #|& tee $OutFolder/$Subj/$Subj.Output.05_Extract_QSM.txt
 
 		#Error Handling
 		ExCode=$?
@@ -1486,9 +1489,10 @@ do
 		#1) Subject
 		#2) Output folder
 		#3) Path
+		#4) Rows
 
 		#Command
-		bash $Path/Functions/06_QSM_SNR.sh $Subj $OutFolder $Path #|& tee $OutFolder/$Subj/$Subj.Output.06_QSM_SNR.txt
+		bash $Path/Functions/06_QSM_SNR.sh $Subj $OutFolder $Path $Rows #|& tee $OutFolder/$Subj/$Subj.Output.06_QSM_SNR.txt
 
 		#Error Handling
 		ExCode=$?
