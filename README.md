@@ -12,8 +12,8 @@ and for extracting QSM based iron concentrations from subcortical and cortical b
 Ironsmith can perform the following tasks:
 
 a) Create QSM maps from GRE DICOM images using the MEDI Toolbox **(see section 7 for details)** .     
-b) Align MPR/MEMPR T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using freesurfer.  
-c) Filter outlier voxels from these ROIs, extract QSM based iron concentration, and format the output into CSV tables (MS Excel compatible).  
+b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using FreeSurfer.  
+c) Filter outlier voxels from these ROIs (QSM values larger than top 95th percentile of values), extract QSM based iron concentration, and format the output into CSV tables (MS Excel compatible).  
 d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM and output SNR values in CSV tables (MS Excel compatible).  
 e) Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
 f) Process single or multiple participants in parallel (multiple instances and nohup supported).
@@ -97,7 +97,9 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 
 *Ex. if S0001 is specified in MyInputFile and folder S0001 exists in output folder, S0001 will be skipped.*
 
-c) Freesurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on quality of life features below.
+c) Absolute path to MyInputFile needs to be provided *(Ex. /home/data/MyAmazingExp/CSVFileVault/File.csv)* if file is not in current folder.
+
+c) FreeSurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on Optional features below.
 
 ## 4) MyInputFile format:  
 
@@ -117,8 +119,8 @@ b) Each row corresponds to a different participant.
 
 **If a single NIFTI (.nii or .nii.gz) MPR/MEMPR file is provided:**  
 File can have any name.  
-File can have multiple time-points, each corresponding to a different echo (RMS will be calculated).  
-File can have a single echo/time-point.
+File can have multiple volumes, each corresponding to a different echo (RMS will be calculated).  
+File can have a single echo/volume.
 
 **If path to directory with MPR/MEMPR files is provided:**   
 
@@ -134,10 +136,10 @@ To make sure the correct files are selected, each NIFTI file needs to have _e# i
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple time-points, each corresponding to a different echo (RMS will be calculated).  
+c) Single .nii/nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
 This single NIFTI file can have any name.
 
-d) Single .nii/nii.gz file with a single echo/time-point.  
+d) Single .nii/nii.gz file with a single echo/volume.  
 This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
 This single NIFTI file can have any name and will be used as is.
 
@@ -159,8 +161,8 @@ All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 
 **If a single NIFTI (.nii or .nii.gz) MPR/MEMPR file is provided:**  
 File can have any name.  
-File can have multiple time-points, each corresponding to a different echo (RMS will be calculated).  
-File can have a single echo/time-point.
+File can have multiple volumes, each corresponding to a different echo (RMS will be calculated).  
+File can have a single echo/volume.
 
 **If path to directory with MPR/MEMPR files is provided:**   
 
@@ -176,10 +178,10 @@ To make sure the correct files are selected, each NIFTI file needs to have _e# i
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple time-points, each corresponding to a different echo (RMS will be calculated).  
+c) Single .nii/nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
 This single NIFTI file can have any name.
 
-d) Single .nii/nii.gz file with a single echo/time-point.  
+d) Single .nii/nii.gz file with a single echo/volume.  
 This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
 This single NIFTI file can have any name and will be used as is.
 
@@ -191,23 +193,23 @@ This single NIFTI file can have any name and will be used as is.
 
 All 5 columns need to be provided, otherwise Ironsmith will exit with errors.
 
-## 5) Quality of life features:  
+## 5) Optional features:  
 
-### Skipping freesurfer segmentation
+### Skipping FreeSurfer segmentation
 
-If a participant already has a completed freesurfer recon-all -all segmentation folder and you would like Ironsmith to skip the freesurfer segmentation step, do the following:
+If FreeSurfer has already run and a participant has a completed FreeSurfer recon-all -all segmentation folder, Ironsmith can skip the FreeSurfer segmentation step by doing the following:
 
-a) Copy the freesurfer recon-all folder (the one containing the *label*, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/Freesurfer_Skip**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
+a) Copy the FreeSurfer recon-all folder (the one containing the *label*, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/FreeSurfer_Skip**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
 
-You can create the /OutputFolder/Freesurfer_Skip folder or Ironsmith will create it for you if you have run it at least once previously for OutputFolder.
+You can create the /OutputFolder/FreeSurfer_Skip folder or Ironsmith will create it for you if you have run it at least once previously for OutputFolder.
 
 b) Rename the recon-all folder to **Subj_FreeSurfSeg_Skull**. Subj should match the one provided in MyInputFile and should correspond to the participant you want the segmentation step skipped.  
 
-**Note:** if Ironsmith runs freesurfer it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/Freesurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
+**Note:** if Ironsmith runs FreeSurfer it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/FreeSurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
 
 ### Processing participants in parallel
 
-Running the same Ironsmith command with the same MyInputFile and output folder in mulitiple terminal windows allows for parallel processing of participants in MyInputFile.  
+Parallel processing can significantly increase the speed of analyses. Running the Ironsmith command with the same MyInputFile and output folder in multiple terminal windows allows for parallel processing of participants specified in MyInputFile.  
 
 *For example, running three instances of Ironsmith:*
 
@@ -233,7 +235,7 @@ https://afni.nimh.nih.gov/pub/dist/edu/latest/afni_handouts/afni03_interactive.p
 
 Each participant processed by Ironsmith will have a corresponding folder in **OutputFolder**. For example, if "**/home/QSM_Analysis**" is the OutputFolder and "**S0001**" is one of the participants processed, then **/home/QSM_Analysis/S0001** will be created and populated with data.
 
-a) All masks/ROIs are placed under:
+a) All FreeSurfer based masks/ROIs are placed under:
 
 **S0001/QSM/Freesurf_QSM_Masks/Cort_Masks_AL_QSM_RS_Erx1  
 S0001/QSM/Freesurf_QSM_Masks/SubC_Masks_AL_QSM_RS_Erx1**
@@ -267,7 +269,7 @@ SNR is calculated as follows:
 mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).  
 Lastly, SNR is multiplied by the Rayleigh distribution correction factor *√(2−π/2)*.  
 
-The outside the head mask can be found here:  
+The outside of the head mask used for SNR can be found here:  
 **/QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
 
 ## 7) Ironsmith uses the following software, provided in the form of a Singularity image:
@@ -284,7 +286,7 @@ S Gold, B Christian, S Arndt, G Zeien, T Cizadlo, DL Johnson, M Flaum, and NC An
 
 Li, Xiangrui, et al. "The first step for neuroimaging data analysis: DICOM to NIFTI conversion." Journal of neuroscience methods 264 (2016): 47-56.
 
-### Freesurfer  
+### FreeSurfer  
 
 Dale, A.M., Fischl, B., Sereno, M.I., 1999. Cortical surface-based analysis. I. Segmentation and surface reconstruction. Neuroimage 9, 179-194.
 
