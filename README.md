@@ -97,9 +97,9 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 
 *Ex. if S0001 is specified in MyInputFile and folder S0001 exists in output folder, S0001 will be skipped.*
 
-c) Absolute path to MyInputFile needs to be provided *(Ex. /home/data/MyAmazingExp/CSVFileVault/File.csv)* if file is not in current folder.
+c) Absolute path to MyInputFile needs to be provided *(Ex. /home/data/MyAmazingExp/CSVFileVault/File.csv)* if MyInputFile is not in current folder.
 
-c) FreeSurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on Optional features below.
+d) FreeSurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on Optional features below.
 
 ## 4) MyInputFile format:  
 
@@ -235,24 +235,24 @@ https://afni.nimh.nih.gov/pub/dist/edu/latest/afni_handouts/afni03_interactive.p
 
 ## 6) Outputs:
 
-Each participant processed by Ironsmith will have a corresponding folder in **OutputFolder**. For example, if "**/home/QSM_Analysis**" is the OutputFolder and "**S0001**" is one of the participants processed, then **/home/QSM_Analysis/S0001** will be created and populated with data.
+Each participant processed by Ironsmith will have a corresponding folder in **OutputFolder**. For example, if "**S0001**" is one of the participants processed, then **OutputFolder/S0001** will be created and populated with data.
 
 a) All FreeSurfer based masks/ROIs are placed under:
 
-**S0001/QSM/Freesurf_QSM_Masks/Cort_Masks_AL_QSM_RS_Erx1  
-S0001/QSM/Freesurf_QSM_Masks/SubC_Masks_AL_QSM_RS_Erx1**
+**S0001/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS_Erx1  
+S0001/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1**
 
-b) All QSM maps/images created are placed under S0001/QSM/Freesurf_QSM_Masks and are labelled as:
+b) All QSM maps/images created are placed under S0001/QSM/FreeSurf_QSM_Masks and are labelled as:
 
-**Subj_QSM_Map_FSL.nii.gz**	<-- Default MEDI  
+**Subj_QSM_Map_FSL.nii.gz**	<-- Whole brain CSF segmented from magnitude image as QSM reference (default MEDI)
 **Subj_QSM_Map_New_CSF_FSL.nii.gz** <-- Lateral ventricles as the QSM reference structure  
 **Subj_QSM_Map_New_WM_FSL.nii.gz** <-- White matter as the QSM reference structure  
 
 c) All QSM maps warped to MNI space are placed under
 
-**S0001/QSM/Freesurf_QSM_Masks/MNI152_QSM**
+**S0001/QSM/FreeSurf_QSM_Masks/MNI152_QSM**
 
-d) QSM per ROI means (89 ROIs) are under **/QSM_Analysis/Group** as follows:
+d) QSM per ROI means (89 ROIs) are under **OutputFolder/Group** as follows:
 
 **Group_QSM_Mean.csv**  
 **Group_QSM_Mean_CSF.csv**  
