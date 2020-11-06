@@ -55,13 +55,22 @@ Currently only MEDI Toolbox version 01/15/2020 is supported
 
 ## 2) Installation:
 
-##### a) Download Ironsmith QSM Toolkit
+##### a) Download Ironsmith QSM
 
 Option 1: download from github  
-https://github.com/vzachari/IronSmithQSM
+
+Visit https://github.com/vzachari/IronSmithQSM  
+Click on tags  
+Click on desired IronsmithQSM version (release notes are displayed by clicking on the three dots `...` )  
+Click on Source code link (zip or tar.gz) to download  
+
+**NOTE:** Via this download option the IronSmithQSM folder will be **IronSmithQSM-version#** *(Ex. IronSmithQSM-1.00)*.  
 
 Option 2: using git  
+
 `git clone https://github.com/vzachari/IronSmithQSM.git && cd IronSmithQSM && git checkout v1.0`
+
+**NOTE:** `git checkout v1.0` can be replaced with a different version number. Type `git tag -l` from within the IronSmithQSM folder for a list of available versions.
 
 ##### b) Download QSM_Container.simg (8.8GB)
 From: https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing  
@@ -99,7 +108,7 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 
 c) Absolute path to MyInputFile needs to be provided *(Ex. /home/data/MyAmazingExp/CSVFileVault/File.csv)* if MyInputFile is not in current folder.
 
-d) FreeSurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on Optional features below.
+d) Freesurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on Optional features below.
 
 ## 4) MyInputFile format:  
 
@@ -201,13 +210,13 @@ All 5 columns need to be provided, otherwise Ironsmith will exit with errors.
 
 If FreeSurfer has already run and a participant has a completed FreeSurfer recon-all -all segmentation folder, Ironsmith can skip the FreeSurfer segmentation step by doing the following:
 
-a) Copy the FreeSurfer recon-all folder (the one containing the *label*, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/FreeSurfer_Skip**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
+a) Copy the FreeSurfer recon-all folder (the one containing the *label*, *mri*, *scripts*, *stats*, *surf*... folders) into **/OutputFolder/Freesurfer_Skip**, where **OutputFolder** is the one specified/to be specified in the Ironsmith command.
 
-You can create the /OutputFolder/FreeSurfer_Skip folder or Ironsmith will create it for you if you have run it at least once previously for OutputFolder.
+You can create the /OutputFolder/Freesurfer_Skip folder or Ironsmith will create it for you if you have run it at least once previously for OutputFolder.
 
 b) Rename the recon-all folder to **Subj_FreeSurfSeg_Skull**. Subj should match the one provided in MyInputFile and should correspond to the participant you want the segmentation step skipped.  
 
-**Note:** if Ironsmith runs FreeSurfer it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/FreeSurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
+**Note:** if Ironsmith runs FreeSurfer it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/Freesurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
 
 ### Processing participants in parallel
 
@@ -244,7 +253,7 @@ S0001/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1**
 
 b) All QSM maps/images created are placed under S0001/QSM/FreeSurf_QSM_Masks and are labelled as:
 
-**Subj_QSM_Map_FSL.nii.gz**	<-- Whole brain CSF segmented from magnitude image as QSM reference (default MEDI)
+**Subj_QSM_Map_FSL.nii.gz**	<-- Whole brain CSF, segmented from magnitude image, as the QSM reference structure (default MEDI)  
 **Subj_QSM_Map_New_CSF_FSL.nii.gz** <-- Lateral ventricles as the QSM reference structure  
 **Subj_QSM_Map_New_WM_FSL.nii.gz** <-- White matter as the QSM reference structure  
 
@@ -272,7 +281,7 @@ mean signal intensity of magnitude image within an ROI / standard deviation of m
 Lastly, SNR is multiplied by the Rayleigh distribution correction factor *√(2−π/2)*.  
 
 The outside of the head mask used for SNR can be found here:  
-**/QSM_Analysis/S0001/QSM/Freesurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
+**/QSM_Analysis/S0001/QSM/FreeSurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
 
 ## 7) Ironsmith uses the following software, provided in the form of a Singularity image:
 
