@@ -170,9 +170,28 @@ echo ""
 if [ -f "$CSVFile" ]; then
 
 	echo ""
-	#echo -e "\e[44m$CSVFile\e[0m Found"
 	echo "$CSVFile Found! "
 	echo ""
+	
+	#Check if .csv file was created in Windows or Mac and convert to Unix line endings
+
+	if file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1; then
+		
+		echo ""
+		echo "$CSVFile created in Windows. Converting to Unix line endings..."
+		echo ""
+
+		sed -i 's/\r$//' $CSVFile
+
+	elif file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
+
+		echo ""
+		echo "$CSVFile created in MacOS. Converting to Unix line endings..."
+		echo ""
+		
+		sed -i 's/\r/\n/g' $CSVFile
+	fi
+
 else
 	echo -e "\e[31m----------------------------------------------"
 	echo "ERROR: $CSVFile NOT FOUND! "
