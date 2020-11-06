@@ -175,10 +175,20 @@ if [ -f "$CSVFile" ]; then
 	
 	#Check if .csv file was created in Windows or Mac and convert to Unix line endings
 
-	if file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1; then
+	if file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1 && file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
+
+		echo ""
+		echo "$CSVFile was created in Windows but saved in MacOS csv format or vice versa (╯°□°）╯︵ ┻━┻ . Converting to Unix line endings..."
+		echo ""		
+
+		sed -i 's/\r$//' $CSVFile
+		sed -i 's/\r/\n/g' $CSVFile	
+
+
+	elif file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1; then
 		
 		echo ""
-		echo "$CSVFile created in Windows. Converting to Unix line endings..."
+		echo "$CSVFile was created in Windows. Converting to Unix line endings..."
 		echo ""
 
 		sed -i 's/\r$//' $CSVFile
@@ -186,10 +196,11 @@ if [ -f "$CSVFile" ]; then
 	elif file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
 
 		echo ""
-		echo "$CSVFile created in MacOS. Converting to Unix line endings..."
+		echo "$CSVFile was created in MacOS. Converting to Unix line endings..."
 		echo ""
 		
 		sed -i 's/\r/\n/g' $CSVFile
+
 	fi
 
 else
