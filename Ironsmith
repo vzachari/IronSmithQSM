@@ -168,9 +168,12 @@ echo ""
 #Check if input CSV file exists
 
 if [ -f "$CSVFile" ]; then
+	
+	unset CSVFileDir
+	CSVFileDir=$(dirname $(readlink -f $CSVFile))
 
 	echo ""
-	echo "$CSVFile Found! "
+	echo "$CSVFile Found in $CSVFileDir"
 	echo ""
 	
 	#Check if .csv file was created in Windows or Mac and convert to Unix line endings
@@ -178,30 +181,43 @@ if [ -f "$CSVFile" ]; then
 	if file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1 && file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
 
 		echo ""
-		echo "$CSVFile was created in Windows but saved in MacOS csv format or vice versa (╯°□°）╯︵ ┻━┻ . Converting to Unix line endings..."
+		echo "$CSVFile has a mix of MS Windows and MacOS line endings (╯°□°）╯︵ ┻━┻ . Converting to Unix line endings..."
 		echo ""		
 
-		sed -i 's/\r$//' $CSVFile
-		sed -i 's/\r/\n/g' $CSVFile	
-
-
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r$//' /mnt/$CSVFile		
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r/\n/g' /mnt/$CSVFile
+		
+		
 	elif file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1; then
 		
 		echo ""
-		echo "$CSVFile was created in Windows. Converting to Unix line endings..."
+		echo "$CSVFile has MS Windows line endings. Converting to Unix line endings..."
 		echo ""
 
-		sed -i 's/\r$//' $CSVFile
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r$//' /mnt/$CSVFile
 
 	elif file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
 
 		echo ""
-		echo "$CSVFile was created in MacOS. Converting to Unix line endings..."
+		echo "$CSVFile has MacOS line endings. Converting to Unix line endings..."
 		echo ""
 		
-		sed -i 's/\r/\n/g' $CSVFile
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r/\n/g' /mnt/$CSVFile
 
 	fi
+
+	#Check if .csv file is encoded using UTF-8 Unicode (with BOM) text and remove BOM
+
+	if file $CSVFile | grep -w "(with BOM)" 1> /dev/null 2>&1; then
+		
+		echo ""
+		echo "$CSVFile is encoded with UTF-8 Unicode (with BOM). Removing BOM..."
+		echo ""
+
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i '1s/^\xEF\xBB\xBF//' /mnt/$CSVFile
+
+	fi
+
 
 else
 	echo -e "\e[31m----------------------------------------------"

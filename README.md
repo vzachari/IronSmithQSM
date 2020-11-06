@@ -103,9 +103,11 @@ c) FreeSurfer_Skip is a reserved folder name under output folder and may be used
 
 ## 4) MyInputFile format:  
 
-a) MyInputFile has to be CSV formatted (entries separated by commas ',').
+a) MyInputFile has to be CSV formatted (entries separated by commas ',').  
 
-b) Each row corresponds to a different participant.  
+b) MyInputFile can be created in Excel (MS Windows or MacOS) and saved as a CSV (Comma delimited) file or in a Unix text editor (e.g. Gedit, Atom, Emacs).  
+
+c) Each row in MyInputFile corresponds to a different participant.  
 
 *see Example_File.csv in IronSmithQSM folder:*  
 
