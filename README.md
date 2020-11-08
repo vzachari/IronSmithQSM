@@ -1,7 +1,7 @@
 # Ironsmith QSM		       
 
 Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).  
-Third party software provided by this toolkit are subject to their own licenses and copyrights.
+Third party software provided with Ironsmith QSM are subject to their own licenses and copyrights (see section 7 for details).
 
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
