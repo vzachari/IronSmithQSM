@@ -13,7 +13,7 @@ Ironsmith can perform the following tasks:
 
 a) Create QSM maps from GRE DICOM images using the MEDI Toolbox **(see section 7 for details)** .     
 b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using FreeSurfer.  
-c) Filter outlier voxels from these ROIs (QSM values larger than top 95th percentile of values), extract QSM based iron concentration, and format the output into CSV tables (MS Excel compatible).  
+c) Filter outlier voxels from these ROIs (QSM values larger than top 97th percentile of values), extract QSM based iron concentration, and format the output into CSV tables (MS Excel compatible).  
 d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM and output SNR values in CSV tables (MS Excel compatible).  
 e) Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
 f) Process single or multiple participants in parallel (multiple instances and nohup supported).
@@ -61,7 +61,7 @@ Option 1: download from github
 
 Visit https://github.com/vzachari/IronSmithQSM  
 Click on tags  
-Click on desired IronsmithQSM version (release notes are displayed by clicking on the three dots `...` )  
+Click on desired IronsmithQSM version (release notes are displayed by clicking the three dots `...` )  
 Click on Source code link (zip or tar.gz) to download  
 
 **NOTE:** Via this download option the IronSmithQSM folder will be **IronSmithQSM-version#** *(Ex. IronSmithQSM-1.00)*.  
@@ -143,8 +143,8 @@ Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith 
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo (will be catenated and RMS will be calculated).
 
-To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
-*(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
+To make sure the correct files are selected, each NIFTI file needs to have \_e# in the file name, where # is the echo number.  
+*(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*  
 This is the default **dcm2niix** output format for multiple echos.
 
 c) Single .nii/nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
@@ -185,8 +185,8 @@ Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith 
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo (will be catenated and RMS will be calculated).
 
-To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
-*(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*   
+To make sure the correct files are selected, each NIFTI file needs to have \_e# in the file name, where # is the echo number.  
+*(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*  
 This is the default **dcm2niix** output format for multiple echos.
 
 c) Single .nii/nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
@@ -271,10 +271,10 @@ d) QSM per ROI means (89 ROIs) are under **OutputFolder/Group** as follows:
 **Group_QSM_ADJ_Mean_WM.csv**  
 **Group_QSM_SNR.csv**  
 
-_Mean = Using only positive QSM voxels  
-_ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size  
-_CSF = Lateral ventricles as the QSM reference structure  
-_WM = White matter as the QSM reference structure  
+\_Mean = Using only positive QSM voxels  
+\_ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size *(sum of all positive QSM voxels / Number of all voxels within an ROI)*  
+\_CSF = Lateral ventricles as the QSM reference structure  
+\_WM = White matter as the QSM reference structure  
 
 SNR is calculated as follows:  
 mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).  
@@ -314,6 +314,11 @@ S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johan
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
 
 ## 8) ROI List:
+
+L_ = Left hemisphere  
+R_ = Right hemisphere  
+LR_ = Bilateral  
+\_GM = Gray matter  
 
 LR_Frontal_Lobe_GM    
 LR_Parietal_Lobe_GM    
