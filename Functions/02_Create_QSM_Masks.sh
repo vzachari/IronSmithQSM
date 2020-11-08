@@ -4,7 +4,9 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 08/24/2020
 #
-# Script creates QSM masks from the freesurfer segmentations created in 01_MPRAGE.sh previous script.
+#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#
+# 	Script creates QSM masks from the freesurfer segmentations created in 01_MPRAGE.sh .
 #
 #
 #       _---~~(~~-_.			

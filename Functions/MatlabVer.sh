@@ -14,8 +14,10 @@ MatPath=$2
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-# Script gets Matlab Version and writes it to MatTempFile.txt
-# Saving Matlab Version in a varialbe breaks nohup and running Ironsmith with & (in the background)
+#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#
+#	Script gets Matlab Version and writes it to MatTempFile.txt
+#	Saving Matlab Version in a varialbe breaks nohup and running Ironsmith with & (in the background)
 #
 #
 #       _---~~(~~-_.			

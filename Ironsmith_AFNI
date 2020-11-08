@@ -4,6 +4,8 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 10/03/2020
 #
+#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#
 #	Script launches AFNI from within the container. 
 #	Useful for people who do not have a viewer program
 # 	and want to visualise the Ironsmith outputs.

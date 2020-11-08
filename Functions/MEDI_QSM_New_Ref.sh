@@ -4,7 +4,9 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-# Script runs MEDI with eroded WM and lateral ventricles as the QSM reference
+#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#
+#	Script runs MEDI with eroded WM and lateral ventricles as the QSM reference
 #
 #
 #       _---~~(~~-_.			

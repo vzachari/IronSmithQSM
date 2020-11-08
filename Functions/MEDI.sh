@@ -4,7 +4,9 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-# Script evaluates QSM DICOM files and if all is good runs MEDI toolbox
+#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#
+#	Script evaluates QSM DICOM files and if all is good runs MEDI toolbox
 #
 #
 #       _---~~(~~-_.			

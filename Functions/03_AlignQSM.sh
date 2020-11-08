@@ -4,7 +4,9 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 08/24/2020
 #
-# Script aligns QSM masks to MAG image
+#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#
+# 	Script aligns QSM masks to MAG image
 #
 #
 #       _---~~(~~-_.			
