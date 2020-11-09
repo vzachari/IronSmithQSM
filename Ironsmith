@@ -527,16 +527,14 @@ do
 						MEDIVer=$(grep -m1 "% Updates" $Path/Functions/MEDI_toolbox/UPDATES.m | awk '{print $4}' | tr -d '\r' | tr -d '\n')
 						
 						echo ""
-						echo "FOUND MEDI_toolbox ver $MEDIVer"
-						echo "All good! "				
+						echo "MEDI_toolbox ver $MEDIVer found. All good! "				
 						echo ""
 						MEDIInstFlag=1
 				
 					else
 						echo ""
 						echo -e "\e[31m----------------------------------------------"
-						echo "ERROR: MEDI_toolbox ver $MEDIVer"			
-						echo "is not currently supported! " 
+						echo "ERROR: MEDI_toolbox ver $MEDIVer is not currently supported! " 
 						echo ""
 						echo "Please download ver 01/15/2020 (Jan 15 2020) from: "
 						echo "http://pre.weill.cornell.edu/mri/pages/qsm.html and place unzipped folder in $Path/Functions/"		
