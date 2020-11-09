@@ -524,7 +524,7 @@ do
 
 					if [ $(grep -m1 "% Updates" $Path/Functions/MEDI_toolbox/UPDATES.m | awk '{print $4}')="01/15/2020" ]; then
 
-						MEDIVer=$(grep -m1 "% Updates" $Path/Functions/MEDI_toolbox/UPDATES.m | awk '{print $4}')
+						MEDIVer=$(grep -m1 "% Updates" $Path/Functions/MEDI_toolbox/UPDATES.m | awk '{print $4}' | tr -d '\r' | tr -d '\n')
 						
 						echo ""
 						echo "FOUND MEDI_toolbox ver $MEDIVer"
@@ -574,9 +574,7 @@ do
 		elif [[ $MEDIInstFlag == 1 ]]; then
 
 			echo ""
-			echo "*** Skipping MEDI Toolbox test"
-			echo "MEDI Toolbox Ver: $MEDIVer"			
-			echo "already found ***"			
+			echo "*** Skipping MEDI Toolbox test. MEDI Toolbox Ver: $MEDIVer already found ***"			
 			echo ""
 
 		fi
