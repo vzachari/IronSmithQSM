@@ -1,7 +1,7 @@
 # Ironsmith QSM		       
 
 Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).  
-Third party software provided with Ironsmith QSM are subject to their own licenses and copyrights (see section 7 for details).
+Third party software provided with Ironsmith are subject to their own licenses and copyrights (see section 7 for details).
 
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
@@ -62,7 +62,7 @@ Option 1: download from github
 Visit https://github.com/vzachari/IronSmithQSM  
 Click on tags  
 Click on desired IronsmithQSM version (release notes are displayed by clicking the three dots `...` )  
-Click on Source code link (zip or tar.gz) to download  
+Click on source code link (zip or tar.gz) to download  
 
 **NOTE:** Via this download option the IronSmithQSM folder will be **IronSmithQSM-version#** *(Ex. IronSmithQSM-1.00)*.  
 
@@ -85,7 +85,7 @@ From: http://pre.weill.cornell.edu/mri/pages/qsm.html
 ##### e) Unzip MEDI Toolbox (typically MEDI_toolbox.zip)  
 
 ##### f) Place MEDI_toolbox folder (folder with README.m, UPDATES.m etc) into IronSmithQSM/Functions  
-NOTE: Make sure the MEDI_toolbox folder in IronSmithQSM/Functions does not have another MEDI_toolbox folder in it (e.g MEDI_toolbox/MEDI_toolbox)
+**NOTE:** Make sure the MEDI_toolbox folder in IronSmithQSM/Functions does not have another MEDI_toolbox folder in it (e.g MEDI_toolbox/MEDI_toolbox)
 
 ##### g) Edit IronSmithQSM/Matlab_Config.txt with the path to the matlab executable on your system.  
 *(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*  
@@ -106,7 +106,8 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 
 *Ex. if S0001 is specified in MyInputFile and folder S0001 exists in output folder, S0001 will be skipped.*
 
-c) Absolute path to MyInputFile needs to be provided *(Ex. /home/data/MyAmazingExp/CSVFileVault/File.csv)* if MyInputFile is not in current folder.
+c) Absolute path to MyInputFile needs to be provided  
+*(Ex. /home/data/MyAmazingExp/CSVFileVault/File.csv)* if MyInputFile is not in current folder.
 
 d) Freesurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on Optional features below.
 
@@ -143,7 +144,7 @@ Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith 
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo (will be catenated and RMS will be calculated).
 
-To make sure the correct files are selected, each NIFTI file needs to have \_e# in the file name, where # is the echo number.  
+To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*  
 This is the default **dcm2niix** output format for multiple echos.
 
@@ -185,7 +186,7 @@ Only MPR/MEMPR DICOMS should be present in the MPR folder if you want Ironsmith 
 
 b) Multiple .nii/.nii.gz files each corresponding to a different echo (will be catenated and RMS will be calculated).
 
-To make sure the correct files are selected, each NIFTI file needs to have \_e# in the file name, where # is the echo number.  
+To make sure the correct files are selected, each NIFTI file needs to have _e# in the file name, where # is the echo number.  
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*  
 This is the default **dcm2niix** output format for multiple echos.
 
@@ -271,10 +272,10 @@ d) QSM per ROI means (89 ROIs) are under **OutputFolder/Group** as follows:
 **Group_QSM_ADJ_Mean_WM.csv**  
 **Group_QSM_SNR.csv**  
 
-\_Mean = Using only positive QSM voxels  
-\_ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size *(sum of all positive QSM voxels / Number of all voxels within an ROI)*  
-\_CSF = Lateral ventricles as the QSM reference structure  
-\_WM = White matter as the QSM reference structure  
+_Mean = Using only positive QSM voxels  
+_ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size *(sum of all positive QSM voxels / Number of all voxels within an ROI)*  
+_CSF = Lateral ventricles as the QSM reference structure  
+_WM = White matter as the QSM reference structure  
 
 SNR is calculated as follows:  
 mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).  
@@ -318,7 +319,7 @@ M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. Neuro
 L_ = Left hemisphere  
 R_ = Right hemisphere  
 LR_ = Bilateral  
-\_GM = Gray matter  
+_GM = Gray matter  
 
 LR_Frontal_Lobe_GM    
 LR_Parietal_Lobe_GM    
