@@ -109,7 +109,7 @@ b) The output folder does not need to be empty but Ironsmith will skip any parti
 c) Absolute path to MyInputFile needs to be provided  
 *(Ex. /home/data/MyAmazingExp/CSVFileVault/File.csv)* if MyInputFile is not in current folder.
 
-d) Freesurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on Optional features below.
+d) Freesurfer_Skip is a reserved folder name under output folder and may be used by Ironsmith. See section #5 on optional features below.
 
 ## 4) MyInputFile format:  
 
@@ -226,19 +226,33 @@ Parallel processing can significantly increase the speed of analyses. Running th
 *For example, running three instances of Ironsmith:*
 
 Terminal 1:   
-**Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis**  
+`Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis`  
 
 Terminal 2:  
-**Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis**  
+`Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis`  
 
 Terminal 3:  
-**Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis**
+`Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis`
 
 Terminals 1-3 will each be running a different instance of Ironsmith (each working on a different set of participants) but all instances will be working on the same group/list of participants (from **File.csv**) and in the same output folder (**/home/data/MyAmazingExp/QSM_Analysis**) and will only create a single set of group output files (see section #6 below).
 
+**NOTE:** nohup can also be used with parallel processing:
+
+*For example, running three **nohup** instances of Ironsmith:*
+
+Terminal 1:   
+`bash` (press enter to switch to bash)  
+`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis > Ironsmith_Inst_1.txt &`   
+`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis > Ironsmith_Inst_2.txt &`    
+`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis > Ironsmith_Inst_3.txt &`    
+
+To monitor the nohup progress of an Ironsmith instance, locate the Ironsmith_Inst_#.txt file (in directory where the nohup command was executed) and use the following command:  
+`tail -f Ironsmith_Inst_#.txt`  
+ctrl+c exits the tail -f process
+
 ### Viewing output NIFTI files
 
-If you do not have a NIFTI viewer, AFNI can be launched from within the QSM_Container.simg by using the *Ironsmith_AFNI* command. Just type *Ironsmith_AFNI* from within the folder you would like to view NIFTI files from.
+If you do not have a NIFTI viewer, AFNI can be launched from within the QSM_Container.simg by using the *Ironsmith_AFNI* command. Just type `Ironsmith_AFNI` from within the folder you would like to view NIFTI files from.
 
 AFNI viewer documentation:  
 https://afni.nimh.nih.gov/pub/dist/edu/latest/afni_handouts/afni03_interactive.pdf
