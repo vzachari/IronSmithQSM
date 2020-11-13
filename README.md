@@ -53,6 +53,8 @@ http://pre.weill.cornell.edu/mri/pages/qsm.html
 MEDI Toolbox is not required if QSM maps already available  
 Currently only MEDI Toolbox version 01/15/2020 is supported
 
+#### NOTE: 8.8 GB of free space is required for each instance of IronSmith running (see section #5, parallel processing)
+
 ## 2) Installation:
 
 ##### a) Download Ironsmith QSM
@@ -242,13 +244,13 @@ Terminals 1-3 will each be running a different instance of Ironsmith (each worki
 
 Terminal 1:   
 `bash` (press enter to switch to bash)  
-`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis > Ironsmith_Inst_1.txt &`   
-`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis > Ironsmith_Inst_2.txt &`    
-`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis > Ironsmith_Inst_3.txt &`    
+`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis &> Ironsmith_Inst_1.txt &`   
+`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis &> Ironsmith_Inst_2.txt &`    
+`nohup Ironsmith File.csv /home/data/MyAmazingExp/QSM_Analysis &> Ironsmith_Inst_3.txt &`    
 
 To monitor the nohup progress of an Ironsmith instance, locate the Ironsmith_Inst_#.txt file (in directory where the nohup command was executed) and use the following command:  
 `tail -f Ironsmith_Inst_#.txt`  
-ctrl+c exits the tail -f process
+ctrl+c exits the tail -f process.
 
 ### Viewing output NIFTI files
 
