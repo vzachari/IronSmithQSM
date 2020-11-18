@@ -1049,12 +1049,27 @@ do
 
 			if [ -d "$OutFolder/$Subj" ]; then
 
-				echo ""
-				echo -e "\e[31m----------------------------------------------"
-				echo "ERROR: $OutFolder/$Subj already EXISTS! Please check folders. Skipping $Subj..."
-				echo -e "----------------------------------------------\e[0m"
-				echo ""
-				continue
+
+				if [ -d "$OutFolder/$Subj/LogFiles" ] && [ -f "$OutFolder/$Subj/LogFiles/$Subj.Output.07.MNI.NL.Warp.QSM.txt" ] && grep -m1 "script finished running succesfully" $OutFolder/$Subj/LogFiles/$Subj.Output.07.MNI.NL.Warp.QSM.txt 1> /dev/null 2>&1; then
+
+					echo ""
+					echo "$OutFolder/$Subj already EXISTS! $Subj processed successfully on $(grep -m1 "script finished running succesfully" $OutFolder/$Subj/LogFiles/$Subj.Output.07.MNI.NL.Warp.QSM.txt | awk -F'on ' '{print $2}')"
+					echo ""
+					echo "Skipping $Subj..."
+					echo ""
+					continue
+
+				else
+
+					echo ""
+					echo -e "\e[31m----------------------------------------------"
+					echo "ERROR: $OutFolder/$Subj already EXISTS but $Subj NOT processed or is still being processed by another instance of Ironsmith! "
+					echo ""
+					echo "Please check $OutFolder/$Subj if no other instances of Ironsmith are currently running. Skipping $Subj..."
+					echo -e "----------------------------------------------\e[0m"
+					echo ""
+					continue
+				fi
 
 			else
 				echo ""
