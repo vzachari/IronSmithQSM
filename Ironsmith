@@ -1612,8 +1612,14 @@ echo "---------------------------------------------------------------"
 echo "Ironsmith finished running on `date`"
 echo ""
 echo "Special Thank You To:"
-shuf -n 1 $Path/Functions/SpecialThankYou.txt
+ThankYou=$(shuf -n 1 $Path/Functions/SpecialThankYou.txt)
+echo "$ThankYou"
 echo ""
+if echo "$ThankYou" | grep "Good weather...or maybe not" 1> /dev/null 2>&1; then
+
+	singularity run -e $Path/Functions/QSM_Container.simg curl -s wttr.in?m_0Aq
+	echo ""
+fi
 echo "---------------------------------------------------------------"
 echo ""
 
