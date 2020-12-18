@@ -159,9 +159,10 @@ This single NIFTI file can have any name and will be used as is.
 
 **Column4** = Absolute path to folder with QSM DICOM files  
 *(e.g. /home/subjects/S01/QSM_Dicom)*  
-QSM DICOM folder must include DICOMS for both GRE magnitude and phase.
 
-Preferably only QSM DICOMS should be present in the QSM_Dicom folder. However, Ironsmith can filter out the following filetypes .nii .json .txt .nii.gz .HEAD .BRIK .hdr .img
+The QSM DICOM folder must include DICOMS for both GRE magnitude and phase. T2* DICOMS that are sometimes part of the QSM GRE sequence can be present in the QSM DICOM folder but will be ignored.
+
+Preferably only DICOMS should be present in the QSM DICOM folder. However, Ironsmith can filter out the following filetypes .nii .json .txt .nii.gz .HEAD .BRIK .hdr .img
 
 All 4 columns need to be provided, otherwise Ironsmith will exit with errors.
 

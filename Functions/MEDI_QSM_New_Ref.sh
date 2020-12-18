@@ -83,64 +83,64 @@ cd $OutFolder/$Subj/QSM
 
 echo ""
 echo "---------------------------------------------------------------"
-echo "Creating new CSF/WM reference MEDI analysis file for ${Subj} --> ${Subj}_MEDI_QSM_New_Ref.m"
+echo "Creating new CSF/WM reference MEDI analysis file for ${Subj} --> Subj_${Subj}_MEDI_QSM_New_Ref.m"
 echo "in: `pwd`"
 echo "---------------------------------------------------------------"
 echo ""
 
-echo "% MEDI New Reference CSF/WM QSM Script For $Subj" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "% Script created automatically by MEDI_QSM_New_Ref.sh on `date`" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "% MEDI New Reference CSF/WM QSM Script For $Subj" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "% Script created automatically by MEDI_QSM_New_Ref.sh on `date`" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "clear all" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "clear all" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "run('$MEDIPath/MEDI_set_path.m');" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "run('$MEDIPath/MEDI_set_path.m');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 
-echo "DICOM_dir = fullfile('$OutFolder/$Subj/QSM/QSM_DICOM');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "QSM_Output_New_CSF = fullfile('$OutFolder/$Subj/QSM/MEDI_Output_New_CSF');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "QSM_Output_New_WM = fullfile('$OutFolder/$Subj/QSM/MEDI_Output_New_WM');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "New_CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_CSF');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "New_WM_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_WM');" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "DICOM_dir = fullfile('$OutFolder/$Subj/QSM/QSM_DICOM');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "QSM_Output_New_CSF = fullfile('$OutFolder/$Subj/QSM/MEDI_Output_New_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "QSM_Output_New_WM = fullfile('$OutFolder/$Subj/QSM/MEDI_Output_New_WM');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "New_CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "New_WM_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_WM');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "Mask_CSF_New = niftiread(fullfile('$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx2.nii.gz'));" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New = niftiread(fullfile('$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_WM_Mask_AL_QSM_RS_Erx1.nii.gz'));" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF_New = niftiread(fullfile('$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx2.nii.gz'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_WM_New = niftiread(fullfile('$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_WM_Mask_AL_QSM_RS_Erx1.nii.gz'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "load('RDF.mat');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "load('files.mat');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "movefile RDF.mat RDF.mat.QSM.Script;" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "load('RDF.mat');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "load('files.mat');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "movefile RDF.mat RDF.mat.QSM.Script;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "Mask_CSF_New = double(Mask_CSF_New);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New = double(Mask_WM_New);" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF_New = double(Mask_CSF_New);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_WM_New = double(Mask_WM_New);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
    
 
-echo "Mask_CSF_New_Rot = permute(Mask_CSF_New,[2,3,1]);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF_New_Rot_F1 = flip(Mask_CSF_New_Rot,1);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF_New_Rot_F2 = flip(Mask_CSF_New_Rot_F1,2);" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF_New_Rot = permute(Mask_CSF_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF_New_Rot_F1 = flip(Mask_CSF_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF_New_Rot_F2 = flip(Mask_CSF_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "Mask_WM_New_Rot = permute(Mask_WM_New,[2,3,1]);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New_Rot_F1 = flip(Mask_WM_New_Rot,1);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New_Rot_F2 = flip(Mask_WM_New_Rot_F1,2);" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_WM_New_Rot = permute(Mask_WM_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_WM_New_Rot_F1 = flip(Mask_WM_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_WM_New_Rot_F2 = flip(Mask_WM_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "write_QSM_dir(Mask_CSF_New_Rot_F2, DICOM_dir, New_CSF_Mask_Dir);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "write_QSM_dir(Mask_WM_New_Rot_F2, DICOM_dir, New_WM_Mask_Dir);" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "write_QSM_dir(Mask_CSF_New_Rot_F2, DICOM_dir, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "write_QSM_dir(Mask_WM_New_Rot_F2, DICOM_dir, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "clear Mask_CSF;" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF = Mask_CSF_New_Rot_F2;" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "QSM_New_CSF = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "delete RDF.mat;" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "clear Mask_CSF;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF = Mask_CSF_New_Rot_F2;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "QSM_New_CSF = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "delete RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "clear Mask_CSF;" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF = Mask_WM_New_Rot_F2;" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "QSM_New_WM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "delete RDF.mat;" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "clear Mask_CSF;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF = Mask_WM_New_Rot_F2;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "QSM_New_WM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "delete RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "Write_DICOM(QSM_New_CSF, files, QSM_Output_New_CSF)" >> ${Subj}_MEDI_QSM_New_Ref.m
-echo "Write_DICOM(QSM_New_WM, files, QSM_Output_New_WM)" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "Write_DICOM(QSM_New_CSF, files, QSM_Output_New_CSF)" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Write_DICOM(QSM_New_WM, files, QSM_Output_New_WM)" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "movefile RDF.mat.QSM.Script RDF.mat;" >> ${Subj}_MEDI_QSM_New_Ref.m
+echo "movefile RDF.mat.QSM.Script RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo ""
 echo "Running MEDI analysis for ${Subj}..."
@@ -148,9 +148,8 @@ echo ""
 
 #Run MEDI_QSM_New_Ref.m FILE to create QSM Maps with new CSF and new WM masks as reference
 #stty -tostop
-#$MatPath -nodisplay -nosplash -nodesktop -r "run('${Subj}_MEDI_QSM.m');exit;"
 #$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-$MatPath -nodisplay -nosplash -nodesktop -r "try; ${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt
+$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt
 
 if (grep -Fq "*ERROR*ERROR*ERROR*" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt); then
 	

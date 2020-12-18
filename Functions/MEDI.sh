@@ -276,58 +276,58 @@ mv QSM_DICOM/*.nii.gz .
 #Create Custom MEDI pipeline file specific to each participant
 echo ""
 echo "---------------------------------------------------------------"
-echo "Creating MEDI analysis file for ${Subj} --> ${Subj}_MEDI_QSM.m "
+echo "Creating MEDI analysis file for ${Subj} --> Subj_${Subj}_MEDI_QSM.m "
 echo "in: `pwd`"
 echo "---------------------------------------------------------------"
 echo ""
 
-echo "% MEDI QSM Script for $Subj" >> ${Subj}_MEDI_QSM.m
-echo "% Script created automatically by MEDI.sh on `date`" >> ${Subj}_MEDI_QSM.m
-echo "" >> ${Subj}_MEDI_QSM.m
+echo "% MEDI QSM Script for $Subj" >> Subj_${Subj}_MEDI_QSM.m
+echo "% Script created automatically by MEDI.sh on `date`" >> Subj_${Subj}_MEDI_QSM.m
+echo "" >> Subj_${Subj}_MEDI_QSM.m
 
-echo "clear all" >> ${Subj}_MEDI_QSM.m
-echo "run('$MEDIPath/MEDI_set_path.m');" >> ${Subj}_MEDI_QSM.m
+echo "clear all" >> Subj_${Subj}_MEDI_QSM.m
+echo "run('$MEDIPath/MEDI_set_path.m');" >> Subj_${Subj}_MEDI_QSM.m
 
-echo "DICOM_dir = fullfile('$OutFolder/$Subj/QSM/QSM_DICOM');" >> ${Subj}_MEDI_QSM.m
-echo "QSM_Output_dir = fullfile('$OutFolder/$Subj/QSM/MEDI_Output');" >> ${Subj}_MEDI_QSM.m
-echo "CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_Orig_Mask_CSF');" >> ${Subj}_MEDI_QSM.m
+echo "DICOM_dir = fullfile('$OutFolder/$Subj/QSM/QSM_DICOM');" >> Subj_${Subj}_MEDI_QSM.m
+echo "QSM_Output_dir = fullfile('$OutFolder/$Subj/QSM/MEDI_Output');" >> Subj_${Subj}_MEDI_QSM.m
+echo "CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_Orig_Mask_CSF');" >> Subj_${Subj}_MEDI_QSM.m
 
 # Use accelerated (for Siemens and GE only) reading of DICOMs
-echo "[iField,voxel_size,matrix_size,CF,delta_TE,TE,B0_dir,files]=Read_DICOM(DICOM_dir);" >> ${Subj}_MEDI_QSM.m
+echo "[iField,voxel_size,matrix_size,CF,delta_TE,TE,B0_dir,files]=Read_DICOM(DICOM_dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Estimate the frequency offset in each of the voxel using a complex
 # fitting (even echo spacing)
-echo "[iFreq_raw, N_std] = Fit_ppm_complex(iField);" >> ${Subj}_MEDI_QSM.m
+echo "[iFreq_raw, N_std] = Fit_ppm_complex(iField);" >> Subj_${Subj}_MEDI_QSM.m
 # Compute magnitude image
-echo "iMag = sqrt(sum(abs(iField).^2,4));" >> ${Subj}_MEDI_QSM.m
+echo "iMag = sqrt(sum(abs(iField).^2,4));" >> Subj_${Subj}_MEDI_QSM.m
 
 # Spatial phase unwrapping (region-growing)
-echo "iFreq = unwrapPhase(iMag, iFreq_raw, matrix_size);" >> ${Subj}_MEDI_QSM.m
+echo "iFreq = unwrapPhase(iMag, iFreq_raw, matrix_size);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Use FSL BET to extract brain mask
-echo "Mask = BET(iMag,matrix_size,voxel_size);" >> ${Subj}_MEDI_QSM.m
+echo "Mask = BET(iMag,matrix_size,voxel_size);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Background field removasl using Projection onto Dipole Fields
-echo "RDF = PDF(iFreq, N_std, Mask,matrix_size,voxel_size, B0_dir);" >> ${Subj}_MEDI_QSM.m
+echo "RDF = PDF(iFreq, N_std, Mask,matrix_size,voxel_size, B0_dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 # R2* map needed for ventricular CSF mask
-echo "R2s = arlo(TE, abs(iField));" >> ${Subj}_MEDI_QSM.m
+echo "R2s = arlo(TE, abs(iField));" >> Subj_${Subj}_MEDI_QSM.m
 
 # Ventricular CSF mask for zero referencing 
 #	Requirement:
 #	R2s:	R2* map
-echo "Mask_CSF = extract_CSF(R2s, Mask, voxel_size);" >> ${Subj}_MEDI_QSM.m
-echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> ${Subj}_MEDI_QSM.m
-echo "save('$OutFolder/$Subj/QSM/files.mat','files');" >> ${Subj}_MEDI_QSM.m
+echo "Mask_CSF = extract_CSF(R2s, Mask, voxel_size);" >> Subj_${Subj}_MEDI_QSM.m
+echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM.m
+echo "save('$OutFolder/$Subj/QSM/files.mat','files');" >> Subj_${Subj}_MEDI_QSM.m
 
 #Save original CSF mask to CSF_Mask_Dir
-echo "write_QSM_dir(Mask_CSF, DICOM_dir, CSF_Mask_Dir);" >> ${Subj}_MEDI_QSM.m
+echo "write_QSM_dir(Mask_CSF, DICOM_dir, CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Morphology enabled dipole inversion with zero reference using CSF (MEDI+0)
-echo "QSM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> ${Subj}_MEDI_QSM.m
+echo "QSM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM.m
 
 # export QSM variable as dicom files in the 'QSM' directory
-echo "Write_DICOM(QSM, files, QSM_Output_dir)" >> ${Subj}_MEDI_QSM.m
+echo "Write_DICOM(QSM, files, QSM_Output_dir)" >> Subj_${Subj}_MEDI_QSM.m
 
 echo ""
 echo "Running MEDI analysis for ${Subj}..."
@@ -337,7 +337,7 @@ echo ""
 #Run MEDI_QSM.m FILE to create a QSM map
 #stty -tostop
 #$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-$MatPath -nodisplay -nosplash -nodesktop -r "try; ${Subj}_MEDI_QSM; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_Matlab_Log.txt
+$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_Matlab_Log.txt
 
 if (grep -Fq "*ERROR*ERROR*ERROR*" ${Subj}_MEDI_Matlab_Log.txt); then
 	
