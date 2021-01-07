@@ -2049,7 +2049,7 @@ echo "Number,Participant,L_Accumbens_area,L_Amygdala,L_AngularGyrus,L_CaudalAnte
 cat Group_QSM_SNR_Columns.csv >> $OutFolder/Group/Group_QSM_SNR.csv
 
 singularity run -e --bind $OutFolder/Group:/mnt $Path/Functions/QSM_Container.simg \
-	sort -k1 -n /mnt/Group_QSM_SNR.csv -o /mnt/Group_QSM_SNR.csv
+	sort -k1,1n -t, /mnt/Group_QSM_SNR.csv -o /mnt/Group_QSM_SNR.csv
 
 #Update LifeLineSNR.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
