@@ -6,7 +6,8 @@ set -e #Exit on error
 #
 #	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
-# 	Script aligns QSM masks to MAG image
+# 	Script extracts QSM-based iron concentrations from each aligned and resampled ROI mask created in previous scripts. 
+#	The script is also responsible for sorting these outputs in tables and making sure only one instance of Ironsmith can write to files at a time.
 #
 #
 #       _---~~(~~-_.			
