@@ -428,7 +428,7 @@ do
 		fi
 
 
-		Subj=`awk -v r=$Rows -F ',' 'FNR == r {print $1}' $CSVFile`
+		Subj=$(awk -v r=$Rows -F ',' 'FNR == r {print $1}' $CSVFile | awk '{$1=$1};1' | sed -e 's/[[:blank:]]/_/g')
 		MPRDir=`awk -v r=$Rows -F ',' 'FNR == r {print $3}' $CSVFile`
 		QSM_Dicom_Dir=`awk -v r=$Rows -F ',' 'FNR == r {print $4}' $CSVFile`
 
@@ -596,14 +596,15 @@ do
 		fi
 
 
-		Subj=`awk -v r=$Rows -F ',' 'FNR == r {print $1}' $CSVFile`
+		Subj=$(awk -v r=$Rows -F ',' 'FNR == r {print $1}' $CSVFile | awk '{$1=$1};1' | sed -e 's/[[:blank:]]/_/g')
 		MPRDir=`awk -v r=$Rows -F ',' 'FNR == r {print $3}' $CSVFile`
 		MAG=`awk -v r=$Rows -F ',' 'FNR == r {print $4}' $CSVFile`
 		QSMFile=`awk -v r=$Rows -F ',' 'FNR == r {print $5}' $CSVFile`
 
 	else
 
-		Subj=`awk -v r=$Rows -F ',' 'FNR == r {print $1}' $CSVFile`
+		Subj=$(awk -v r=$Rows -F ',' 'FNR == r {print $1}' $CSVFile | awk '{$1=$1};1' | sed -e 's/[[:blank:]]/_/g')		
+		
 		echo ""
 		echo -e "\e[31m----------------------------------------------"
 		echo "ERROR: Column 2 needs to be either MEDI_Yes or MEDI_No and is case sensitive."
@@ -1053,7 +1054,7 @@ do
 				if [ -d "$OutFolder/$Subj/LogFiles" ] && [ -f "$OutFolder/$Subj/LogFiles/$Subj.Output.07.MNI.NL.Warp.QSM.txt" ] && grep -m1 "script finished running succesfully" $OutFolder/$Subj/LogFiles/$Subj.Output.07.MNI.NL.Warp.QSM.txt 1> /dev/null 2>&1; then
 
 					echo ""
-					echo "$OutFolder/$Subj already EXISTS! $Subj processed successfully on $(grep -m1 "script finished running succesfully" $OutFolder/$Subj/LogFiles/$Subj.Output.07.MNI.NL.Warp.QSM.txt | awk -F'on ' '{print $2}')"
+					echo "$OutFolder/$Subj already EXISTS! $Subj processed successfully on $(grep -m1 "script finished running succesfully" $OutFolder/$Subj/LogFiles/$Subj.Output.07.MNI.NL.Warp.QSM.txt | awk -F' on ' '{print $2}')"
 					echo ""
 					echo "Skipping $Subj..."
 					echo ""
