@@ -32,12 +32,17 @@ set -e #Exit on error
 #OutFolder="/home/data3/vzachari/QSM_Toolkit/QSM_Test_Run"
 #Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #MEDIFlag="MEDI_No"
+#Rows=""
+
+#Percentile cutoff for outlier removal. Edit Percnt varialbe to change outlier cutoff
+Percnt="97"
 
 Subj=$1
 OutFolder=$2
 Path=$3
 MEDIFlag=$4
 Rows=$5
+
 
 log_file=$(echo "$OutFolder/$Subj/LogFiles/$Subj.Output.05.Extract.QSM.txt")
 exec &> >(tee -a "$log_file")
@@ -206,6 +211,8 @@ fi
 echo ""
 echo "---------------------------------------------------------------"	
 echo "*** Extracting QSM values from cortical/subcortical aligned/resampled freesurfer masks ***"
+echo ""
+echo "Outlier percentile cutoff set to $Percnt" 
 echo "---------------------------------------------------------------"	
 echo ""
 
@@ -365,7 +372,7 @@ unset Eval ROISize Sum OutFilter
 echo "LR_Frontal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -419,7 +426,7 @@ unset ROISize Sum OutFilter
 echo "LR_Parietal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -473,7 +480,7 @@ unset ROISize Sum OutFilter
 echo "LR_Occipital_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -527,7 +534,7 @@ unset ROISize Sum OutFilter
 echo "LR_Temporal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -583,7 +590,7 @@ unset ROISize Sum OutFilter
 #echo "L_BanksSTS_GM	(Mask does not exist at the moment)"
 
 #OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-#	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
+#	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
 #	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -637,7 +644,7 @@ unset ROISize Sum OutFilter
 echo "L_CaudalAnteriorCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -691,7 +698,7 @@ unset ROISize Sum OutFilter
 echo "L_CaudalMiddleFrontal_GM"
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -745,7 +752,7 @@ unset ROISize Sum OutFilter
 echo "L_Cuneus_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -799,7 +806,7 @@ unset ROISize Sum OutFilter
 echo "L_DLPFC_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -853,7 +860,7 @@ unset ROISize Sum OutFilter
 echo "L_Entorhinal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -907,7 +914,7 @@ unset ROISize Sum OutFilter
 echo "L_Frontal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -961,7 +968,7 @@ unset ROISize Sum OutFilter
 echo "L_Fusiform_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1015,7 +1022,7 @@ unset ROISize Sum OutFilter
 echo "L_InferiorParietal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1069,7 +1076,7 @@ unset ROISize Sum OutFilter
 echo "L_AngularGyrus_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_AngularGyrus_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1123,7 +1130,7 @@ unset ROISize Sum OutFilter
 echo "L_InferiorTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1177,7 +1184,7 @@ unset ROISize Sum OutFilter
 echo "L_Insula_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1231,7 +1238,7 @@ unset ROISize Sum OutFilter
 echo "L_IsthmusCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1285,7 +1292,7 @@ unset ROISize Sum OutFilter
 echo "L_LateralOccipital_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1339,7 +1346,7 @@ unset ROISize Sum OutFilter
 echo "L_LateralOrbitofrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1393,7 +1400,7 @@ unset ROISize Sum OutFilter
 echo "L_Lingual_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1447,7 +1454,7 @@ unset ROISize Sum OutFilter
 echo "L_MedialOrbitofrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1501,7 +1508,7 @@ unset ROISize Sum OutFilter
 echo "L_MiddleTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1555,7 +1562,7 @@ unset ROISize Sum OutFilter
 echo "L_Occipital_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1610,7 +1617,7 @@ unset ROISize Sum OutFilter
 echo "L_Parietal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1664,7 +1671,7 @@ unset ROISize Sum OutFilter
 echo "L_Temporal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1718,7 +1725,7 @@ unset ROISize Sum OutFilter
 echo "L_Parahippocampal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1772,7 +1779,7 @@ unset ROISize Sum OutFilter
 echo "L_Pericalcarine_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1826,7 +1833,7 @@ unset ROISize Sum OutFilter
 echo "L_Postcentral_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1880,7 +1887,7 @@ unset ROISize Sum OutFilter
 echo "L_PosteriorCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1934,7 +1941,7 @@ unset ROISize Sum OutFilter
 echo "L_Precentral_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -1988,7 +1995,7 @@ unset ROISize Sum OutFilter
 echo "L_Precuneus_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2042,7 +2049,7 @@ unset ROISize Sum OutFilter
 echo "L_RostalMiddleFrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2097,7 +2104,7 @@ unset ROISize Sum OutFilter
 echo "L_RostralAnteriorCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2151,7 +2158,7 @@ unset ROISize Sum OutFilter
 echo "L_SuperiorFrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2205,7 +2212,7 @@ unset ROISize Sum OutFilter
 echo "L_SuperiorParietal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2259,7 +2266,7 @@ unset ROISize Sum OutFilter
 echo "L_SuperiorTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2313,7 +2320,7 @@ unset ROISize Sum OutFilter
 echo "L_TransverseTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2369,7 +2376,7 @@ unset ROISize Sum OutFilter
 #echo "R_BanksSTS_GM (Mask does not exist at the moment)"
 
 #OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-#	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
+#	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_BanksSTS_GM_AL_QSM_RS_Erx1.nii.gz \
 #	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 #Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2423,7 +2430,7 @@ unset ROISize Sum OutFilter
 echo "R_CaudalAnteriorCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2477,7 +2484,7 @@ unset ROISize Sum OutFilter
 echo "R_CaudalMiddleFrontal_GM"
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2531,7 +2538,7 @@ unset ROISize Sum OutFilter
 echo "R_Cuneus_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Cuneus_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2585,7 +2592,7 @@ unset ROISize Sum OutFilter
 echo "R_DLPFC_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_DLPFC_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2639,7 +2646,7 @@ unset ROISize Sum OutFilter
 echo "R_Entorhinal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Entorhinal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2693,7 +2700,7 @@ unset ROISize Sum OutFilter
 echo "R_Frontal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Frontal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2747,7 +2754,7 @@ unset ROISize Sum OutFilter
 echo "R_Fusiform_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Fusiform_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2801,7 +2808,7 @@ unset ROISize Sum OutFilter
 echo "R_InferiorParietal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2855,7 +2862,7 @@ unset ROISize Sum OutFilter
 echo "R_AngularGyrus_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_AngularGyrus_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2909,7 +2916,7 @@ unset ROISize Sum OutFilter
 echo "R_InferiorTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_InferiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -2963,7 +2970,7 @@ unset ROISize Sum OutFilter
 echo "R_Insula_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Insula_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3017,7 +3024,7 @@ unset ROISize Sum OutFilter
 echo "R_IsthmusCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3071,7 +3078,7 @@ unset ROISize Sum OutFilter
 echo "R_LateralOccipital_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOccipital_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3125,7 +3132,7 @@ unset ROISize Sum OutFilter
 echo "R_LateralOrbitofrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_LateralOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3179,7 +3186,7 @@ unset ROISize Sum OutFilter
 echo "R_Lingual_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Lingual_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3233,7 +3240,7 @@ unset ROISize Sum OutFilter
 echo "R_MedialOrbitofrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MedialOrbitofrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3287,7 +3294,7 @@ unset ROISize Sum OutFilter
 echo "R_MiddleTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_MiddleTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3341,7 +3348,7 @@ unset ROISize Sum OutFilter
 echo "R_Occipital_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Occipital_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3396,7 +3403,7 @@ unset ROISize Sum OutFilter
 echo "R_Parietal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parietal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3450,7 +3457,7 @@ unset ROISize Sum OutFilter
 echo "R_Temporal_GM_Mask"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Temporal_GM_Mask_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3504,7 +3511,7 @@ unset ROISize Sum OutFilter
 echo "R_Parahippocampal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Parahippocampal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3558,7 +3565,7 @@ unset ROISize Sum OutFilter
 echo "R_Pericalcarine_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pericalcarine_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3612,7 +3619,7 @@ unset ROISize Sum OutFilter
 echo "R_Postcentral_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Postcentral_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3666,7 +3673,7 @@ unset ROISize Sum OutFilter
 echo "R_PosteriorCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_PosteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3720,7 +3727,7 @@ unset ROISize Sum OutFilter
 echo "R_Precentral_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precentral_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3774,7 +3781,7 @@ unset ROISize Sum OutFilter
 echo "R_Precuneus_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3828,7 +3835,7 @@ unset ROISize Sum OutFilter
 echo "R_RostalMiddleFrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3883,7 +3890,7 @@ unset ROISize Sum OutFilter
 echo "R_RostralAnteriorCingulate_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralAnteriorCingulate_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3937,7 +3944,7 @@ unset ROISize Sum OutFilter
 echo "R_SuperiorFrontal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -3991,7 +3998,7 @@ unset ROISize Sum OutFilter
 echo "R_SuperiorParietal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorParietal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4045,7 +4052,7 @@ unset ROISize Sum OutFilter
 echo "R_SuperiorTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_SuperiorTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4099,7 +4106,7 @@ unset ROISize Sum OutFilter
 echo "R_TransverseTemporal_GM"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_TransverseTemporal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4159,7 +4166,7 @@ unset ROISize Sum OutFilter
 echo "LR_Accumbens_area"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4213,7 +4220,7 @@ unset ROISize Sum OutFilter
 echo "LR_Amygdala"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Amygdala_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Amygdala_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4267,7 +4274,7 @@ unset ROISize Sum OutFilter
 echo "LR_Caudate"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Caudate_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Caudate_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4321,7 +4328,7 @@ unset ROISize Sum OutFilter
 echo "LR_Hipp"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Hipp_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Hipp_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4376,7 +4383,7 @@ unset ROISize Sum OutFilter
 echo "LR_Pallidum"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Pallidum_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Pallidum_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4430,7 +4437,7 @@ unset ROISize Sum OutFilter
 echo "LR_Putamen"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Putamen_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Putamen_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4484,7 +4491,7 @@ unset ROISize Sum OutFilter
 echo "LR_Thalamus_Proper"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4542,7 +4549,7 @@ unset ROISize Sum OutFilter
 echo "L_Accumbens_area"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4596,7 +4603,7 @@ unset ROISize Sum OutFilter
 echo "L_Amygdala"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Amygdala_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Amygdala_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4650,7 +4657,7 @@ unset ROISize Sum OutFilter
 echo "L_Caudate"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Caudate_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Caudate_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4704,7 +4711,7 @@ unset ROISize Sum OutFilter
 echo "L_Hipp"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Hipp_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Hipp_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4759,7 +4766,7 @@ unset ROISize Sum OutFilter
 echo "L_Pallidum"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pallidum_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Pallidum_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4813,7 +4820,7 @@ unset ROISize Sum OutFilter
 echo "L_Putamen"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Putamen_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Putamen_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4867,7 +4874,7 @@ unset ROISize Sum OutFilter
 echo "L_Thalamus_Proper"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4924,7 +4931,7 @@ unset ROISize Sum OutFilter
 echo "R_Accumbens_area"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Accumbens_area_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -4978,7 +4985,7 @@ unset ROISize Sum OutFilter
 echo "R_Amygdala"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Amygdala_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Amygdala_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -5032,7 +5039,7 @@ unset ROISize Sum OutFilter
 echo "R_Caudate"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Caudate_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Caudate_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -5086,7 +5093,7 @@ unset ROISize Sum OutFilter
 echo "R_Hipp"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Hipp_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Hipp_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -5141,7 +5148,7 @@ unset ROISize Sum OutFilter
 echo "R_Pallidum"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pallidum_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Pallidum_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -5195,7 +5202,7 @@ unset ROISize Sum OutFilter
 echo "R_Putamen"
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Putamen_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Putamen_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
@@ -5249,7 +5256,7 @@ unset ROISize Sum OutFilter
 echo "R_Thalamus_Proper"	
 
 OutFilter=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -percentile 97 1 97 -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -percentile $Percnt 1 $Percnt -mask SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_Thalamus_Proper_AL_QSM_RS_Erx1.nii.gz \
 	${MasterQSM[$LoopCounter]} | awk '{print $2}') 
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \

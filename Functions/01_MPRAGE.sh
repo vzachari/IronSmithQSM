@@ -461,7 +461,7 @@ elif [[ $MPRType == 4 ]]; then
 	singularity run -e --bind $MPRDirTrim $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_MPR_File -z i -b n -m 1 $MPRDir/
 	
 	echo ""
-	echo "Moving `ls ${Subj}_MPR_File*.nii.gz` from $MPRDir to $OutFolder/$Subj/MPR"
+	echo "Moving $(basename $(ls $MPRDir/${Subj}_MPR_File*.nii.gz)) from $MPRDir to $OutFolder/$Subj/MPR"
 	echo ""
 
 	mv $MPRDir/${Subj}_MPR_File*.nii.gz .
