@@ -6,16 +6,15 @@ Third party software provided with Ironsmith are subject to their own licenses a
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
 #### Description:  
-Ironsmith is an automated pipeline for creating Quantitative Susceptibility Maps (QSM)  
-and for extracting QSM based iron concentrations from subcortical and cortical brain regions.
+Ironsmith is an automated pipeline for creating and processing Quantitative Susceptibility Maps (QSM), extracting QSM based iron concentrations from subcortical and cortical brain regions and evaluating the quality of QSM data using per ROI SNR measures.
 
 Ironsmith can perform the following tasks:
 
-a) Create QSM maps from GRE DICOM images using the MEDI Toolbox **(see section 7 for details)** .     
+a) Create QSM maps from GRE DICOM images using MEDI Toolbox **(see section 7 for details)** .     
 b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using FreeSurfer.  
-c) Filter outlier voxels from these ROIs (QSM values larger than top 97th percentile of values), extract QSM based iron concentration, and format the output into CSV tables (MS Excel compatible).  
-d) Calculate SNR (magnitude image based) for each ROI as a measure of quality control for QSM and output SNR values in CSV tables (MS Excel compatible).  
-e) Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
+c) Filter outlier voxels from these ROIs (default: QSM values larger than top 97th percentile of values), extract QSM based iron concentration, and format the output into CSV tables.  
+d) Calculate SNR (GRE magnitude image based) for each ROI as a measure of quality control for QSM data and output SNR values in CSV tables.  
+e) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space for voxelwise QSM analyses.   
 f) Process single or multiple participants in parallel (multiple instances and nohup supported).
 
 ## 1) Software requirements:
@@ -44,13 +43,13 @@ Ironsmith tested on Singularity versions 3.5.2 and 3.5.3
 Installation guide:  
 https://sylabs.io/guides/3.5/admin-guide/installation.html
 
-#### d) Bash UNIX shell version 4.2.46(2) or later  
+#### d) Bash UNIX shell version 4.2.46(2) or later with GNU coreutils
 
 #### e) MEDI Toolbox version 01/15/2020
 Ironsmith requires MEDI Toolbox if QSM maps need to be generated  
 Download from:  
 http://pre.weill.cornell.edu/mri/pages/qsm.html  
-MEDI Toolbox is not required if QSM maps already available  
+MEDI Toolbox is not required if QSM maps are already available  
 Currently only MEDI Toolbox version 01/15/2020 is supported
 
 #### NOTE: 8.8 GB of free space is required for each instance of IronSmith running (see section #5, parallel processing)
@@ -87,9 +86,9 @@ From: http://pre.weill.cornell.edu/mri/pages/qsm.html
 ##### e) Unzip MEDI Toolbox (typically MEDI_toolbox.zip)  
 
 ##### f) Place MEDI_toolbox folder (folder with README.m, UPDATES.m etc) into IronSmithQSM/Functions  
-**NOTE:** Make sure the MEDI_toolbox folder in IronSmithQSM/Functions does not have another MEDI_toolbox folder in it (e.g MEDI_toolbox/MEDI_toolbox)
+**NOTE:** Make sure the MEDI_toolbox folder in IronSmithQSM/Functions does not have another MEDI_toolbox folder in it (e.g MEDI_toolbox/MEDI_toolbox).
 
-##### g) Edit IronSmithQSM/Matlab_Config.txt with the path to the matlab executable on your system.  
+##### g) Edit IronSmithQSM/Matlab_Config.txt with the path to the matlab executable on your system  
 *(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*  
 Supported versions R2017b to R2019b.  
 
@@ -150,17 +149,17 @@ To make sure the correct files are selected, each NIFTI file needs to have _e# i
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*  
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
+c) Single .nii/.nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
 This single NIFTI file can have any name.
 
-d) Single .nii/nii.gz file with a single echo/volume.  
+d) Single .nii/.nii.gz file with a single echo/volume.  
 This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
 This single NIFTI file can have any name and will be used as is.
 
 **Column4** = Absolute path to folder with QSM DICOM files  
 *(e.g. /home/subjects/S01/QSM_Dicom)*  
 
-The QSM DICOM folder must include DICOMS for both GRE magnitude and phase. T2* DICOMS that are sometimes part of the QSM GRE sequence can be present in the QSM DICOM folder but will be ignored.
+The QSM DICOM folder must include DICOMS for both GRE magnitude and phase. T2* DICOMS that are sometimes saved as part of a GRE sequence can be present in the QSM DICOM folder and will be ignored.
 
 Preferably only DICOMS should be present in the QSM DICOM folder. However, Ironsmith can filter out the following filetypes .nii .json .txt .nii.gz .HEAD .BRIK .hdr .img
 
@@ -193,10 +192,10 @@ To make sure the correct files are selected, each NIFTI file needs to have _e# i
 *(e.g. S0001_MEMPR_e1.nii.gz, S0001_MEMPR_e2.nii.gz...)*  
 This is the default **dcm2niix** output format for multiple echos.
 
-c) Single .nii/nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
+c) Single .nii/.nii.gz file with multiple volumes, each corresponding to a different echo (RMS will be calculated).  
 This single NIFTI file can have any name.
 
-d) Single .nii/nii.gz file with a single echo/volume.  
+d) Single .nii/.nii.gz file with a single echo/volume.  
 This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
 This single NIFTI file can have any name and will be used as is.
 
@@ -220,7 +219,7 @@ You can create the /OutputFolder/Freesurfer_Skip folder or Ironsmith will create
 
 b) Rename the recon-all folder to **Subj_FreeSurfSeg_Skull**. Subj should match the one provided in MyInputFile and should correspond to the participant you want the segmentation step skipped.  
 
-**Note:** if Ironsmith runs FreeSurfer it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/Freesurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
+**Note:** if Ironsmith runs FreeSurfer, it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/Freesurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
 
 ### Processing participants in parallel
 
@@ -271,7 +270,7 @@ S0001/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1**
 
 b) All QSM maps/images created are placed under S0001/QSM/FreeSurf_QSM_Masks and are labelled as:
 
-**Subj_QSM_Map_FSL.nii.gz**	<-- Whole brain CSF, segmented from magnitude image, as the QSM reference structure (default MEDI)  
+**Subj_QSM_Map_FSL.nii.gz**	<-- Whole brain CSF, segmented by MEDI Toolbox, as the QSM reference structure (default MEDI)  
 **Subj_QSM_Map_New_CSF_FSL.nii.gz** <-- Lateral ventricles as the QSM reference structure  
 **Subj_QSM_Map_New_WM_FSL.nii.gz** <-- White matter as the QSM reference structure  
 
@@ -293,6 +292,13 @@ _Mean = Using only positive QSM voxels
 _ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size *(sum of all positive QSM voxels / Number of all voxels within an ROI)*  
 _CSF = Lateral ventricles as the QSM reference structure  
 _WM = White matter as the QSM reference structure  
+
+**NOTE:** For each ROI, only QSM voxels with values less than the 97th percentile of all positive QSM values are included in averages.This percentile cutoff point for outliers can be modified by manually editing the header of the **05_Extract_QSM.sh** script file (line 38) under the Ironsmith installation folder:  
+
+~~~
+#Percentile cutoff for outlier removal. Edit Percnt varialbe to change outlier cutoff
+Percnt="97"
+~~~
 
 SNR is calculated as follows:  
 mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).  
