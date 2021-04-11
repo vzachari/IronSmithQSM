@@ -210,8 +210,8 @@ echo ""
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 1027.9 -uthr 1028.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_GM.nii.gz
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 2027.9 -uthr 2028.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_GM.nii.gz
 
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 1026.9 -uthr 1027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_GM.nii.gz
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 2026.9 -uthr 2027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_GM.nii.gz
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 1026.9 -uthr 1027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_GM.nii.gz
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 2026.9 -uthr 2027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_GM.nii.gz
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 1002.9 -uthr 1003.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM.nii.gz
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_DKTatlas.nii.gz -thr 2002.9 -uthr 2003.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM.nii.gz
@@ -255,8 +255,8 @@ echo ""
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_LR_Frontal_GM_Mask.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_GM.nii.gz    		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_GM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_GM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_GM.nii.gz		\
+			Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_GM.nii.gz		\
+			Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_ParsOpercularis_GM.nii.gz		\
@@ -282,7 +282,7 @@ echo ""
 	#Combine structures together (with no overlap) to create Left Frontal Lobar Mask
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_L_Frontal_GM_Mask.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_GM.nii.gz    	\
-			Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_GM.nii.gz	\
+			Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_GM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_ParsOpercularis_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_ParsTriangularis_GM.nii.gz		\
@@ -299,7 +299,7 @@ echo ""
 	#Combine structures together (with no overlap) to create right Frontal Lobar Mask
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_R_Frontal_GM_Mask.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_GM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_GM.nii.gz	\
+			Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_GM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_ParsOpercularis_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_ParsTriangularis_GM.nii.gz		\
@@ -320,8 +320,8 @@ echo ""
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_LR_Frontal_GM_Mask_Plus_SubC.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_GM.nii.gz    		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_GM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_GM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_GM.nii.gz		\
+			Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_GM.nii.gz		\
+			Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_CaudalMiddleFrontal_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_CaudalMiddleFrontal_GM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_ParsOpercularis_GM.nii.gz		\
@@ -358,11 +358,11 @@ echo ""
 	#Create DLPFC
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_L_DLPFC.nii.gz	\
 		Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_GM.nii.gz    	\
-		Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_GM.nii.gz	
+		Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_GM.nii.gz	
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_R_DLPFC.nii.gz	\
 		Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_GM.nii.gz    	\
-		Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_GM.nii.gz	
+		Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_GM.nii.gz	
 
 
 echo ""
@@ -373,8 +373,8 @@ echo ""
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 3027.9 -uthr 3028.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_WM.nii.gz
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 4027.9 -uthr 4028.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_WM.nii.gz
 
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 3026.9 -uthr 3027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_WM.nii.gz
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 4026.9 -uthr 4027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_WM.nii.gz
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 3026.9 -uthr 3027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_WM.nii.gz
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 4026.9 -uthr 4027.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_WM.nii.gz
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 3002.9 -uthr 3003.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_L_CaudalMiddleFrontal_WM.nii.gz
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg fslmaths ${Subj}_freesurfer_aseg_WM.nii.gz -thr 4002.9 -uthr 4003.1 -bin Cort_Mask_Orig/${Subj}_freesurfer_R_CaudalMiddleFrontal_WM.nii.gz
@@ -416,8 +416,8 @@ echo ""
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_LR_Frontal_WM_Mask.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_WM.nii.gz    		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_WM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_WM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_WM.nii.gz		\
+			Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_WM.nii.gz		\
+			Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_WM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_CaudalMiddleFrontal_WM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_CaudalMiddleFrontal_WM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_ParsOpercularis_WM.nii.gz		\
@@ -450,7 +450,7 @@ echo ""
 	#Combine structures together (with no overlap) to create Left Frontal Lobar WM Mask
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_L_Frontal_WM_Mask.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_WM.nii.gz    	\
-			Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_WM.nii.gz	\
+			Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_WM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_CaudalMiddleFrontal_WM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_ParsOpercularis_WM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_L_ParsTriangularis_WM.nii.gz		\
@@ -467,7 +467,7 @@ echo ""
 	#Combine structures together (with no overlap) to create right Frontal Lobar WM Mask
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_R_Frontal_WM_Mask.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_WM.nii.gz		\
-			Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_WM.nii.gz	\
+			Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_WM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_CaudalMiddleFrontal_WM.nii.gz	\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_ParsOpercularis_WM.nii.gz		\
 			Cort_Mask_Orig/${Subj}_freesurfer_R_ParsTriangularis_WM.nii.gz		\
@@ -487,11 +487,11 @@ echo ""
 	#Create DLPFC
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_L_DLPFC_WM.nii.gz	\
 		Cort_Mask_Orig/${Subj}_freesurfer_L_SuperiorFrontal_WM.nii.gz    	\
-		Cort_Mask_Orig/${Subj}_freesurfer_L_RostalMiddleFrontal_WM.nii.gz	
+		Cort_Mask_Orig/${Subj}_freesurfer_L_RostralMiddleFrontal_WM.nii.gz	
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmerge -gorder -prefix Cort_Mask_Orig/${Subj}_freesurfer_R_DLPFC_WM.nii.gz	\
 		Cort_Mask_Orig/${Subj}_freesurfer_R_SuperiorFrontal_WM.nii.gz    	\
-		Cort_Mask_Orig/${Subj}_freesurfer_R_RostalMiddleFrontal_WM.nii.gz	
+		Cort_Mask_Orig/${Subj}_freesurfer_R_RostralMiddleFrontal_WM.nii.gz	
 
 
 #Parietal Lobe

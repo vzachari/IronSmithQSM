@@ -740,30 +740,30 @@ cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS/
 		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_Precuneus_GM_AL_QSM_RS_Erx1.nii.gz
 
 
-# Erodes RostalMiddleFrontal
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_RostalMiddleFrontal_WM_AL_QSM_RS.nii.gz \
+# Erodes RostralMiddleFrontal
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_RostralMiddleFrontal_WM_AL_QSM_RS.nii.gz \
 		-b a+i -c a-i -d a+j -e a-j -f a+k -g a-k -expr 'amongst(1,a,b,c,d,e,f,g)'\
-		-prefix ${Subj}_freesurfer_L_RostalMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz
+		-prefix ${Subj}_freesurfer_L_RostralMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz
 
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_RostalMiddleFrontal_WM_AL_QSM_RS.nii.gz \
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_RostralMiddleFrontal_WM_AL_QSM_RS.nii.gz \
 		-b a+i -c a-i -d a+j -e a-j -f a+k -g a-k -expr 'amongst(1,a,b,c,d,e,f,g)'\
-		-prefix ${Subj}_freesurfer_R_RostalMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz
+		-prefix ${Subj}_freesurfer_R_RostralMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz
 
-	#Left RostalMiddleFrontal
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS.nii.gz -b \
-		${Subj}_freesurfer_L_RostalMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz \
-		-expr a-b -prefix ${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz
+	#Left RostralMiddleFrontal
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_RostralMiddleFrontal_GM_AL_QSM_RS.nii.gz -b \
+		${Subj}_freesurfer_L_RostralMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz \
+		-expr a-b -prefix ${Subj}_freesurfer_L_RostralMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz
 
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz \
-		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz	
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_L_RostralMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz \
+		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_L_RostralMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz	
 
-	#right RostalMiddleFrontal
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS.nii.gz -b \
-		${Subj}_freesurfer_R_RostalMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz \
-		-expr a-b -prefix ${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz
+	#right RostralMiddleFrontal
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_RostralMiddleFrontal_GM_AL_QSM_RS.nii.gz -b \
+		${Subj}_freesurfer_R_RostralMiddleFrontal_WM_AL_QSM_RS_Dilated.nii.gz \
+		-expr a-b -prefix ${Subj}_freesurfer_R_RostralMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz
 
-	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz \
-		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz	
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_RostralMiddleFrontal_GM_AL_QSM_RS_Step1.nii.gz \
+		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_RostralMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz	
 
 
 # Erodes RostralAnteriorCingulate

@@ -10,7 +10,7 @@ Ironsmith is an automated pipeline for creating and processing Quantitative Susc
 
 Ironsmith can perform the following tasks:
 
-a) Automate the process of creating QSM mpas from GRE DICOM images using MEDI Toolbox **(see section 7 for details)** .     
+a) Automate the process of creating QSM maps from GRE DICOM images using MEDI Toolbox **(see section 7 for details)** .     
 b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using FreeSurfer.  
 c) Filter outlier voxels from these ROIs (default: QSM values larger than 97th percentile of values), extract QSM based iron concentration and output the results into CSV formatted tables.  
 d) Calculate SNR (GRE magnitude image based) for each ROI as a measure of quality control for QSM data and output SNR values into CSV tables.  
@@ -374,7 +374,7 @@ L_Postcentral_GM
 L_PosteriorCingulate_GM  
 L_Precentral_GM  
 L_Precuneus_GM  
-L_RostalMiddleFrontal_GM  
+L_RostralMiddleFrontal_GM  
 L_RostralAnteriorCingulate_GM  
 L_SuperiorFrontal_GM  
 L_SuperiorParietal_GM  
@@ -406,7 +406,7 @@ R_Postcentral_GM
 R_PosteriorCingulate_GM  
 R_Precentral_GM  
 R_Precuneus_GM  
-R_RostalMiddleFrontal_GM  
+R_RostralMiddleFrontal_GM  
 R_RostralAnteriorCingulate_GM  
 R_SuperiorFrontal_GM  
 R_SuperiorParietal_GM  

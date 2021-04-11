@@ -819,10 +819,10 @@ echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
-echo "L_RostalMiddleFrontal_GM"	
+echo "L_RostralMiddleFrontal_GM"	
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_L_RostralMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${Subj}_QSM_Mag_FSL_rms.nii.gz) 
 
 Mean=$(echo "${Eval:-FAIL}") 
@@ -830,7 +830,7 @@ Mean=$(echo "${Eval:-FAIL}")
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
-echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_RostalMiddleFrontal_GM_SNR.txt
+echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_L_RostralMiddleFrontal_GM_SNR.txt
 
 #Update LifeLineSNR.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
@@ -1423,10 +1423,10 @@ echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
 
 unset Eval Mean SNR
 
-echo "R_RostalMiddleFrontal_GM"	
+echo "R_RostralMiddleFrontal_GM"	
 
 Eval=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostalMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
+	3dBrickStat -positive -mean -mask Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_R_RostralMiddleFrontal_GM_AL_QSM_RS_Erx1.nii.gz \
 	${Subj}_QSM_Mag_FSL_rms.nii.gz) 
 
 Mean=$(echo "${Eval:-FAIL}") 
@@ -1434,7 +1434,7 @@ Mean=$(echo "${Eval:-FAIL}")
 SNR=$(singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 	echo "scale=2; ($Mean / $SD)*0.655 " | bc -l) 
 
-echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_RostalMiddleFrontal_GM_SNR.txt
+echo "${SNR:-FAIL}" >> $OutFolder/Group/$Fold/Group_R_RostralMiddleFrontal_GM_SNR.txt
 
 #Update LifeLineSNR.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt
@@ -1936,7 +1936,7 @@ cd $OutFolder/Group/$Fold
 #Update LifeLineSNR.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
 
-QSMSNRFileList="Group_LR_Frontal_GM_Mask_SNR.txt Group_L_DLPFC_GM_Mask_SNR.txt Group_L_InferiorTemporal_GM_Mask_SNR.txt Group_L_MedialOrbitofrontal_GM_SNR.txt Group_L_MiddleTemporal_GM_SNR.txt Group_L_Parietal_GM_Mask_SNR.txt Group_R_Postcentral_GM_SNR.txt Group_R_Precentral_GM_SNR.txt Group_R_Precuneus_GM_SNR.txt Group_R_RostralAnteriorCingulate_GM_SNR.txt Group_R_SuperiorParietal_GM_SNR.txt Group_LR_Accumbens_area_SNR.txt Group_LR_Thalamus_Proper_SNR.txt Group_L_Pallidum_SNR.txt Group_L_Putamen_SNR.txt Group_R_Accumbens_area_SNR.txt Group_R_Amygdala_SNR.txt Group_R_Caudate_SNR.txt Group_R_Putamen_SNR.txt Group_LR_Temporal_GM_Mask_SNR.txt Group_L_RostalMiddleFrontal_GM_SNR.txt Group_R_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_R_Cuneus_GM_Mask_SNR.txt Group_R_Fusiform_GM_Mask_SNR.txt Group_R_IsthmusCingulate_GM_SNR.txt Group_R_LateralOccipital_GM_SNR.txt Group_R_Occipital_GM_Mask_SNR.txt Group_LR_Amygdala_SNR.txt Group_L_Accumbens_area_SNR.txt Group_R_Pallidum_SNR.txt Group_L_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_L_Cuneus_GM_Mask_SNR.txt Group_L_IsthmusCingulate_GM_SNR.txt Group_L_LateralOccipital_GM_SNR.txt Group_L_Temporal_GM_Mask_SNR.txt Group_L_SuperiorFrontal_GM_SNR.txt Group_R_Entorhinal_GM_Mask_SNR.txt Group_R_Lingual_GM_SNR.txt Group_R_PosteriorCingulate_GM_SNR.txt Group_R_SuperiorFrontal_GM_SNR.txt Group_R_TransverseTemporal_GM_SNR.txt Group_LR_Putamen_SNR.txt Group_L_Amygdala_SNR.txt Group_L_Caudate_SNR.txt Group_L_Hipp_SNR.txt Group_L_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_L_Entorhinal_GM_Mask_SNR.txt Group_L_InferiorParietal_GM_Mask_SNR.txt Group_L_Occipital_GM_Mask_SNR.txt Group_L_Parahippocampal_GM_SNR.txt Group_L_Precentral_GM_SNR.txt Group_L_SuperiorParietal_GM_SNR.txt Group_L_SuperiorTemporal_GM_SNR.txt Group_R_DLPFC_GM_Mask_SNR.txt Group_R_InferiorTemporal_GM_Mask_SNR.txt Group_R_Insula_GM_SNR.txt Group_R_MedialOrbitofrontal_GM_SNR.txt Group_R_Temporal_GM_Mask_SNR.txt Group_R_Parahippocampal_GM_SNR.txt Group_R_Pericalcarine_GM_SNR.txt Group_R_RostalMiddleFrontal_GM_SNR.txt Group_R_SuperiorTemporal_GM_SNR.txt Group_LR_Caudate_SNR.txt Group_LR_Pallidum_SNR.txt Group_L_Thalamus_Proper_SNR.txt Group_R_Hipp_SNR.txt Group_R_Thalamus_Proper_SNR.txt Group_LR_Parietal_GM_Mask_SNR.txt Group_LR_Occipital_GM_Mask_SNR.txt Group_L_LateralOrbitofrontal_GM_SNR.txt Group_L_Lingual_GM_SNR.txt Group_L_Pericalcarine_GM_SNR.txt Group_L_Postcentral_GM_SNR.txt Group_L_PosteriorCingulate_GM_SNR.txt Group_L_RostralAnteriorCingulate_GM_SNR.txt Group_R_Frontal_GM_Mask_SNR.txt Group_R_InferiorParietal_GM_Mask_SNR.txt Group_R_LateralOrbitofrontal_GM_SNR.txt Group_R_MiddleTemporal_GM_SNR.txt Group_L_Frontal_GM_Mask_SNR.txt Group_L_Fusiform_GM_Mask_SNR.txt Group_L_Insula_GM_SNR.txt Group_L_Precuneus_GM_SNR.txt Group_L_TransverseTemporal_GM_SNR.txt Group_R_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_R_Parietal_GM_Mask_SNR.txt Group_LR_Hipp_SNR.txt Group_L_AngularGyrus_GM_Mask_SNR.txt Group_R_AngularGyrus_GM_Mask_SNR.txt SubjOrderSNR.txt SubjectsSNR.txt"
+QSMSNRFileList="Group_LR_Frontal_GM_Mask_SNR.txt Group_L_DLPFC_GM_Mask_SNR.txt Group_L_InferiorTemporal_GM_Mask_SNR.txt Group_L_MedialOrbitofrontal_GM_SNR.txt Group_L_MiddleTemporal_GM_SNR.txt Group_L_Parietal_GM_Mask_SNR.txt Group_R_Postcentral_GM_SNR.txt Group_R_Precentral_GM_SNR.txt Group_R_Precuneus_GM_SNR.txt Group_R_RostralAnteriorCingulate_GM_SNR.txt Group_R_SuperiorParietal_GM_SNR.txt Group_LR_Accumbens_area_SNR.txt Group_LR_Thalamus_Proper_SNR.txt Group_L_Pallidum_SNR.txt Group_L_Putamen_SNR.txt Group_R_Accumbens_area_SNR.txt Group_R_Amygdala_SNR.txt Group_R_Caudate_SNR.txt Group_R_Putamen_SNR.txt Group_LR_Temporal_GM_Mask_SNR.txt Group_L_RostralMiddleFrontal_GM_SNR.txt Group_R_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_R_Cuneus_GM_Mask_SNR.txt Group_R_Fusiform_GM_Mask_SNR.txt Group_R_IsthmusCingulate_GM_SNR.txt Group_R_LateralOccipital_GM_SNR.txt Group_R_Occipital_GM_Mask_SNR.txt Group_LR_Amygdala_SNR.txt Group_L_Accumbens_area_SNR.txt Group_R_Pallidum_SNR.txt Group_L_CaudalAnteriorCingulate_GM_Mask_SNR.txt Group_L_Cuneus_GM_Mask_SNR.txt Group_L_IsthmusCingulate_GM_SNR.txt Group_L_LateralOccipital_GM_SNR.txt Group_L_Temporal_GM_Mask_SNR.txt Group_L_SuperiorFrontal_GM_SNR.txt Group_R_Entorhinal_GM_Mask_SNR.txt Group_R_Lingual_GM_SNR.txt Group_R_PosteriorCingulate_GM_SNR.txt Group_R_SuperiorFrontal_GM_SNR.txt Group_R_TransverseTemporal_GM_SNR.txt Group_LR_Putamen_SNR.txt Group_L_Amygdala_SNR.txt Group_L_Caudate_SNR.txt Group_L_Hipp_SNR.txt Group_L_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_L_Entorhinal_GM_Mask_SNR.txt Group_L_InferiorParietal_GM_Mask_SNR.txt Group_L_Occipital_GM_Mask_SNR.txt Group_L_Parahippocampal_GM_SNR.txt Group_L_Precentral_GM_SNR.txt Group_L_SuperiorParietal_GM_SNR.txt Group_L_SuperiorTemporal_GM_SNR.txt Group_R_DLPFC_GM_Mask_SNR.txt Group_R_InferiorTemporal_GM_Mask_SNR.txt Group_R_Insula_GM_SNR.txt Group_R_MedialOrbitofrontal_GM_SNR.txt Group_R_Temporal_GM_Mask_SNR.txt Group_R_Parahippocampal_GM_SNR.txt Group_R_Pericalcarine_GM_SNR.txt Group_R_RostralMiddleFrontal_GM_SNR.txt Group_R_SuperiorTemporal_GM_SNR.txt Group_LR_Caudate_SNR.txt Group_LR_Pallidum_SNR.txt Group_L_Thalamus_Proper_SNR.txt Group_R_Hipp_SNR.txt Group_R_Thalamus_Proper_SNR.txt Group_LR_Parietal_GM_Mask_SNR.txt Group_LR_Occipital_GM_Mask_SNR.txt Group_L_LateralOrbitofrontal_GM_SNR.txt Group_L_Lingual_GM_SNR.txt Group_L_Pericalcarine_GM_SNR.txt Group_L_Postcentral_GM_SNR.txt Group_L_PosteriorCingulate_GM_SNR.txt Group_L_RostralAnteriorCingulate_GM_SNR.txt Group_R_Frontal_GM_Mask_SNR.txt Group_R_InferiorParietal_GM_Mask_SNR.txt Group_R_LateralOrbitofrontal_GM_SNR.txt Group_R_MiddleTemporal_GM_SNR.txt Group_L_Frontal_GM_Mask_SNR.txt Group_L_Fusiform_GM_Mask_SNR.txt Group_L_Insula_GM_SNR.txt Group_L_Precuneus_GM_SNR.txt Group_L_TransverseTemporal_GM_SNR.txt Group_R_CaudalMiddleFrontal_GM_Mask_SNR.txt Group_R_Parietal_GM_Mask_SNR.txt Group_LR_Hipp_SNR.txt Group_L_AngularGyrus_GM_Mask_SNR.txt Group_R_AngularGyrus_GM_Mask_SNR.txt SubjOrderSNR.txt SubjectsSNR.txt"
 
 #Update LifeLineSNR.txt
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
@@ -1981,7 +1981,7 @@ paste -d "," SubjOrderSNR.txt SubjectsSNR.txt \
 	Group_L_Precentral_GM_SNR.txt \
 	Group_L_Precuneus_GM_SNR.txt \
 	Group_L_Putamen_SNR.txt \
-	Group_L_RostalMiddleFrontal_GM_SNR.txt \
+	Group_L_RostralMiddleFrontal_GM_SNR.txt \
 	Group_L_RostralAnteriorCingulate_GM_SNR.txt \
 	Group_L_SuperiorFrontal_GM_SNR.txt \
 	Group_L_SuperiorParietal_GM_SNR.txt \
@@ -2020,7 +2020,7 @@ paste -d "," SubjOrderSNR.txt SubjectsSNR.txt \
 	Group_R_Precentral_GM_SNR.txt \
 	Group_R_Precuneus_GM_SNR.txt \
 	Group_R_Putamen_SNR.txt \
-	Group_R_RostalMiddleFrontal_GM_SNR.txt \
+	Group_R_RostralMiddleFrontal_GM_SNR.txt \
 	Group_R_RostralAnteriorCingulate_GM_SNR.txt \
 	Group_R_SuperiorFrontal_GM_SNR.txt \
 	Group_R_SuperiorParietal_GM_SNR.txt \
@@ -2044,7 +2044,7 @@ paste -d "," SubjOrderSNR.txt SubjectsSNR.txt \
 echo "$RANDOM" > $OutFolder/Group/$Fold/LifeLineSNR.txt	
 
 
-echo "Number,Participant,L_Accumbens_area,L_Amygdala,L_AngularGyrus,L_CaudalAnteriorCingulate,L_CaudalMiddleFrontal,L_Caudate,L_Cuneus,L_DLPFC,L_Entorhinal,L_Frontal,L_Fusiform,L_Hipp,L_InferiorParietal,L_InferiorTemporal,L_Insula,L_IsthmusCingulate,L_LateralOccipital,L_LateralOrbitofrontal,L_Lingual,L_MedialOrbitofrontal,L_MiddleTemporal,L_Occipital,L_Pallidum,L_Parahippocampal,L_Parietal,L_Pericalcarine,L_Postcentral,L_PosteriorCingulate,L_Precentral,L_Precuneus,L_Putamen,L_RostalMiddleFrontal,L_RostralAnteriorCingulate,L_SuperiorFrontal,L_SuperiorParietal,L_SuperiorTemporal,L_Temporal,L_Thalamus_Proper,L_TransverseTemporal,R_Accumbens_area,R_Amygdala,R_AngularGyrus,R_CaudalAnteriorCingulate,R_CaudalMiddleFrontal,R_Caudate,R_Cuneus,R_DLPFC,R_Entorhinal,R_Frontal,R_Fusiform,R_Hipp,R_InferiorParietal,R_InferiorTemporal,R_Insula,R_IsthmusCingulate,R_LateralOccipital,R_LateralOrbitofrontal,R_Lingual,R_MedialOrbitofrontal,R_MiddleTemporal,R_Occipital,R_Pallidum,R_Parahippocampal,R_Parietal,R_Pericalcarine,R_Postcentral,R_PosteriorCingulate,R_Precentral,R_Precuneus,R_Putamen,R_RostalMiddleFrontal,R_RostralAnteriorCingulate,R_SuperiorFrontal,R_SuperiorParietal,R_SuperiorTemporal,R_Temporal,R_Thalamus_Proper,R_TransverseTemporal,LR_Accumbens_area,LR_Amygdala,LR_Caudate,LR_Frontal,LR_Hipp,LR_Occipital,LR_Pallidum,LR_Parietal,LR_Putamen,LR_Temporal,LR_Thalamus_Proper" > $OutFolder/Group/Group_QSM_SNR.csv
+echo "Number,Participant,L_Accumbens_area,L_Amygdala,L_AngularGyrus,L_CaudalAnteriorCingulate,L_CaudalMiddleFrontal,L_Caudate,L_Cuneus,L_DLPFC,L_Entorhinal,L_Frontal,L_Fusiform,L_Hipp,L_InferiorParietal,L_InferiorTemporal,L_Insula,L_IsthmusCingulate,L_LateralOccipital,L_LateralOrbitofrontal,L_Lingual,L_MedialOrbitofrontal,L_MiddleTemporal,L_Occipital,L_Pallidum,L_Parahippocampal,L_Parietal,L_Pericalcarine,L_Postcentral,L_PosteriorCingulate,L_Precentral,L_Precuneus,L_Putamen,L_RostralMiddleFrontal,L_RostralAnteriorCingulate,L_SuperiorFrontal,L_SuperiorParietal,L_SuperiorTemporal,L_Temporal,L_Thalamus_Proper,L_TransverseTemporal,R_Accumbens_area,R_Amygdala,R_AngularGyrus,R_CaudalAnteriorCingulate,R_CaudalMiddleFrontal,R_Caudate,R_Cuneus,R_DLPFC,R_Entorhinal,R_Frontal,R_Fusiform,R_Hipp,R_InferiorParietal,R_InferiorTemporal,R_Insula,R_IsthmusCingulate,R_LateralOccipital,R_LateralOrbitofrontal,R_Lingual,R_MedialOrbitofrontal,R_MiddleTemporal,R_Occipital,R_Pallidum,R_Parahippocampal,R_Parietal,R_Pericalcarine,R_Postcentral,R_PosteriorCingulate,R_Precentral,R_Precuneus,R_Putamen,R_RostralMiddleFrontal,R_RostralAnteriorCingulate,R_SuperiorFrontal,R_SuperiorParietal,R_SuperiorTemporal,R_Temporal,R_Thalamus_Proper,R_TransverseTemporal,LR_Accumbens_area,LR_Amygdala,LR_Caudate,LR_Frontal,LR_Hipp,LR_Occipital,LR_Pallidum,LR_Parietal,LR_Putamen,LR_Temporal,LR_Thalamus_Proper" > $OutFolder/Group/Group_QSM_SNR.csv
 
 cat Group_QSM_SNR_Columns.csv >> $OutFolder/Group/Group_QSM_SNR.csv
 
