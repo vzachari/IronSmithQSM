@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 08/24/2020
 #
-#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 # 	Script creates MPR folder in output path 
 # 	Script creates RMS MPRAGE .nii.gz file if multi-echos exist

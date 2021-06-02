@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Script runs MEDI with eroded WM and lateral ventricles as the QSM reference
 #
@@ -33,7 +33,7 @@ set -e #Exit on error
 #Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #QSM_Dicom_Dir="/home/data3/vzachari/QSM_Toolkit/S0030/QSM/QSM_Dicom"
 #MatPath="Same path as one used in Matlab_Config.txt"
-#MEDIVer="This just a label. It should match the version of MEDI toolbox you have"
+#MEDIVer="This is just a label. It should match the version of MEDI toolbox you have"
 
 Subj=$1
 OutFolder=$2

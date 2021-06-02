@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 # 	Script calculates SNR (magnitude image based) for each structural ROI used for QSM
 # 	SNR= [ average signal intensity of GRE magnitude image within an ROI / average standard deviation of pixel intensity from air outside the head (away from the frequency and phase axes) ] 

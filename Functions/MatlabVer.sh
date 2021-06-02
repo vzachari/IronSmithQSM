@@ -2,19 +2,9 @@
 
 set -e #Exit on error
 
-#Passed varialbes to MatlabVer.sh 
-#1) Path
-#2) Matlab Path
-
-#Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
-#MatPath="Same path as in Matlab_Config.txt"
-
-Path=$1
-MatPath=$2
-
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Script gets Matlab Version and writes it to MatTempFile.txt
 #	Saving Matlab Version in a varialbe breaks nohup and running Ironsmith with & (in the background)
@@ -31,6 +21,15 @@ MatPath=$2
 #                `\  }
 #                  { }
 
+#Passed varialbes to MatlabVer.sh 
+#1) Path
+#2) Matlab Path
+
+#Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
+#MatPath="Same path as in Matlab_Config.txt"
+
+Path=$1
+MatPath=$2
 
 MatVersion=$($MatPath -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n1 | head -c 3) # change matlab command
 

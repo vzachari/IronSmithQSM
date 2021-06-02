@@ -13,10 +13,10 @@ exec &> >(tee -a "$log_file")
 
 #Authored by Valentinos Zachariou on 08/24/2020
 #
-#	Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
-#	Master QSM toolkit script. Checks paths and file availability and creates variables for use by subsequent scripts.
-#	The Master QSM script also creates the output directory in the user specified path.
+#	Master Ironsmith script. Checks paths and file availability and creates variables for use by subsequent scripts.
+#	The Master script also creates the output directory in the user specified path.
 #
 #
 #
@@ -57,7 +57,7 @@ echo -e "\t\t               ~~~~ {_ -_(())          "
 echo -e "\t\t                      '\  }            "
 echo -e "\t\t                       { }             "
 echo -e "				            "
-echo -e "\t	  Ironsmith QSM Toolkit V0.99b (10/27/2020)		       "
+echo -e "\t	  Ironsmith QSM Toolkit V1.00 (06/02/2021)		       "
 echo -e "\t	  Valentinos Zachariou	    		  	     	       "
 echo -e "\t	  University of Kentucky 	                               "
 echo -e "\t	  https://github.com/vzachari/IronSmithQSM		       "

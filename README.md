@@ -1,6 +1,6 @@
 # Ironsmith QSM		       
 
-Copyright (C) 2020 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).  
+Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).  
 Third party software provided with Ironsmith are subject to their own licenses and copyrights (see section 7 for details).
 
 #### This software has been developed for research purposes only and is not a clinical tool.  
@@ -14,7 +14,7 @@ a) Automate the process of creating QSM maps from GRE DICOM images using MEDI To
 b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using FreeSurfer.  
 c) Filter outlier voxels from these ROIs (default: QSM values larger than 97th percentile of values), extract QSM based iron concentration and output the results into CSV formatted tables.  
 d) Calculate SNR (GRE magnitude image based) for each ROI as a measure of quality control for QSM data and output SNR values into CSV tables.  
-e) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space. This step allows users to (1) extract QSM values from standard space ROIs, not included with Ironsmith and (2) conduct voxelwise QSM analyses.   
+e) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space. This step allows users to (1) extract QSM values from standard space ROIs not included with Ironsmith and (2) conduct voxelwise QSM analyses.   
 f) Process single or multiple participants in parallel (multiple instances and nohup supported).
 
 ## 1) Software requirements:
@@ -199,10 +199,10 @@ d) Single .nii/.nii.gz file with a single echo/volume.
 This can be rms/averaged across echos or just a single echo T1 MPRAGE.  
 This single NIFTI file can have any name and will be used as is.
 
-**Column4** = Absolute path including filename to QSM magnitude image  
+**Column4** = Absolute path including filename to QSM magnitude image (.nii or .nii.gz)   
 *(e.g. /home/subjects/S01/QSM/QSM_Magnitude.nii.gz)*  
 
-**Column5** = Absolute path including filename to QSM map  
+**Column5** = Absolute path including filename to QSM map  (.nii or .nii.gz)  
 *(e.g. /home/subjects/S01/QSM/QSM_Map.nii.gz)*  
 
 All 5 columns need to be provided, otherwise Ironsmith will exit with errors.
@@ -219,7 +219,7 @@ You can create the /OutputFolder/Freesurfer_Skip folder or Ironsmith will create
 
 b) Rename the recon-all folder to **Subj_FreeSurfSeg_Skull**. Subj should match the one provided in MyInputFile and should correspond to the participant you want the segmentation step skipped.  
 
-**Note:** if Ironsmith runs FreeSurfer, it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to crash or errors). Just copy/move this folder over to **/OutputFolder/Freesurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
+**Note:** if Ironsmith runs FreeSurfer, it will create **Subj_FreeSurfSeg_Skull** and place it under **/OutputFolder/Subj/MPR**. This helps reduce processing time if for any reason one would like to repeat the analysis on a given participant (e.g. due to a crash or errors). Just copy/move this folder over to **/OutputFolder/Freesurfer_Skip**, delete the problematic participant folder (e.g. **/OutputFolder/Subj**) and re-run Ironsmith.  
 
 ### Processing participants in parallel
 
@@ -301,11 +301,11 @@ Percnt="97"
 ~~~
 
 SNR is calculated as follows:  
-mean signal intensity of magnitude image within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).  
+Mean signal intensity of magnitude image (root mean square of all echos) within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).
 Lastly, SNR is multiplied by the Rayleigh distribution correction factor *√(2−π/2)*.  
 
-The outside of the head mask used for SNR can be found here:  
-**/QSM_Analysis/S0001/QSM/FreeSurf_QSM_Masks/Subj_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
+The outside of the head mask used for SNR can be found in a participants folder within the **OutputFolder**. For example:  
+**/OutputFolder/S0001/QSM/FreeSurf_QSM_Masks/S0001_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
 
 ## 7) Ironsmith uses the following software, provided in the form of a Singularity image:
 
