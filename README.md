@@ -6,7 +6,7 @@ Third party software provided with Ironsmith are subject to their own licenses a
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
 #### Description:  
-Ironsmith is an automated pipeline for creating and processing Quantitative Susceptibility Maps (QSM), extracting QSM based iron concentrations from subcortical and cortical brain regions and evaluating the quality of QSM data using per ROI SNR measures.
+Ironsmith is a comprehensive, fully automated pipeline for creating and processing Quantitative Susceptibility Maps (QSM), extracting QSM based iron concentrations from subcortical and cortical brain regions and evaluating the quality of QSM data using per ROI SNR measures. Ironsmith can also filter out per-ROI outlier QSM values (such as values associated with large veins) and offers a precise, CSF-only reference region for QSM reconstruction to minimize partial volume effects.
 
 Ironsmith can perform the following tasks:
 
@@ -65,7 +65,7 @@ Click on tags
 Click on desired IronsmithQSM version (release notes are displayed by clicking the three dots `...` )  
 Click on source code link (zip or tar.gz) to download  
 
-**NOTE:** Via this download option the IronSmithQSM folder will be **IronSmithQSM-version#** *(Ex. IronSmithQSM-1.00)*.  
+**NOTE:** Via this download option the IronSmithQSM folder will be **IronSmithQSM-version#** *(Ex. IronSmithQSM-1.0)*.  
 
 Option 2: using git  
 
