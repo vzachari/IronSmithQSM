@@ -2,7 +2,7 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 09/9/2020
+#Authored by Valentinos Zachariou on 06/22/2021
 #
 #	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
@@ -26,16 +26,35 @@ set -e #Exit on error
 #2) Matlab Path
 
 #Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
-#MatPath="Same path as in Matlab_Config.txt"
+#MatPath="/usr/local/MATLAB/R2019b/bin/matlab"
 
 Path=$1
 MatPath=$2
 
 MatVersion=$($MatPath -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n1 | head -c 3) # change matlab command
+ImToolLicTest=$($MatPath -nodisplay -nosplash -nodesktop -r "try; v=license('test','image_toolbox'); disp(v); catch; end; quit;" | tail -n -2 | sed -e 's/^[[:space:]]*//')
+ImToolTest=$($MatPath -nodisplay -nosplash -nodesktop -r "try; v = ver; Index = find(strcmp({v.Name}, 'Image Processing Toolbox')==1); disp(~isempty(Index)); catch; end; quit;" | tail -n -2 | sed -e 's/^[[:space:]]*//')
 
-echo "${MatVersion:-ERROR}" > $Path/Functions/MatTempFile.txt
+echo "${MatVersion:-ERROR},${ImToolTest:-ERROR},${ImToolLicTest:-ERROR}" > $Path/Functions/MatTempFile.txt
 
 
-	
-
-
+#   .-'  /
+# .'    /   /`.
+# |    /   /  |
+# |    \__/   |
+# `.         .'
+#   `.     .'
+#     | ][ |
+#     | ][ |
+#     | ][ |
+#     | ][ |
+#     | ][ |
+#     | ][ |
+#     | ][ |
+#     | ][ |
+#     | ][ |
+#   .'  __  `.
+#   |  /  \  |
+#   |  \__/  |
+#   `.      .'
+#     `----'

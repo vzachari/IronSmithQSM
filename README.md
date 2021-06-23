@@ -15,7 +15,25 @@ b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment
 c) Filter outlier voxels from these ROIs (default: QSM values larger than 97th percentile of values), extract QSM based iron concentration and output the results into CSV formatted tables.  
 d) Calculate SNR (GRE magnitude image based) for each ROI as a measure of quality control for QSM data and output SNR values into CSV tables.  
 e) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space. This step allows users to (1) extract QSM values from standard space ROIs not included with Ironsmith and (2) conduct voxelwise QSM analyses.   
-f) Process single or multiple participants in parallel (multiple instances and nohup supported).
+f) Process single or multiple participants in parallel (multiple instances and nohup supported).  
+g) Provide comprehensive user feedback and detailed error reporting. When an error or warning occurs, Ironsmith does not display cryptic messages but instead provides detailed reports of what might have gone wrong and how a user can fix the error/warning.
+
+## Release Notes (latest release):  
+
+#### Ironsmith QSM v1.1  
+Currently available as a Release Candidate version. Tag v1.1 will be created once testing/reliability/validation is complete.  
+Can be installed via `git clone https://github.com/vzachari/IronSmithQSM.git`  
+
+1. FreeSurfer updated to v7.1.1 in singularity container (reduces recon-all time to around 5 hours from 8 hours).  
+ * Updated singularity container needs to be downloaded. See section 2b (Download QSM_Container.simg).    
+2. Fsleyes can now be accessed within the singularity container via the Ironsmith_fsleyes command.  
+3. Minor bug fixes.  
+4. Updates to README.md and README.pdf for clarity/readability.
+
+**NOTE:**  
+Due to the FreeSufer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and v1.1.  
+Correlation of QSM values extracted from the 89 ROIs offered by Ironsmith, between v1.0 and v1.1 yielded an r^2 value of 0.99.  
+For this reason, we do not recommend updating Ironsmith mid-analyses. All data should be analyzed with either v1.0 OR v1.1 (Freesurfer 6.0.0 or FreeSurfer 7.1.1).
 
 ## 1) Software requirements:
 
@@ -35,6 +53,7 @@ Ubuntu 16.04 running on Windows 10 Subsystem for Linux V2 (WSL2)
 #### b) MATLAB
 
 Ironsmith requires Matlab to run MEDI Toolbox and supports versions R2017b to R2019b.  
+MEDI Toolbox requires the Matlab `Image Processing Toolbox` to be installed.  
 Matlab is not needed if MEDI is not required.  
 
 #### c) Singularity
@@ -52,7 +71,7 @@ http://pre.weill.cornell.edu/mri/pages/qsm.html
 MEDI Toolbox is not required if QSM maps are already available  
 Currently only MEDI Toolbox version 01/15/2020 is supported
 
-#### NOTE: 8.8 GB of free space is required for each instance of IronSmith running (see section #5, parallel processing)
+#### NOTE: 10.8 GB of free space is required for each instance of IronSmith running (see section #5, parallel processing)
 
 ## 2) Installation:
 
@@ -73,10 +92,13 @@ Option 2: using git
 
 **NOTE:** `git checkout v1.0` can be replaced with a different version number. Type `git tag -l` from within the IronSmithQSM folder for a list of available versions.
 
-##### b) Download QSM_Container.simg (8.8GB)
-From: https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing  
-Or  
-From: https://tinyurl.com/QSMContainer
+##### b) Download QSM_Container.simg   
+
+##### For Ironsmith v1.1 (06/23/2021): FreeSurfer7.1.1  (10.8GB)
+From: https://drive.google.com/file/d/1NFV2z0yIEPKGblQVrcMe8bza8ZS21AO7/view?usp=sharing  
+
+##### For Ironsmith v1.0 (06/04/2021): FreeSurfer6.0.0  (8.3GB)
+From: https://drive.google.com/file/d/1Q1KC665q1Pv_GSWPWH9cfUsoJcd-dxEB/view?usp=sharing  
 
 ##### c) Place QSM_Container.simg in IronSmithQSM/Functions
 
@@ -91,6 +113,7 @@ From: http://pre.weill.cornell.edu/mri/pages/qsm.html
 ##### g) Edit IronSmithQSM/Matlab_Config.txt with the path to the matlab executable on your system  
 *(e.g. /usr/local/MATLAB/R2019b/bin/matlab)*  
 Supported versions R2017b to R2019b.  
+**NOTE:** the `Image Processing Toolbox` needs to be installed for the matlab version specified in IronSmithQSM/Matlab_Config.txt.  
 
 ##### h) Add the IronSmithQSM directory to $PATH  
 Guide: https://opensource.com/article/17/6/set-path-linux
@@ -252,12 +275,23 @@ To monitor the nohup progress of an Ironsmith instance, locate the Ironsmith_Ins
 `tail -f Ironsmith_Inst_#.txt`  
 ctrl+c exits the tail -f process.
 
+### Adding participants to an existing analysis/output folder
+
+To add participants to an existing Ironsmith analysis, simply edit MyInputFile.csv with the info of the additional participants and rerun the Ironsmith command. Ironsmith will skip all participants that have been previously processed (without errors) and will proceed to process the newly added participants. Lastly, the QSM/SNR values of the new participants will be added to the group output files in **OutputFolder**.  
+
+### What if Ironsmith fails while writing data to output files (computer resets, power outage etc)?  
+
+Ironsmith can identify corrupted output files and will attempt to correct the damage by reverting these back to the last participant that completed successfully. This error is clearly communicated to the user both on screen and in log files so a corrupted/unfinished participant can be re-processed.
+
 ### Viewing output NIFTI files
 
-If you do not have a NIFTI viewer, AFNI can be launched from within the QSM_Container.simg by using the *Ironsmith_AFNI* command. Just type `Ironsmith_AFNI` from within the folder you would like to view NIFTI files from.
+If you do not have a NIFTI viewer, AFNI or fsleyes can be launched from within the QSM_Container.simg by using the *Ironsmith_AFNI* or *Ironsmith_fsleyes* commands. Just type `Ironsmith_AFNI` or `Ironsmith_fsleyes` from within the folder you would like to view NIFTI files from (provided the IronSmithQSM directory (the installation folder) was added to $PATH; see section 2: Installation ).  
 
 AFNI viewer documentation:  
 https://afni.nimh.nih.gov/pub/dist/edu/latest/afni_handouts/afni03_interactive.pdf
+
+Fsleyes documentation:  
+https://open.win.ox.ac.uk/pages/fsl/fsleyes/fsleyes/userdoc/
 
 ## 6) Outputs:
 
@@ -336,6 +370,11 @@ M.W. Woolrich, S. Jbabdi, B. Patenaude, M. Chappell, S. Makni, T. Behrens, C. Be
 S.M. Smith, M. Jenkinson, M.W. Woolrich, C.F. Beckmann, T.E.J. Behrens, H. Johansen-Berg, P.R. Bannister, M. De Luca, I. Drobnjak, D.E. Flitney, R. Niazy, J. Saunders, J. Vickers, Y. Zhang, N. De Stefano, J.M. Brady, and P.M. Matthews. Advances in functional and structural MR image analysis and implementation as FSL. NeuroImage, 23(S1):208-19, 2004
 
 M. Jenkinson, C.F. Beckmann, T.E. Behrens, M.W. Woolrich, S.M. Smith. FSL. NeuroImage, 62:782-90, 2012
+
+### Neurodocker
+
+The singularity containers provided with Ironsmith have been created using Neurodocker:  
+https://github.com/ReproNim/neurodocker
 
 ## 8) ROI List:
 

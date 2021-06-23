@@ -2,7 +2,7 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 08/24/2020
+#Authored by Valentinos Zachariou on 06/23/2021
 #
 #	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
@@ -137,7 +137,7 @@ if [[ $MPRType == 1 ]]; then
 		
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
+		echo "Running freesurfer. This could take up to 6 hours (´∀｀；) "	
 		echo ""	
 	
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
@@ -206,7 +206,7 @@ elif [[ $MPRType == 2 ]]; then
 	else
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours (´∀｀；)"	
+		echo "Running freesurfer. This could take up to 6 hours (´∀｀；)"	
 		echo ""			
 
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
@@ -271,7 +271,7 @@ elif [[ $MPRType == 3 ]]; then
 	else
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
+		echo "Running freesurfer. This could take up to 6 hours (´∀｀；) "	
 		echo ""	
 
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr.nii.gz -sd .
@@ -344,7 +344,7 @@ elif [[ $MPRType == 5 ]]; then
 	else
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours (´∀｀；)"	
+		echo "Running freesurfer. This could take up to 6 hours (´∀｀；)"	
 		echo ""			
 
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
@@ -412,7 +412,7 @@ elif [[ $MPRType == 6 ]]; then
 	else
 
 		echo ""	
-		echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
+		echo "Running freesurfer. This could take up to 6 hours (´∀｀；) "	
 		echo ""	
 
 		singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr.nii.gz -sd .
@@ -496,7 +496,7 @@ elif [[ $MPRType == 4 ]]; then
 		else
 
 			echo ""	
-			echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
+			echo "Running freesurfer. This could take up to 6 hours (´∀｀；) "	
 			echo ""			
 
 			singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr_rms.nii.gz -sd .
@@ -557,7 +557,7 @@ elif [[ $MPRType == 4 ]]; then
 		else
 
 			echo ""	
-			echo "Running freesurfer. This could take up to 8 hours (´∀｀；) "	
+			echo "Running freesurfer. This could take up to 6 hours (´∀｀；) "	
 			echo ""	
 
 			singularity run -e --bind $OutFolder/$Subj/MPR $Path/Functions/QSM_Container.simg recon-all -all -openmp $CoreNum -subjid $Subj'_'FreeSurfSeg_Skull -i $Subj'_'mempr.nii.gz -sd .

@@ -2,7 +2,7 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 09/9/2020
+#Authored by Valentinos Zachariou on 06/23/2021
 #
 #	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
@@ -105,7 +105,7 @@ if [[ $MEDIFlag == "MEDI_Yes" ]]; then
 	#Warp the Mag-aligned freesurfer brain to standard space (non-linear warp)
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-		python3 /opt/afni-latest/auto_warp.py -base /opt/fsl-6.0.1/data/standard/MNI152_T1_1mm_brain.nii.gz -input ../${Subj}_freesurfer_brain_AL_Mag+orig \
+		python3 /opt/afni-latest/auto_warp.py -base /opt/fsl-6.0.4/data/standard/MNI152_T1_1mm_brain.nii.gz -input ../${Subj}_freesurfer_brain_AL_Mag+orig \
 	        -skull_strip_input no
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/MNI152_QSM $Path/Functions/QSM_Container.simg \
@@ -171,7 +171,7 @@ elif [[ $MEDIFlag == "MEDI_No" ]]; then
 	#Warp the Mag-aligned freesurfer brain to standard space (non-linear warp)
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
-		python3 /opt/afni-latest/auto_warp.py -base /opt/fsl-6.0.1/data/standard/MNI152_T1_1mm_brain.nii.gz -input ../${Subj}_freesurfer_brain_AL_Mag+orig \
+		python3 /opt/afni-latest/auto_warp.py -base /opt/fsl-6.0.4/data/standard/MNI152_T1_1mm_brain.nii.gz -input ../${Subj}_freesurfer_brain_AL_Mag+orig \
 	        -skull_strip_input no
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/MNI152_QSM $Path/Functions/QSM_Container.simg \

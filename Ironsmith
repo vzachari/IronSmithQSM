@@ -57,7 +57,7 @@ echo -e "\t\t               ~~~~ {_ -_(())          "
 echo -e "\t\t                      '\  }            "
 echo -e "\t\t                       { }             "
 echo -e "				            "
-echo -e "\t	  Ironsmith QSM Toolkit V1.00 (06/02/2021)		       "
+echo -e "\t	  Ironsmith QSM Toolkit V1.1 (06/23/2021)		       "
 echo -e "\t	  Valentinos Zachariou	    		  	     	       "
 echo -e "\t	  University of Kentucky 	                               "
 echo -e "\t	  https://github.com/vzachari/IronSmithQSM		       "
@@ -84,7 +84,7 @@ MatPath="MATLAB PATH NOT SET"
 
 #Check if QSM_Container.simg is in /Functions
 
-if [ -f "$Path/Functions/QSM_Container.simg" ] && [[ $(find $Path/Functions/QSM_Container.simg -type f -size +8G 2>/dev/null) ]]; then
+if [ -f "$Path/Functions/QSM_Container.simg" ] && [[ $(find $Path/Functions/QSM_Container.simg -type f -size +10750000000c 2>/dev/null) ]]; then
 
 	echo ""
 	echo "QSM_Container.simg FOUND in $Path/Functions"
@@ -94,17 +94,103 @@ else
 
 	echo ""
 	echo -e "\e[31m----------------------------------------------"
-	echo "ERROR: QSM_Container.simg NOT FOUND in $Path/Functions or is the wrong size (should be 8.8G)! (⊙_◎) "
+	echo "ERROR: QSM_Container.simg NOT FOUND in $Path/Functions or is the wrong size (should be 10.8G)! (⊙_◎) "
 	echo ""
 	echo "Please download QSM_Container.simg from:"
 	echo ""
-	echo "https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing"
+	echo "https://drive.google.com/file/d/1NFV2z0yIEPKGblQVrcMe8bza8ZS21AO7/view?usp=sharing"
 	echo ""
 	echo "Then place in $Path/Functions"
 	echo -e "----------------------------------------------\e[0m"
 	echo ""
 	exit 1
 
+fi
+
+echo ""
+echo "---------------------------------------------------------------"
+echo "*** Checking if Singularity and/or Docker are installed: ***"
+echo "---------------------------------------------------------------"
+echo ""
+
+#Check for Singularity or docker
+
+if command -v singularity &> /dev/null; then
+
+	#SingVer1=$(singularity --version | awk -F 'version' '{print $1}')
+	SingVer2=$(singularity --version | awk -F 'version' '{print $2}')
+	echo ""
+	#echo -e "singularity Ver \e[44m$SingVer2\e[0m installed. All good! "
+	echo "Singularity Ver$SingVer2 installed. All good! "
+	#echo -e "singularity is installed. All good! "
+	echo ""
+	ContainerFlag=1
+
+ 	#Test QSM_Container.simg
+ 	echo ""
+ 	echo "---------------------------------------------------------------"
+  	echo "*** Testing QSM_Container.simg... ***"
+  	echo "---------------------------------------------------------------"
+  	echo ""
+
+ 	#Warmup run
+  	singularity run -e $Path/Functions/QSM_Container.simg afni -ver &> /dev/null
+  	singularity run -e $Path/Functions/QSM_Container.simg flirt -version &> /dev/null
+
+  	unset ConTest
+  	ConTest=$(singularity run -e $Path/Functions/QSM_Container.simg afni -ver | awk '{print $8}')
+
+	if [[ $ConTest == "AFNI_21.1.12" ]]; then
+
+      		echo ""
+      		echo "QSM_Container.simg test SUCCESSFUL! "
+     		echo ""
+
+  	else
+
+   		echo ""
+   		echo -e "\e[93m----------------------------------------------"
+    		echo "ERROR: QSM_Container.simg test FAILED! "
+    		echo ""
+    		echo "QSM_Container.simg could be corrupted, please re-download from:"
+    		echo "https://drive.google.com/file/d/1NFV2z0yIEPKGblQVrcMe8bza8ZS21AO7/view?usp=sharing"
+    		echo -e "----------------------------------------------\e[0m"
+    		echo ""
+   		exit 1
+
+  	fi
+
+elif ! command -v singularity &> /dev/null; then
+	echo ""
+	echo -e "\e[93m----------------------------------------------"
+	echo "WARNING: Singularity NOT FOUND! "
+	echo "Checking for DOCKER"
+	echo -e "----------------------------------------------\e[0m"
+	echo ""
+
+	if command -v docker &> /dev/null; then
+
+
+		DockVer2=$(docker --version | awk -F 'version' '{print $2}')
+		echo ""
+		echo -e "\e[93m----------------------------------------------"
+		echo "ERROR: Docker Ver $DockVer2 installed. However, only Singularity supported at the moment (╯°□°）╯︵ ┻━┻ "
+		echo -e "----------------------------------------------\e[0m"
+		echo ""
+		ContainerFlag=2
+    		exit 1
+
+
+	elif ! command -v docker &> /dev/null; then
+
+		echo ""
+		echo -e "\e[93m----------------------------------------------"
+		echo "ERROR: Singularity not FOUND! "
+		echo "Singularity needs to be installed for this toolkit to work ¯\_(ツ)_/¯"
+		echo -e "----------------------------------------------\e[0m"
+		echo ""
+		exit 1
+	fi
 fi
 
 echo ""
@@ -255,93 +341,6 @@ else
 
 fi
 
-
-echo ""
-echo "---------------------------------------------------------------"
-echo "*** Checking if Singularity and/or Docker are installed: ***"
-echo "---------------------------------------------------------------"
-echo ""
-
-#Check for Singularity or docker
-
-if command -v singularity &> /dev/null; then
-
-	#SingVer1=$(singularity --version | awk -F 'version' '{print $1}')
-	SingVer2=$(singularity --version | awk -F 'version' '{print $2}')
-	echo ""
-	#echo -e "singularity Ver \e[44m$SingVer2\e[0m installed. All good! "
-	echo "Singularity Ver$SingVer2 installed. All good! "
-	#echo -e "singularity is installed. All good! "
-	echo ""
-	ContainerFlag=1
-
- 	#Test QSM_Container.simg
- 	echo ""
- 	echo "---------------------------------------------------------------"
-  	echo "*** Testing QSM_Container.simg... ***"
-  	echo "---------------------------------------------------------------"
-  	echo ""
-
- 	#Warmup run
-  	singularity run -e $Path/Functions/QSM_Container.simg afni -ver &> /dev/null
-  	singularity run -e $Path/Functions/QSM_Container.simg flirt -version &> /dev/null
-
-  	unset ConTest
-  	ConTest=$(singularity run -e $Path/Functions/QSM_Container.simg afni -ver | awk '{print $8}')
-
-	if [[ $ConTest == "AFNI_20.2.16" ]]; then
-
-      		echo ""
-      		echo "QSM_Container.simg test SUCCESSFUL! "
-     		echo ""
-
-  	else
-
-   		echo ""
-   		echo -e "\e[93m----------------------------------------------"
-    		echo "ERROR: QSM_Container.simg test FAILED! "
-    		echo ""
-    		echo "QSM_Container.simg could be corrupted, please re-download from:"
-    		echo "https://drive.google.com/file/d/1wPdd2Xa0oLV2wwpHneXZ7nlIZB3XoKFb/view?usp=sharing"
-    		echo -e "----------------------------------------------\e[0m"
-    		echo ""
-   		exit 1
-
-  	fi
-
-elif ! command -v singularity &> /dev/null; then
-	echo ""
-	echo -e "\e[93m----------------------------------------------"
-	echo "WARNING: Singularity NOT FOUND! "
-	echo "Checking for DOCKER"
-	echo -e "----------------------------------------------\e[0m"
-	echo ""
-
-	if command -v docker &> /dev/null; then
-
-
-		DockVer2=$(docker --version | awk -F 'version' '{print $2}')
-		echo ""
-		echo -e "\e[93m----------------------------------------------"
-		echo "ERROR: Docker Ver $DockVer2 installed. However, only Singularity supported at the moment (╯°□°）╯︵ ┻━┻ "
-		echo -e "----------------------------------------------\e[0m"
-		echo ""
-		ContainerFlag=2
-    		exit 1
-
-
-	elif ! command -v docker &> /dev/null; then
-
-		echo ""
-		echo -e "\e[93m----------------------------------------------"
-		echo "ERROR: Singularity not FOUND! "
-		echo "Singularity needs to be installed for this toolkit to work ¯\_(ツ)_/¯"
-		echo -e "----------------------------------------------\e[0m"
-		echo ""
-		exit 1
-	fi
-fi
-
 echo ""
 echo "---------------------------------------------------------------"
 echo "*** Cleaning $Path/LogFiles:"
@@ -453,17 +452,41 @@ do
 
 			#MatVer=$($MatPath -nodisplay -nosplash -nodesktop -r "try; v=version; disp(v); catch; end; quit;" | tail -n2 | head -c 3)
 			bash $Path/Functions/MatlabVer.sh $Path $MatPath < /dev/null
-			MatVer=$(cat $Path/Functions/MatTempFile.txt)
+			MatVer=$(cat $Path/Functions/MatTempFile.txt | awk -F',' '{print $1}')
+			ImToolkitTest=$(cat $Path/Functions/MatTempFile.txt | awk -F',' '{print $2}')
+			ImToolkitLicTest=$(cat $Path/Functions/MatTempFile.txt | awk -F',' '{print $3}')
 			rm $Path/Functions/MatTempFile.txt
 
-			if (( $(echo "$MatVer >= 9.3" | bc -l) )) && (( $(echo "$MatVer < 9.8" | bc -l) )); then
+			if (( $(echo "$MatVer >= 9.3" | bc -l) )) && (( $(echo "$MatVer < 9.8" | bc -l) )) && [ $ImToolkitTest == 1 ] && [ $ImToolkitLicTest == 1 ]; then
 
 				echo ""
 				#echo -e "Matlab Ver \e[44m$MatVer\e[0m installed. All good! "
-				echo "Matlab Ver $MatVer installed. All good! "
+				echo "Matlab Ver $MatVer installed"
+				echo "Image Processing Toolbox found and is licensed! "
+				echo "All Good! "
 				echo ""
 				unset MatlabFlag
 				MatlabFlag=1 #correct Version of Matlab found
+
+			elif (( $(echo "$MatVer >= 9.3" | bc -l) )) && (( $(echo "$MatVer < 9.8" | bc -l) )) && [ ! $ImToolkitTest == 1 ]; then
+
+				echo ""
+				echo -e "\e[31m----------------------------------------------"
+				echo "ERROR: Matlab Ver $MatVer is installed but the Image Processing Toolbox was NOT FOUND! "
+				echo "Please install the Image Processing Toolbox for Matlab $MatVer as it is required by MEDI Toolbox"
+				echo -e "----------------------------------------------\e[0m"
+				echo ""
+				exit 1	
+
+			elif (( $(echo "$MatVer >= 9.3" | bc -l) )) && (( $(echo "$MatVer < 9.8" | bc -l) )) && [ $ImToolkitTest == 1 ] && [ ! $ImToolkitLicTest == 1 ]; then
+
+				echo ""
+				echo -e "\e[31m----------------------------------------------"
+				echo "ERROR: Matlab Ver $MatVer is installed but the Image Processing Toolbox is NOT licensed! ¯\(°_o)/¯ "
+				echo "Please license the Image Processing Toolbox for Matlab $MatVer as it is required by MEDI Toolbox"
+				echo -e "----------------------------------------------\e[0m"
+				echo ""
+				exit 1				
 
 			elif ((  $(echo "$MatVer < 9.3" | bc -l) )); then
 

@@ -2,11 +2,11 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 10/03/2020
+#Authored by Valentinos Zachariou on 06/22/2021
 #
 #	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
-#	Script launches AFNI from within the singularity container. 
+#	Script launches fsleyes from within the singularity container. 
 #	Useful for people who do not have a viewer program
 # 	and want to visualise the Ironsmith outputs.
 #
@@ -77,12 +77,12 @@ if command -v singularity &> /dev/null; then
 	fi
 
  	#Warmup run
-  	singularity run -e $Path/Functions/QSM_Container.simg afni -ver &> /dev/null
+  	singularity run -e $Path/Functions/QSM_Container.simg flirt -version &> /dev/null
 
   	unset ConTest
-  	ConTest=$(singularity run -e $Path/Functions/QSM_Container.simg afni -ver | awk '{print $8}')
+  	ConTest=$(singularity run -e $Path/Functions/QSM_Container.simg flirt -version)
 
-	if [[ $ConTest == "AFNI_21.1.12" ]]; then
+	if [[ $ConTest == "FLIRT version 6.0" ]]; then
 
       		echo ""
       		echo "QSM_Container.simg test SUCCESSFUL! "
@@ -135,6 +135,6 @@ elif ! command -v singularity &> /dev/null; then
 fi
 
 
-singularity exec --bind $PathCurr $Path/Functions/QSM_Container.simg afni
+singularity exec --bind $PathCurr $Path/Functions/QSM_Container.simg fsleyes
 
 
