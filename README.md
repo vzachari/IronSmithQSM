@@ -31,9 +31,9 @@ Can be installed via `git clone https://github.com/vzachari/IronSmithQSM.git`
 4. Updates to README.md and README.pdf for clarity/readability.
 
 **NOTE:**  
-Due to the FreeSufer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and v1.1.  
+Due to the FreeSurfer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and v1.1.  
 Correlation of QSM values extracted from the 89 ROIs offered by Ironsmith, between v1.0 and v1.1 yielded an r^2 value of 0.99.  
-For this reason, we do not recommend updating Ironsmith mid-analyses. All data should be analyzed with either v1.0 OR v1.1 (Freesurfer 6.0.0 or FreeSurfer 7.1.1).
+For this reason, we do not recommend updating Ironsmith mid-analyses. All data should be analyzed with either v1.0 OR v1.1 (FreeSurfer 6.0.0 or FreeSurfer 7.1.1).
 
 ## 1) Software requirements:
 
@@ -327,10 +327,10 @@ _ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size *(sum of a
 _CSF = Lateral ventricles as the QSM reference structure  
 _WM = White matter as the QSM reference structure  
 
-**NOTE:** For each ROI, only QSM voxels with values less than the 97th percentile of all positive QSM values are included in averages.This percentile cutoff point for outliers can be modified by manually editing the header of the **05_Extract_QSM.sh** script file (line 38) under the Ironsmith installation folder:  
+**NOTE:** For each ROI, only QSM voxels with values less than the 97th percentile of all positive QSM values are included in averages. This percentile cutoff point for outliers can be modified by manually editing the header of the **05_Extract_QSM.sh** script file (line 38) under the Ironsmith installation folder:  
 
 ~~~
-#Percentile cutoff for outlier removal. Edit Percnt varialbe to change outlier cutoff
+#Percentile cutoff for outlier removal. Edit Percnt variable to change outlier cutoff
 Percnt="97"
 ~~~
 

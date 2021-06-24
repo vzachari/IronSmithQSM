@@ -34,7 +34,7 @@ set -e #Exit on error
 #MEDIFlag="MEDI_No"
 #Rows=""
 
-#Percentile cutoff for outlier removal. Edit Percnt varialbe to change outlier cutoff
+#Percentile cutoff for outlier removal. Edit Percnt variable to change outlier cutoff
 Percnt="97"
 
 Subj=$1
