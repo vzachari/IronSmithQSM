@@ -6,7 +6,7 @@ Third party software provided with Ironsmith are subject to their own licenses a
 #### This software has been developed for research purposes only and is not a clinical tool.  
 
 #### Description:  
-Ironsmith is a comprehensive, fully automated pipeline for creating and processing Quantitative Susceptibility Maps (QSM), extracting QSM based iron concentrations from subcortical and cortical brain regions and evaluating the quality of QSM data using per ROI SNR measures. Ironsmith can also filter out per-ROI outlier QSM values (such as values associated with large veins) and offers a precise, CSF-only reference region for QSM reconstruction to minimize partial volume effects.
+Ironsmith is a comprehensive, fully automated pipeline for creating and processing Quantitative Susceptibility Maps (QSM), extracting QSM values from subcortical and cortical brain regions and evaluating the quality of QSM data using SNR measures and assessment of outlier regions on phase images. Ironsmith can also filter out per-ROI outlier QSM values (such as values associated with large veins) and offers a precise, CSF-only reference region for QSM reconstruction to minimize partial volume effects.
 
 Ironsmith can perform the following tasks:
 
@@ -349,7 +349,10 @@ Lastly, SNR is multiplied by the Rayleigh distribution correction factor *âˆš(2â
 The outside of the head mask used for SNR can be found in a participants folder within the **OutputFolder**. For example:  
 **/OutputFolder/S0001/QSM/FreeSurf_QSM_Masks/S0001_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
 
-**Phase QC:**  
+**Phase QC:**
+
+**Note**: Phase QC is only available if "MEDI_Yes" is indicated for a participant in MyInputFile.csv and QSM maps are created through Ironsmith using MEDI Toolbox.  
+
 Median Absolute deviation (MAD) based outlier regions on phase images are identified as follows: first, using MEDI Toolbox, a relative difference field (RDF) image is created by unwrapping (region growing method) the input phase image and removing the background field (using projections onto dipole fields). Then, the median of an RDF image is calculated, constrained within an aligned, Freesurfer-derived whole-brain (WB) mask, eroded by one voxel. The median is calculated using the FSL function fslstats. Then, using the same FSL function and WB mask, the median is subtracted from every voxel of the RDF image and the absolute value of the outcome is saved into a new intermediate map/image. The median of this intermediate map/image is then calculated to get the MAD of the RDF image. Positive and negative thresholds for outlier voxels are subsequently calculated and correspond to the median of the RDF image +/- (5 * MAD). These outlier thresholds have been determined by testing the outlier detection procedure on  35 participants. Next, a MAD-based outlier mask is created using the AFNI function 3dcalc by identifying all voxels within an RDF image (WB-mask constrained) lower or higher than the positive and negative outlier thresholds calculated in the previous step. Lastly, the percent overlap between a MAD-based outlier mask and each of the 89 anatomical ROIs supported by Ironsmith is calculated and saved in an output file labelled Group_QSM_MAD.csv within the output directory (output directory/Group/ Group_QSM_MAD.csv).
 
 ## 7) Ironsmith uses the following software, provided in the form of a Singularity image:
