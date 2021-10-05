@@ -162,7 +162,6 @@ singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Function
 	-prefix ../SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_WM_Mask_AL_QSM_RS_Erx2.nii.gz -dilate_input -2
 
 
-
 cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS/
 
 
@@ -1021,8 +1020,18 @@ cd $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS/
 		-expr a-b -prefix ${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Step1.nii.gz
 
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/Cort_Mask_AL_QSM_RS $Path/Functions/QSM_Container.simg 3dcalc -a ${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Step1.nii.gz \
-		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz												
-	
+		-expr 'equals(a,1)' -prefix ${Subj}_freesurfer_R_IsthmusCingulate_GM_AL_QSM_RS_Erx1.nii.gz
+
+
+#Erodes whole brain mask for overall QSM and iFreq
+
+singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmask_tool -input ${Subj}_freesurfer_brain_AL_Mag_Mask_RS.nii.gz \
+	-prefix ../Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_brain_AL_Mag_Mask_RS_Erx1.nii.gz -dilate_input -1
+
+singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg 3dmask_tool -input ${Subj}_freesurfer_brain_AL_Mag_Mask_RS.nii.gz \
+	-prefix ../Cort_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_brain_AL_Mag_Mask_RS_Erx2.nii.gz -dilate_input -2
+
+											
 mv *Dilated.nii.gz ../Cort_Mask_AL_QSM_RS_Erx1
 mv *Step1.nii.gz ../Cort_Mask_AL_QSM_RS_Erx1
 mv *Erx1.nii.gz ../Cort_Mask_AL_QSM_RS_Erx1

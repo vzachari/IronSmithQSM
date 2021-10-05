@@ -146,12 +146,31 @@ if [[ $MEDIFlag == "MEDI_Yes" ]]; then
 		
 	fi
 
+	if [ ! -f "$OutFolder/$Subj/QSM/${Subj}_RDF.nii.gz" ]; then 
+
+		echo ""		
+		echo -e "\e[31m----------------------------------------------"
+		echo "ERROR: $OutFolder/$Subj/QSM/${Subj}_RDF.nii.gz NOT FOUND! "
+		echo -e "----------------------------------------------\e[0m"
+		echo ""		
+		exit 5
+	
+	else 
+		echo ""
+		cp $OutFolder/$Subj/QSM/${Subj}_RDF.nii.gz .
+		
+	fi
+	
+
 	#Re-orients QSM_Map and QSM_Mag image to FSL standard view
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 		fslreorient2std ${Subj}_QSM_Map_New_CSF.nii.gz ${Subj}_QSM_Map_New_CSF_FSL.nii.gz
 	
 	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
 		fslreorient2std ${Subj}_QSM_Map_New_WM.nii.gz ${Subj}_QSM_Map_New_WM_FSL.nii.gz
+
+	singularity run -e --bind $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks $Path/Functions/QSM_Container.simg \
+		fslreorient2std ${Subj}_RDF.nii.gz ${Subj}_RDF_FSL.nii.gz
 
 	StatsFolder=(QSM_ROI_Stats QSM_ROI_Stats_CSF_Ref QSM_ROI_Stats_WM_Ref)
 	OutStatFile=(Group_QSM_Mean.csv Group_QSM_Mean_CSF.csv Group_QSM_Mean_WM.csv)

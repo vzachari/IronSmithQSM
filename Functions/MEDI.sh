@@ -2,7 +2,7 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 09/9/2020
+#Authored by Valentinos Zachariou on 07/22/2021
 #
 #	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
@@ -144,9 +144,9 @@ if [[ $File1 == "${Subj}_QSM_Files"*"_ph".nii.gz ]]; then
 
 		echo ""	
 		echo -e "\e[93m----------------------------------------------"
-		echo "WARNING: QSM PHASE scans usually have at least 8 echos! "
+		echo "WARNING: QSM PHASE scan has a small number of echos! "
 		echo "$File1 appears to only have $QSM_Echos_File1"
-		echo "MEDI will continue but check QSM files for consistency"
+		echo "MEDI will continue but check QSM output files for consistency"
 		echo -e "----------------------------------------------\e[0m"	
 		echo ""		
 	
@@ -203,9 +203,9 @@ if [[ $File2 == "${Subj}_QSM_Files"*.nii.gz ]]; then
 
 		echo ""	
 		echo -e "\e[93m----------------------------------------------"
-		echo "WARNING: QSM MAGNITUDE scans usually have at least 8 echos! "
+		echo "WARNING: QSM MAGNITUDE scan has a small number of echos! "
 		echo "$File2 appears to only have $QSM_Echos_File2"
-		echo "MEDI will continue but check QSM files for consistency"
+		echo "MEDI will continue but check QSM output files for consistency"
 		echo -e "----------------------------------------------\e[0m"	
 		echo ""		
 	
@@ -290,6 +290,7 @@ echo "run('$MEDIPath/MEDI_set_path.m');" >> Subj_${Subj}_MEDI_QSM.m
 
 echo "DICOM_dir = fullfile('$OutFolder/$Subj/QSM/QSM_DICOM');" >> Subj_${Subj}_MEDI_QSM.m
 echo "QSM_Output_dir = fullfile('$OutFolder/$Subj/QSM/MEDI_Output');" >> Subj_${Subj}_MEDI_QSM.m
+echo "QSM_RDF_dir = fullfile('$OutFolder/$Subj/QSM/MEDI_RDF_Output');" >> Subj_${Subj}_MEDI_QSM.m
 echo "CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_Orig_Mask_CSF');" >> Subj_${Subj}_MEDI_QSM.m
 
 # Use accelerated (for Siemens and GE only) reading of DICOMs
@@ -326,6 +327,9 @@ echo "write_QSM_dir(Mask_CSF, DICOM_dir, CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QS
 # Morphology enabled dipole inversion with zero reference using CSF (MEDI+0)
 echo "QSM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM.m
 
+# export RDF varialbe as dicom files in 'QSM' directory
+echo "Write_DICOM(RDF, files, QSM_RDF_dir)" >> Subj_${Subj}_MEDI_QSM.m
+
 # export QSM variable as dicom files in the 'QSM' directory
 echo "Write_DICOM(QSM, files, QSM_Output_dir)" >> Subj_${Subj}_MEDI_QSM.m
 
@@ -349,10 +353,26 @@ if (grep -Fq "*ERROR*ERROR*ERROR*" ${Subj}_MEDI_Matlab_Log.txt); then
 	echo -e "----------------------------------------------\e[0m"
 	echo ""
 	exit 5
+
+elif (grep -Fq "Unknown manufacturer:" ${Subj}_MEDI_Matlab_Log.txt); then
+
+	echo ""		
+	echo -e "\e[31m----------------------------------------------"
+	echo "ERROR: MEDI.sh script FAILED! The error provided by MEDI Toolbox was: "
+	echo $(grep -Fq "Unknown manufacturer:" ${Subj}_MEDI_Matlab_Log.txt)
+	echo "The main reason for this failure is the DICOM files provided are not from a MEDI Toolbox supported scanner manufacturer"
+	echo "Supported manufacturers are Siemens, GE and Philips"
+	echo -e "----------------------------------------------\e[0m"
+	echo ""
+	exit 5
+
 else
 	
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_QSM_Map -z i -b n MEDI_Output/
 	mv MEDI_Output/${Subj}_QSM_Map*.nii.gz ${Subj}_QSM_Map.nii.gz
+
+	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_RDF -z i -b n MEDI_RDF_Output/
+	mv MEDI_RDF_Output/${Subj}_RDF*.nii.gz ${Subj}_RDF.nii.gz
 
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_QSM_Orig_Mask_CSF -z i -b n QSM_Orig_Mask_CSF/
 	#mv QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF*.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF.nii.gz

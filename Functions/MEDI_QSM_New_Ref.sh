@@ -117,22 +117,24 @@ echo "Mask_WM_New = double(Mask_WM_New);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_CSF_New_Rot = permute(Mask_CSF_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_CSF_New_Rot_F1 = flip(Mask_CSF_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_CSF_New_Rot_F2 = flip(Mask_CSF_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF_New_Rot_F3 = flip(Mask_CSF_New_Rot_F2,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "Mask_WM_New_Rot = permute(Mask_WM_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_WM_New_Rot_F1 = flip(Mask_WM_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_WM_New_Rot_F2 = flip(Mask_WM_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_WM_New_Rot_F3 = flip(Mask_WM_New_Rot_F2,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "write_QSM_dir(Mask_CSF_New_Rot_F2, DICOM_dir, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "write_QSM_dir(Mask_WM_New_Rot_F2, DICOM_dir, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "write_QSM_dir(Mask_CSF_New_Rot_F3, DICOM_dir, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "write_QSM_dir(Mask_WM_New_Rot_F3, DICOM_dir, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "clear Mask_CSF;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF = Mask_CSF_New_Rot_F2;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF = Mask_CSF_New_Rot_F3;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "QSM_New_CSF = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "delete RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "clear Mask_CSF;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF = Mask_WM_New_Rot_F2;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF = Mask_WM_New_Rot_F3;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "QSM_New_WM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "delete RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
@@ -161,6 +163,19 @@ if (grep -Fq "*ERROR*ERROR*ERROR*" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt); then
 	echo -e "----------------------------------------------\e[0m"
 	echo ""
 	exit 5
+
+elif (grep -Fq "Unknown manufacturer:" ${Subj}_MEDI_New_Ref_Matlab_Log.txt); then
+
+	echo ""		
+	echo -e "\e[31m----------------------------------------------"
+	echo "ERROR: MEDI_QSM_New_Ref.sh script FAILED! The error provided by MEDI Toolbox was: "
+	echo $(grep -Fq "Unknown manufacturer:" ${Subj}_MEDI_New_Ref_Matlab_Log.txt)
+	echo "The main reason for this failure is the DICOM files provided are not from a MEDI Toolbox supported scanner manufacturer"
+	echo "Supported manufacturers are Siemens, GE and Philips"
+	echo -e "----------------------------------------------\e[0m"
+	echo ""
+	exit 5
+
 else
 	
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_QSM_Map_New_CSF -z i -b n MEDI_Output_New_CSF

@@ -13,27 +13,32 @@ Ironsmith can perform the following tasks:
 a) Automate the process of creating QSM maps from GRE DICOM images using MEDI Toolbox **(see section 7 for details)** .     
 b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment these into 89 ROIs **(ROI list in section 8)** using FreeSurfer.  
 c) Filter outlier voxels from these ROIs (default: QSM values larger than 97th percentile of values), extract QSM based iron concentration and output the results into CSV formatted tables.  
-d) Calculate SNR (GRE magnitude image based) for each ROI as a measure of quality control for QSM data and output SNR values into CSV tables.  
+d) Calculate SNR (GRE magnitude image based) for each ROI and output SNR values into CSV tables.  
+e) Identify outlier regions on phase images using median absolute deviation (MAD); calculate percent overlap between phase-image outlier regions and each ROI; Output results into CSV tables.  
 e) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space. This step allows users to (1) extract QSM values from standard space ROIs not included with Ironsmith and (2) conduct voxelwise QSM analyses.   
 f) Process single or multiple participants in parallel (multiple instances and nohup supported).  
 g) Provide comprehensive user feedback and detailed error reporting. When an error or warning occurs, Ironsmith does not display cryptic messages but instead provides detailed reports of what might have gone wrong and how a user can fix the error/warning.
 
 ## Release Notes (latest release):  
 
-#### Ironsmith QSM v1.1  
-Currently available as a Release Candidate version. Tag v1.1 will be created once testing/reliability/validation is complete.  
-Can be installed via `git clone https://github.com/vzachari/IronSmithQSM.git`  
+#### Ironsmith QSM v1.2  
 
-1. FreeSurfer updated to v7.1.1 in singularity container (reduces recon-all time to around 5 hours from 8 hours).  
+Can be installed via `git clone https://github.com/vzachari/IronSmithQSM.git`  
+or via direct download as described in *section #2, Installation.*  
+
+Updates:
+1. Phase image quality control procedure added.
+ * Ironsmith will automatically Identify artifacts on Relative Difference Field (RDF) images (unwrapped phase images with the background field removed) and report the perecent overlap of these with the 89 supported ROIs in a CSV formatted output file (see section #6, Outputs).
+2. FreeSurfer updated to v7.1.1 in singularity container (reduces recon-all time to around 5 hours from 8 hours).  
  * Updated singularity container needs to be downloaded. See section 2b (Download QSM_Container.simg).    
-2. Fsleyes can now be accessed within the singularity container via the Ironsmith_fsleyes command.  
-3. Minor bug fixes.  
-4. Updates to README.md and README.pdf for clarity/readability.
+3. Fsleyes can now be accessed within the singularity container via the Ironsmith_fsleyes command.  
+4. Minor bug fixes.  
+5. Updates to README.md and README.pdf for clarity/readability.
 
 **NOTE:**  
-Due to the FreeSurfer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and v1.1.  
-Correlation of QSM values extracted from the 89 ROIs offered by Ironsmith, between v1.0 and v1.1 yielded an r^2 value of 0.99.  
-For this reason, we do not recommend updating Ironsmith mid-analyses. All data should be analyzed with either v1.0 OR v1.1 (FreeSurfer 6.0.0 or FreeSurfer 7.1.1).
+Due to the FreeSurfer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and v1.2.  
+Correlation of QSM values extracted from the 89 ROIs offered by Ironsmith, between v1.0 and v1.2, yielded an r^2 value of 0.99.  
+For this reason, we do not recommend updating Ironsmith mid-analyses. All data should be analyzed with either v1.0 OR v1.2 (FreeSurfer 6.0.0 or FreeSurfer 7.1.1).
 
 ## 1) Software requirements:
 
@@ -94,7 +99,7 @@ Option 2: using git
 
 ##### b) Download QSM_Container.simg   
 
-##### For Ironsmith v1.1 (06/23/2021): FreeSurfer7.1.1  (10.8GB)
+##### For Ironsmith v1.2 (09/29/2021): FreeSurfer7.1.1 (10.8GB)
 From: https://drive.google.com/file/d/1NFV2z0yIEPKGblQVrcMe8bza8ZS21AO7/view?usp=sharing  
 
 ##### For Ironsmith v1.0 (06/04/2021): FreeSurfer6.0.0  (8.3GB)
@@ -277,7 +282,7 @@ ctrl+c exits the tail -f process.
 
 ### Adding participants to an existing analysis/output folder
 
-To add participants to an existing Ironsmith analysis, simply edit MyInputFile.csv with the info of the additional participants and rerun the Ironsmith command. Ironsmith will skip all participants that have been previously processed (without errors) and will proceed to process the newly added participants. Lastly, the QSM/SNR values of the new participants will be added to the group output files in **OutputFolder**.  
+To add participants to an existing Ironsmith analysis, simply edit MyInputFile.csv with the info of the additional participants and rerun the Ironsmith command. Ironsmith will skip all participants that have been previously processed (without errors) and will proceed to process the newly added participants. Lastly, the QSM/SNR/MAD values of the new participants will be added to the group output files in **OutputFolder**.  
 
 ### What if Ironsmith fails while writing data to output files (computer resets, power outage etc)?  
 
@@ -321,11 +326,14 @@ d) QSM per ROI means (89 ROIs) are under **OutputFolder/Group** as follows:
 **Group_QSM_ADJ_Mean_CSF.csv**  
 **Group_QSM_ADJ_Mean_WM.csv**  
 **Group_QSM_SNR.csv**  
+**Group_QSM_MAD.csv**
 
 _Mean = Using only positive QSM voxels  
 _ADJ_Mean = Using only positive QSM voxels and adjusting for ROI size *(sum of all positive QSM voxels / Number of all voxels within an ROI)*  
 _CSF = Lateral ventricles as the QSM reference structure  
 _WM = White matter as the QSM reference structure  
+_SNR = Per ROI SNR values (see **SNR** description below)  
+_MAD = Percent overlap between phase image outlier regions and each of the 89 supported ROIs (see **Phase QC** description below).
 
 **NOTE:** For each ROI, only QSM voxels with values less than the 97th percentile of all positive QSM values are included in averages. This percentile cutoff point for outliers can be modified by manually editing the header of the **05_Extract_QSM.sh** script file (line 38) under the Ironsmith installation folder:  
 
@@ -333,13 +341,16 @@ _WM = White matter as the QSM reference structure
 #Percentile cutoff for outlier removal. Edit Percnt variable to change outlier cutoff
 Percnt="97"
 ~~~
-
+**SNR:**  
 SNR is calculated as follows:  
 Mean signal intensity of magnitude image (root mean square of all echos) within an ROI / standard deviation of magnitude signal outside the head (away from the frequency and phase axes).
 Lastly, SNR is multiplied by the Rayleigh distribution correction factor *√(2−π/2)*.  
 
 The outside of the head mask used for SNR can be found in a participants folder within the **OutputFolder**. For example:  
 **/OutputFolder/S0001/QSM/FreeSurf_QSM_Masks/S0001_QSM_Mag_FSL_rms_OH_Mask.nii.gz**
+
+**Phase QC:**  
+Median Absolute deviation (MAD) based outlier regions on phase images are identified as follows: first, using MEDI Toolbox, a relative difference field (RDF) image is created by unwrapping (region growing method) the input phase image and removing the background field (using projections onto dipole fields). Then, the median of an RDF image is calculated, constrained within an aligned, Freesurfer-derived whole-brain (WB) mask, eroded by one voxel. The median is calculated using the FSL function fslstats. Then, using the same FSL function and WB mask, the median is subtracted from every voxel of the RDF image and the absolute value of the outcome is saved into a new intermediate map/image. The median of this intermediate map/image is then calculated to get the MAD of the RDF image. Positive and negative thresholds for outlier voxels are subsequently calculated and correspond to the median of the RDF image +/- (5 * MAD). These outlier thresholds have been determined by testing the outlier detection procedure on  35 participants. Next, a MAD-based outlier mask is created using the AFNI function 3dcalc by identifying all voxels within an RDF image (WB-mask constrained) lower or higher than the positive and negative outlier thresholds calculated in the previous step. Lastly, the percent overlap between a MAD-based outlier mask and each of the 89 anatomical ROIs supported by Ironsmith is calculated and saved in an output file labelled Group_QSM_MAD.csv within the output directory (output directory/Group/ Group_QSM_MAD.csv).
 
 ## 7) Ironsmith uses the following software, provided in the form of a Singularity image:
 
