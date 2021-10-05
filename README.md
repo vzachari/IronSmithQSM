@@ -28,7 +28,7 @@ or via direct download as described in *section #2, Installation.*
 
 Updates:
 1. Phase image quality control procedure added.
- * Ironsmith will automatically Identify artifacts on Relative Difference Field (RDF) images (unwrapped phase images with the background field removed) and report the perecent overlap of these with the 89 supported ROIs in a CSV formatted output file (see section #6, Outputs).
+ * Ironsmith will automatically Identify artifacts on Relative Difference Field (RDF) images (unwrapped phase images with the background field removed) and report the percent overlap of these with the 89 supported ROIs in a CSV formatted output file (see section #6, Outputs).
 2. FreeSurfer updated to v7.1.1 in singularity container (reduces recon-all time to around 5 hours from 8 hours).  
  * Updated singularity container needs to be downloaded. See section 2b (Download QSM_Container.simg).    
 3. Fsleyes can now be accessed within the singularity container via the Ironsmith_fsleyes command.  
