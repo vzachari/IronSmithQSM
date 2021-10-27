@@ -15,9 +15,9 @@ b) Register MPR or multi-echo MPR (MEMPR) T1 images to QSM maps and then segment
 c) Filter outlier voxels from these ROIs (default: QSM values larger than 97th percentile of values), extract QSM based iron concentration and output the results into CSV formatted tables.  
 d) Calculate SNR (GRE magnitude image based) for each ROI and output SNR values into CSV tables.  
 e) Identify outlier regions on phase images using median absolute deviation (MAD); calculate percent overlap between phase-image outlier regions and each ROI; Output results into CSV tables.  
-e) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space. This step allows users to (1) extract QSM values from standard space ROIs not included with Ironsmith and (2) conduct voxelwise QSM analyses.   
-f) Process single or multiple participants in parallel (multiple instances and nohup supported).  
-g) Provide comprehensive user feedback and detailed error reporting. When an error or warning occurs, Ironsmith does not display cryptic messages but instead provides detailed reports of what might have gone wrong and how a user can fix the error/warning.
+f) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space. This step allows users to (1) extract QSM values from standard space ROIs not included with Ironsmith and (2) conduct voxelwise QSM analyses.   
+g) Process single or multiple participants in parallel (multiple instances and nohup supported).  
+h) Provide comprehensive user feedback and detailed error reporting. When an error or warning occurs, Ironsmith does not display cryptic messages but instead provides detailed reports of what might have gone wrong and how a user can fix the error/warning.
 
 ## Release Notes (latest release):  
 
