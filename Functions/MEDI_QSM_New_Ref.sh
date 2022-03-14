@@ -124,8 +124,11 @@ echo "Mask_WM_New_Rot_F1 = flip(Mask_WM_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_Ne
 echo "Mask_WM_New_Rot_F2 = flip(Mask_WM_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_WM_New_Rot_F3 = flip(Mask_WM_New_Rot_F2,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "write_QSM_dir(Mask_CSF_New_Rot_F3, DICOM_dir, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "write_QSM_dir(Mask_WM_New_Rot_F3, DICOM_dir, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+#echo "write_QSM_dir(Mask_CSF_New_Rot_F3, DICOM_dir, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m <--write_QSM_dir() does not work with Siemens XA30 DICOMs, not even in interoperability
+#echo "write_QSM_dir(Mask_WM_New_Rot_F3, DICOM_dir, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "Write_DICOM(Mask_CSF_New_Rot_F3, files, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Write_DICOM(Mask_WM_New_Rot_F3, files, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "clear Mask_CSF;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_CSF = Mask_CSF_New_Rot_F3;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m

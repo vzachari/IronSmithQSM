@@ -19,6 +19,9 @@ f) Non-linearly Warp QSM maps and aligned MPR/MEMPR to MNI152 1mm space. This st
 g) Process single or multiple participants in parallel (multiple instances and nohup supported).  
 h) Provide comprehensive user feedback and detailed error reporting. When an error or warning occurs, Ironsmith does not display cryptic messages but instead provides detailed reports of what might have gone wrong and how a user can fix the error/warning.
 
+#### If Ironsmith QSM was useful for your research/project, please cite the following publication:  
+*Zachariou, V., Bauer, C. E., Powell, D. K., & Gold, B. T. (2022). Ironsmith: An automated pipeline for QSM-based data analyses. NeuroImage, 249, 118835.*
+
 ## Release Notes (latest release):  
 
 #### Ironsmith QSM v1.2  
@@ -34,6 +37,13 @@ Updates:
 3. Fsleyes can now be accessed within the singularity container via the Ironsmith_fsleyes command.  
 4. Minor bug fixes.  
 5. Updates to README.md and README.pdf for clarity/readability.
+
+**NOTE for Siemens XA30 software users:**  
+MEDI Toolbox (version 01/15/2020) does not support XA30 enhanced DICOMs. To fix this issue:    
+1. DICOMs must be exported as "Interoperability" from the MRI scanner console.  
+2. A single line of code needs to be changed in one of the MEDI Toolbox (version 01/15/2020) functions:  
+ * In file `Read_DICOM.m` under `MEDI_toolbox/functions`  
+Change line **50** from `case {'siemens','siemens healthcare gmbh'}` to `case {'siemens','siemens healthcare gmbh','siemens healthineers'}`
 
 **NOTE:**  
 Due to the FreeSurfer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and v1.2.  

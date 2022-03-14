@@ -322,7 +322,8 @@ echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_st
 echo "save('$OutFolder/$Subj/QSM/files.mat','files');" >> Subj_${Subj}_MEDI_QSM.m
 
 #Save original CSF mask to CSF_Mask_Dir
-echo "write_QSM_dir(Mask_CSF, DICOM_dir, CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM.m
+#echo "write_QSM_dir(Mask_CSF, DICOM_dir, CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM.m <-- does not work with Siemens XA30 scanner software
+echo "Write_DICOM(Mask_CSF, files, CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Morphology enabled dipole inversion with zero reference using CSF (MEDI+0)
 echo "QSM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM.m
