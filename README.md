@@ -34,7 +34,7 @@ Updates:
   * *Ironsmith will now automatically align all FreeSurfer derived QSM reference masks to the QSM data inside Matlab. This issue occurs because MEDI Toolbox loads the QSM data in Matlab in a slightly different format than the Matlab function niftiread().*
 2. FreeSurfer derived QSM reference mask erosion is now selected based on provided QSM data.
   * *For instance, less erosion might be used for younger participants who have smaller ventricles whereas more erosion might be used for older adults who might have larger ventricles. This update ensures "too much erosion" does not take place and QSM reference masks always have enough voxels. If without eroding, less than 100 voxels per QSM reference mask are present, Ironsmith will exit with an error describing the issue.*
-3. MEDI Toolbox/Matlab output is now displayed on screen while Ironsmith is running, as with outher code. MEDI Toolbox/Matlab output is also saved in the approriate log file under OutputFolder/Subj/LogFiles.  
+3. MEDI Toolbox/Matlab output is now displayed on screen while Ironsmith is running, as with other code. MEDI Toolbox/Matlab output is also saved in the appropriate log file under OutputFolder/Subj/LogFiles.  
 4. Updates to README.md and README.pdf for clarity/readability.
 
 **NOTE for Siemens XA30 software users:**  
