@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 09/9/2020
 #
-#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 # 	Script erodes aligned and rescaled freesurfer QSM masks by one voxel
 #

@@ -1,6 +1,6 @@
 # Ironsmith QSM		       
 
-Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).  
+Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details).  
 Third party software provided with Ironsmith are subject to their own licenses and copyrights (see section 7 for details).
 
 #### This software has been developed for research purposes only and is not a clinical tool.  
@@ -24,19 +24,18 @@ h) Provide comprehensive user feedback and detailed error reporting. When an err
 
 ## Release Notes (latest release):  
 
-#### Ironsmith QSM v1.2  
+#### Ironsmith QSM v1.3 Beta
 
 Can be installed via `git clone https://github.com/vzachari/IronSmithQSM.git`  
-or via direct download as described in *section #2, Installation.*  
+or via direct download as described in section #2, Installation.
 
-Updates:
-1. Phase image quality control procedure added.
- * Ironsmith will automatically Identify artifacts on Relative Difference Field (RDF) images (unwrapped phase images with the background field removed) and report the percent overlap of these with the 89 supported ROIs in a CSV formatted output file (see section #6, Outputs).
-2. FreeSurfer updated to v7.1.1 in singularity container (reduces recon-all time to around 5 hours from 8 hours).  
- * Updated singularity container needs to be downloaded. See section 2b (Download QSM_Container.simg).    
-3. Fsleyes can now be accessed within the singularity container via the Ironsmith_fsleyes command.  
-4. Minor bug fixes.  
-5. Updates to README.md and README.pdf for clarity/readability.
+Updates:  
+1. Fixed bug related to [issue #3 : MEDI new ref fails](https://github.com/vzachari/IronSmithQSM/issues/3) .
+  * *Ironsmith will now automatically align all FreeSurfer derived QSM reference masks to the QSM data inside Matlab. This issue occurs because MEDI Toolbox loads the QSM data in Matlab in a slightly different format than the Matlab function niftiread().*
+2. FreeSurfer derived QSM reference mask erosion is now selected based on provided QSM data.
+  * *For instance, less erosion might be used for younger participants who have smaller ventricles whereas more erosion might be used for older adults who might have larger ventricles. This update ensures "too much erosion" does not take place and QSM reference masks always have enough voxels. If without eroding, less than 100 voxels per QSM reference mask are present, Ironsmith will exit with an error describing the issue.*
+3. MEDI Toolbox/Matlab output is now displayed on screen while Ironsmith is running, as with outher code. MEDI Toolbox/Matlab output is also saved in the approriate log file under OutputFolder/Subj/LogFiles.  
+4. Updates to README.md and README.pdf for clarity/readability.
 
 **NOTE for Siemens XA30 software users:**  
 MEDI Toolbox (version 01/15/2020) does not support XA30 enhanced DICOMs. To fix this issue:    
@@ -46,7 +45,7 @@ MEDI Toolbox (version 01/15/2020) does not support XA30 enhanced DICOMs. To fix 
 Change line **50** from `case {'siemens','siemens healthcare gmbh'}` to `case {'siemens','siemens healthcare gmbh','siemens healthineers'}`
 
 **NOTE:**  
-Due to the FreeSurfer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and v1.2.  
+Due to the FreeSurfer update, the per-ROI QSM values are not identical between Ironsmith v1.0 and later versions.  
 Correlation of QSM values extracted from the 89 ROIs offered by Ironsmith, between v1.0 and v1.2, yielded an r^2 value of 0.99.  
 For this reason, we do not recommend updating Ironsmith mid-analyses. All data should be analyzed with either v1.0 OR v1.2 (FreeSurfer 6.0.0 or FreeSurfer 7.1.1).
 

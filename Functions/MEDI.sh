@@ -2,9 +2,9 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 07/22/2021
+#Authored by Valentinos Zachariou on 05/12/2022
 #
-#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Script evaluates QSM DICOM files and if all is good runs MEDI toolbox
 #
@@ -293,6 +293,8 @@ echo "QSM_Output_dir = fullfile('$OutFolder/$Subj/QSM/MEDI_Output');" >> Subj_${
 echo "QSM_RDF_dir = fullfile('$OutFolder/$Subj/QSM/MEDI_RDF_Output');" >> Subj_${Subj}_MEDI_QSM.m
 echo "CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_Orig_Mask_CSF');" >> Subj_${Subj}_MEDI_QSM.m
 
+echo "" >> Subj_${Subj}_MEDI_QSM.m
+
 # Use accelerated (for Siemens and GE only) reading of DICOMs
 echo "[iField,voxel_size,matrix_size,CF,delta_TE,TE,B0_dir,files]=Read_DICOM(DICOM_dir);" >> Subj_${Subj}_MEDI_QSM.m
 
@@ -318,21 +320,29 @@ echo "R2s = arlo(TE, abs(iField));" >> Subj_${Subj}_MEDI_QSM.m
 #	Requirement:
 #	R2s:	R2* map
 echo "Mask_CSF = extract_CSF(R2s, Mask, voxel_size);" >> Subj_${Subj}_MEDI_QSM.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM.m
+
 echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM.m
 echo "save('$OutFolder/$Subj/QSM/files.mat','files');" >> Subj_${Subj}_MEDI_QSM.m
 
+echo "" >> Subj_${Subj}_MEDI_QSM.m
+
 #Save original CSF mask to CSF_Mask_Dir
 #echo "write_QSM_dir(Mask_CSF, DICOM_dir, CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM.m <-- does not work with Siemens XA30 scanner software
+echo "disp('"Writing MEDI default CSF QSM reference mask to $OutFolder/$Subj/QSM/QSM_Orig_Mask_CSF"');" >> Subj_${Subj}_MEDI_QSM.m
 echo "Write_DICOM(Mask_CSF, files, CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Morphology enabled dipole inversion with zero reference using CSF (MEDI+0)
 echo "QSM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM.m
 
 # export RDF varialbe as dicom files in 'QSM' directory
-echo "Write_DICOM(RDF, files, QSM_RDF_dir)" >> Subj_${Subj}_MEDI_QSM.m
+echo "disp('"Writing RDF map to $OutFolder/$Subj/QSM/MEDI_RDF_Output"');" >> Subj_${Subj}_MEDI_QSM.m
+echo "Write_DICOM(RDF, files, QSM_RDF_dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 # export QSM variable as dicom files in the 'QSM' directory
-echo "Write_DICOM(QSM, files, QSM_Output_dir)" >> Subj_${Subj}_MEDI_QSM.m
+echo "disp('"Writing MEDI defualt QSM map to $OutFolder/$Subj/QSM/MEDI_Output"');" >> Subj_${Subj}_MEDI_QSM.m
+echo "Write_DICOM(QSM, files, QSM_Output_dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 echo ""
 echo "Running MEDI analysis for ${Subj}..."
@@ -342,9 +352,9 @@ echo ""
 #Run MEDI_QSM.m FILE to create a QSM map
 #stty -tostop
 #$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_Matlab_Log.txt
+$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM; catch warning('*ERROR*ERROR*ERROR*'); end; quit" #> ${Subj}_MEDI_Matlab_Log.txt
 
-if (grep -Fq "*ERROR*ERROR*ERROR*" ${Subj}_MEDI_Matlab_Log.txt); then
+if (grep -Fq "*ERROR*ERROR*ERROR*" $log_file); then #${Subj}_MEDI_Matlab_Log.txt
 	
 	echo ""		
 	echo -e "\e[31m----------------------------------------------"
@@ -355,7 +365,7 @@ if (grep -Fq "*ERROR*ERROR*ERROR*" ${Subj}_MEDI_Matlab_Log.txt); then
 	echo ""
 	exit 5
 
-elif (grep -Fq "Unknown manufacturer:" ${Subj}_MEDI_Matlab_Log.txt); then
+elif (grep -Fq "Unknown manufacturer:" $log_file); then #${Subj}_MEDI_Matlab_Log.txt
 
 	echo ""		
 	echo -e "\e[31m----------------------------------------------"

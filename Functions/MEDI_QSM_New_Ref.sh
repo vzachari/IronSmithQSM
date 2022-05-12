@@ -2,9 +2,9 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 09/9/2020
+#Authored by Valentinos Zachariou on 05/12/2022
 #
-#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Script runs MEDI with eroded WM and lateral ventricles as the QSM reference
 #
@@ -33,6 +33,13 @@ set -e #Exit on error
 #Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
 #QSM_Dicom_Dir="/home/data3/vzachari/QSM_Toolkit/S0030/QSM/QSM_Dicom"
 #MatPath="Same path as one used in Matlab_Config.txt"
+#MEDIVer="This is just a label. It should match the version of MEDI toolbox you have"
+
+#Subj="20865_11881"
+#OutFolder="/home/data3/vzachari/UPenn_QSM_Help/UPenn_Output"
+#Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
+#QSM_Dicom_Dir="/home/data3/vzachari/UPenn_QSM_Help/UPenn_Output/20865_11881/QSM/QSM_DICOM"
+#MatPath="/usr/local/MATLAB/R2019b/bin/matlab"
 #MEDIVer="This is just a label. It should match the version of MEDI toolbox you have"
 
 Subj=$1
@@ -79,6 +86,73 @@ MEDIPath="$Path/Functions/MEDI_toolbox"
 
 cd $OutFolder/$Subj/QSM
 
+# Check if ${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx2.nii.gz has enough voxels after erosion
+
+echo ""
+echo "---------------------------------------------------------------"
+echo "Selecting LR_Lateral_Ventricle_Mask erosion level suited for the QSM data provided"
+echo "---------------------------------------------------------------"
+echo ""
+
+LatVent="$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS.nii.gz"
+LatVentErx1="$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx1.nii.gz"
+LatVentErx2="$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx2.nii.gz"
+
+LatVentCount=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+	3dBrickStat -non-zero -count $LatVent | awk '{$1=$1};1')
+
+LatVentErx1Count=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+	3dBrickStat -non-zero -count $LatVentErx1 | awk '{$1=$1};1')
+
+LatVentErx2Count=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+	3dBrickStat -non-zero -count $LatVentErx2 | awk '{$1=$1};1')
+
+if [ "$LatVentErx2Count" -lt "100" ]; then
+
+	if [ "$LatVentErx1Count" -lt "100" ]; then
+
+		if [ "$LatVentCount" -lt "100" ]; then
+
+			echo ""		
+			echo -e "\e[31m----------------------------------------------"
+			echo "ERROR: ${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS.nii.gz has too few voxels to be used as the QSM reference! "
+			echo "Check $OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS" 
+			echo "Something might have gone wrong with the FS segmentation"
+			echo -e "----------------------------------------------\e[0m"
+			echo ""
+			exit 5
+		else
+	
+			echo ""	
+			echo "${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS.nii.gz" 
+			echo "will be used as the QSM reference. The _Erx1 and _Erx2 versions of the mask have too few voxels after erosion"			
+			echo ""			
+			
+			WhatCSFMask=$LatVent
+
+		fi
+	else
+
+		echo ""	
+		echo "${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx1.nii.gz" 
+		echo "will be used as the QSM reference. The _Erx2 version of the mask has too few voxels after erosion"			
+		echo ""		
+			
+		WhatCSFMask=$LatVentErx1
+
+	fi
+else
+
+	echo ""	
+	echo "${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx2.nii.gz" 
+	echo "will be used as the QSM reference"			
+	echo ""			
+			
+	WhatCSFMask=$LatVentErx2
+
+fi
+
+
 #Create Custom MEDI pipeline file specific to each participant
 
 echo ""
@@ -103,7 +177,7 @@ echo "QSM_Output_New_WM = fullfile('$OutFolder/$Subj/QSM/MEDI_Output_New_WM');" 
 echo "New_CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "New_WM_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_WM');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "Mask_CSF_New = niftiread(fullfile('$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx2.nii.gz'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF_New = niftiread(fullfile('$WhatCSFMask'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_WM_New = niftiread(fullfile('$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_WM_Mask_AL_QSM_RS_Erx1.nii.gz'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "load('RDF.mat');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
@@ -112,38 +186,204 @@ echo "movefile RDF.mat RDF.mat.QSM.Script;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "Mask_CSF_New = double(Mask_CSF_New);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "Mask_WM_New = double(Mask_WM_New);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-   
 
-echo "Mask_CSF_New_Rot = permute(Mask_CSF_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF_New_Rot_F1 = flip(Mask_CSF_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF_New_Rot_F2 = flip(Mask_CSF_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF_New_Rot_F3 = flip(Mask_CSF_New_Rot_F2,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m   
 
-echo "Mask_WM_New_Rot = permute(Mask_WM_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New_Rot_F1 = flip(Mask_WM_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New_Rot_F2 = flip(Mask_WM_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New_Rot_F3 = flip(Mask_WM_New_Rot_F2,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "%Find if permute is needed for the CSF/WM masks" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "Affine3DR1=files.Affine3D(1,:);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Affine3DR2=files.Affine3D(2,:);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Affine3DR3=files.Affine3D(3,:);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+     
+echo "MatOrder(1)=find(abs(Affine3DR1)==1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(2)=find(abs(Affine3DR2)==1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(3)=find(abs(Affine3DR3)==1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "if MatOrder==[1,2,3]" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Affine3D order is 1 2 3");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("No permute needed");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_CSF_New_Perm=Mask_CSF_New;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_WM_New_Perm=Mask_WM_New;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "elseif MatOrder==[1,3,2]" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Affine3D order is 1 3 2");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute needed");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute order 1, 3, 2");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_CSF_New_Perm=permute(Mask_CSF_New,[1,3,2]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_WM_New_Perm=permute(Mask_WM_New,[1,3,2]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "elseif MatOrder==[2,1,3]" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Affine3D order is 2 1 3");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute needed");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute order 2, 1, 3");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_CSF_New_Perm=permute(Mask_CSF_New,[2,1,3]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_WM_New_Perm=permute(Mask_WM_New,[2,1,3]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "elseif MatOrder==[2,3,1]" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Affine3D order is 2 3 1");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute needed");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute order 3, 1, 2");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_CSF_New_Perm=permute(Mask_CSF_New,[3,1,2]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_WM_New_Perm=permute(Mask_WM_New,[3,1,2]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "elseif MatOrder==[3,1,2]" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Affine3D order is 3 1 2");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute needed");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute order 2, 3, 1");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_CSF_New_Perm=permute(Mask_CSF_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_WM_New_Perm=permute(Mask_WM_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "elseif MatOrder==[3,2,1]" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Affine3D order is 3 2 1");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute needed");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '	disp("Permute order 3, 2, 1");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_CSF_New_Perm=permute(Mask_CSF_New,[3,2,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "	Mask_WM_New_Perm=permute(Mask_WM_New,[3,2,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "end" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "%Brute Force align" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "AlignTemplate=(Mask_CSF);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "TestAlign(1,1)=sum((AlignTemplate.*Mask_CSF_New_Perm),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(2,1)=sum((AlignTemplate.*(flip(Mask_CSF_New_Perm,1))),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(3,1)=sum((AlignTemplate.*(flip(Mask_CSF_New_Perm,2))),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(4,1)=sum((AlignTemplate.*(flip(Mask_CSF_New_Perm,3))),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(5,1)=sum(AlignTemplate.*(flip(flip(Mask_CSF_New_Perm,1),2)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(6,1)=sum(AlignTemplate.*(flip(flip(Mask_CSF_New_Perm,1),3)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(7,1)=sum(AlignTemplate.*(flip(flip(Mask_CSF_New_Perm,2),1)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(8,1)=sum(AlignTemplate.*(flip(flip(Mask_CSF_New_Perm,2),3)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(9,1)=sum(AlignTemplate.*(flip(flip(Mask_CSF_New_Perm,3),1)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(10,1)=sum(AlignTemplate.*(flip(flip(Mask_CSF_New_Perm,3),2)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(11,1)=sum(AlignTemplate.*(flip((flip(flip(Mask_CSF_New_Perm,1),2)),3)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(12,1)=sum(AlignTemplate.*(flip((flip(flip(Mask_CSF_New_Perm,1),3)),2)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(13,1)=sum(AlignTemplate.*(flip((flip(flip(Mask_CSF_New_Perm,2),1)),3)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(14,1)=sum(AlignTemplate.*(flip((flip(flip(Mask_CSF_New_Perm,2),3)),1)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(15,1)=sum(AlignTemplate.*(flip((flip(flip(Mask_CSF_New_Perm,3),1)),2)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "TestAlign(16,1)=sum(AlignTemplate.*(flip((flip(flip(Mask_CSF_New_Perm,3),2)),1)),'all');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "MaxAlign=find(TestAlign==max(TestAlign));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "switch MaxAlign(1)" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 1" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("No Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=Mask_CSF_New_Perm;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=Mask_WM_New_Perm;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 2" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 1 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(Mask_CSF_New_Perm,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(Mask_WM_New_Perm,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 3" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 2 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(Mask_CSF_New_Perm,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(Mask_WM_New_Perm,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 4" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 3 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(Mask_CSF_New_Perm,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(Mask_WM_New_Perm,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 5" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 1,2 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(flip(Mask_CSF_New_Perm,1),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(flip(Mask_WM_New_Perm,1),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 6" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 1,3 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(flip(Mask_CSF_New_Perm,1),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(flip(Mask_WM_New_Perm,1),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 7" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 2,1 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(flip(Mask_CSF_New_Perm,2),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(flip(Mask_WM_New_Perm,2),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 8" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 2,3 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(flip(Mask_CSF_New_Perm,2),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(flip(Mask_WM_New_Perm,2),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 9" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 3,1 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(flip(Mask_CSF_New_Perm,3),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(flip(Mask_WM_New_Perm,3),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 10" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 3,2 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip(flip(Mask_CSF_New_Perm,3),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip(flip(Mask_WM_New_Perm,3),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 11" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 1,2,3 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip((flip(flip(Mask_CSF_New_Perm,1),2)),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip((flip(flip(Mask_WM_New_Perm,1),2)),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 12" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 1,3,2 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip((flip(flip(Mask_CSF_New_Perm,1),3)),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip((flip(flip(Mask_WM_New_Perm,1),3)),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 13" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 2,1,3 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip((flip(flip(Mask_CSF_New_Perm,2),1)),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip((flip(flip(Mask_WM_New_Perm,2),1)),3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 14" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 2,3,1 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip((flip(flip(Mask_CSF_New_Perm,2),3)),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip((flip(flip(Mask_WM_New_Perm,2),3)),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 15" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 3,1,2 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip((flip(flip(Mask_CSF_New_Perm,3),1)),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip((flip(flip(Mask_WM_New_Perm,3),1)),2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "    case 16" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo '        disp("flip 3,2,1 Transform required");' >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_CSF_New_Perm_Tran=flip((flip(flip(Mask_CSF_New_Perm,3),2)),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "        Mask_WM_New_Perm_Tran=flip((flip(flip(Mask_WM_New_Perm,3),2)),1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "end" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+#Old dumb way of aligning the freesurfer derived lateral ventricles mask to the QSM data inside Matlab
+#echo "Mask_CSF_New_Rot = permute(Mask_CSF_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+#echo "Mask_CSF_New_Rot_F1 = flip(Mask_CSF_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+#echo "Mask_CSF_New_Rot_F2 = flip(Mask_CSF_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+#echo "Mask_CSF_New_Rot_F3 = flip(Mask_CSF_New_Rot_F2,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+#echo "Mask_WM_New_Rot = permute(Mask_WM_New,[2,3,1]);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+#echo "Mask_WM_New_Rot_F1 = flip(Mask_WM_New_Rot,1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+#echo "Mask_WM_New_Rot_F2 = flip(Mask_WM_New_Rot_F1,2);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+#echo "Mask_WM_New_Rot_F3 = flip(Mask_WM_New_Rot_F2,3);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 #echo "write_QSM_dir(Mask_CSF_New_Rot_F3, DICOM_dir, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m <--write_QSM_dir() does not work with Siemens XA30 DICOMs, not even in interoperability
 #echo "write_QSM_dir(Mask_WM_New_Rot_F3, DICOM_dir, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "Write_DICOM(Mask_CSF_New_Rot_F3, files, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Write_DICOM(Mask_WM_New_Rot_F3, files, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "disp('"Writing freesurfer derived CSF/WM QSM reference masks to $OutFolder/$Subj/QSM/QSM_New_Mask_CSF and QSM_New_Mask_WM"');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Write_DICOM(Mask_CSF_New_Perm_Tran, files, New_CSF_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Write_DICOM(Mask_WM_New_Perm_Tran, files, New_WM_Mask_Dir);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "clear Mask_CSF;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF = Mask_CSF_New_Rot_F3;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF = Mask_CSF_New_Perm_Tran;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "QSM_New_CSF = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "delete RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "clear Mask_CSF;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_CSF = Mask_WM_New_Rot_F3;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_CSF = Mask_WM_New_Perm_Tran;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "save('$OutFolder/$Subj/QSM/RDF.mat','RDF','iFreq','iFreq_raw','iMag','N_std','Mask','matrix_size','voxel_size','delta_TE','CF','B0_dir','Mask_CSF');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "QSM_New_WM = MEDI_L1('lambda',1000,'lambda_CSF',100,'merit','smv',5);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "delete RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
-echo "Write_DICOM(QSM_New_CSF, files, QSM_Output_New_CSF)" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Write_DICOM(QSM_New_WM, files, QSM_Output_New_WM)" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "disp('"Writing QSM_New_CSF map to $OutFolder/$Subj/QSM/MEDI_Output_New_CSF"');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Write_DICOM(QSM_New_CSF, files, QSM_Output_New_CSF);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+
+echo "disp('"Writing QSM_New_WM map to $OutFolder/$Subj/QSM/MEDI_Output_New_WM"');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Write_DICOM(QSM_New_WM, files, QSM_Output_New_WM);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "movefile RDF.mat.QSM.Script RDF.mat;" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
@@ -154,9 +394,9 @@ echo ""
 #Run MEDI_QSM_New_Ref.m FILE to create QSM Maps with new CSF and new WM masks as reference
 #stty -tostop
 #$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt
+$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" #> ${Subj}_MEDI_New_Ref_Matlab_Log.txt
 
-if (grep -Fq "*ERROR*ERROR*ERROR*" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt); then
+if (grep -Fq "*ERROR*ERROR*ERROR*" $log_file); then #${Subj}_MEDI_New_Ref_Matlab_Log.txt
 	
 	echo ""		
 	echo -e "\e[31m----------------------------------------------"
@@ -167,7 +407,7 @@ if (grep -Fq "*ERROR*ERROR*ERROR*" > ${Subj}_MEDI_New_Ref_Matlab_Log.txt); then
 	echo ""
 	exit 5
 
-elif (grep -Fq "Unknown manufacturer:" ${Subj}_MEDI_New_Ref_Matlab_Log.txt); then
+elif (grep -Fq "Unknown manufacturer:" $log_file); then #${Subj}_MEDI_New_Ref_Matlab_Log.txt
 
 	echo ""		
 	echo -e "\e[31m----------------------------------------------"

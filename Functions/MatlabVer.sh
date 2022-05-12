@@ -4,7 +4,7 @@ set -e #Exit on error
 
 #Authored by Valentinos Zachariou on 06/22/2021
 #
-#	Copyright (C) 2021 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Script gets Matlab Version and writes it to MatTempFile.txt
 #	Saving Matlab Version in a varialbe breaks nohup and running Ironsmith with & (in the background)
