@@ -2,7 +2,7 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 05/12/2022
+#Authored by Valentinos Zachariou on 12/12/2022
 #
 #	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
@@ -123,7 +123,7 @@ if [[ $File1 == "${Subj}_QSM_Files"*"_ph".nii.gz ]]; then
 	echo "$File1 has $QSM_Echos_File1 echos"
 	echo ""
 
-	if [[ $QSM_Echos_File1 < 2 ]]; then
+	if (( $QSM_Echos_File1 < 2 )); then
 	#if [ ! -z ${QSM_Echos_File1+x} ]; then
 		
 		echo ""		
@@ -134,13 +134,13 @@ if [[ $File1 == "${Subj}_QSM_Files"*"_ph".nii.gz ]]; then
 		echo ""
 		exit 5
 		
-	elif (( "$QSM_Echos_File1" >= 8 )); then
+	elif (( $QSM_Echos_File1 >= 8 )); then
 		
 		echo ""	
 		echo "File $File1 has a valid number of echos"			
 		echo ""
 	
-	elif [[ $QSM_Echos_File1 < 8 ]] && [[ $QSM_Echos_File1 > 2 ]]; then
+	elif (( $QSM_Echos_File1 < 8 )) && (( $QSM_Echos_File1 > 2 )); then
 
 		echo ""	
 		echo -e "\e[93m----------------------------------------------"
@@ -183,7 +183,7 @@ if [[ $File2 == "${Subj}_QSM_Files"*.nii.gz ]]; then
 	echo "$File2 has $QSM_Echos_File2 echos"
 	echo ""
 
-	if [[ $QSM_Echos_File2 < 2 ]]; then
+	if (( $QSM_Echos_File2 < 2 )); then
 		
 		echo ""		
 		echo -e "\e[31m----------------------------------------------"
@@ -193,13 +193,13 @@ if [[ $File2 == "${Subj}_QSM_Files"*.nii.gz ]]; then
 		echo ""
 		exit 5
 		
-	elif (( "$QSM_Echos_File2" >= 8 )); then
+	elif (( $QSM_Echos_File2 >= 8 )); then
 		
 		echo ""				
 		echo "File $File2 has a valid number of echos"	
 		echo ""			
 
-	elif [[ $QSM_Echos_File2 < 8 ]] && [[ $QSM_Echos_File2 > 2 ]]; then
+	elif (( $QSM_Echos_File2 < 8 )) && (( $QSM_Echos_File2 > 2 )); then
 
 		echo ""	
 		echo -e "\e[93m----------------------------------------------"
@@ -233,7 +233,7 @@ else
 
 fi
 
-if [[ ! $QSM_Echos_File1 == $QSM_Echos_File2 ]]; then
+if (( ! $QSM_Echos_File1 == $QSM_Echos_File2 )); then
 
 	echo ""		
 	echo -e "\e[31m----------------------------------------------"
@@ -243,7 +243,7 @@ if [[ ! $QSM_Echos_File1 == $QSM_Echos_File2 ]]; then
 	echo ""
 	exit 5
 
-elif [[ $QSM_Echos_File1 == $QSM_Echos_File2 ]] && (( "$QSM_Echos_File1" >= 8 )) ; then
+elif (( $QSM_Echos_File1 == $QSM_Echos_File2 )) && (( $QSM_Echos_File1 >= 8 )) ; then
 	
 	echo ""	
 	echo "QSM PHASE scan verified as $File1"
@@ -255,7 +255,7 @@ elif [[ $QSM_Echos_File1 == $QSM_Echos_File2 ]] && (( "$QSM_Echos_File1" >= 8 ))
 	echo ""		
 	mv $File2 ${Subj}_QSM_Mag.nii.gz
 
-elif [[ $QSM_Echos_File1 == $QSM_Echos_File2 ]] && [[ $QSM_Echos_File1 < 8 ]] ; then
+elif (( $QSM_Echos_File1 == $QSM_Echos_File2 )) && (( $QSM_Echos_File1 < 8 )) ; then
 	
 	echo -e "\e[93m"	
 	echo "QSM PHASE scan NOT verifired. Proceed at own risk! "
@@ -272,6 +272,26 @@ fi
 
 cd $OutFolder/$Subj/QSM
 mv QSM_DICOM/*.nii.gz .
+
+ObliFile1=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Mag.nii.gz)
+
+if (( $ObliFile1 == 1 )); then
+
+	echo ""	
+	echo "QSM PHASE and MAGNITUDE scans appear to be oblique (collected at an angle). Deoblique will be used..."
+	echo ""	
+
+	mv ${Subj}_QSM_Mag.nii.gz ${Subj}_QSM_Mag_Obli.nii.gz
+	mv ${Subj}_QSM_PHASE.nii.gz ${Subj}_QSM_PHASE_Obli.nii.gz
+
+	singularity run -e $Path/Functions/QSM_Container.simg \
+		3dWarp -deoblique -prefix ${Subj}_QSM_Mag.nii.gz ${Subj}_QSM_Mag_Obli.nii.gz
+
+	singularity run -e $Path/Functions/QSM_Container.simg \
+		3dWarp -deoblique -prefix ${Subj}_QSM_PHASE.nii.gz ${Subj}_QSM_PHASE_Obli.nii.gz
+
+fi
+
 
 #Create Custom MEDI pipeline file specific to each participant
 echo ""
@@ -299,13 +319,23 @@ echo "" >> Subj_${Subj}_MEDI_QSM.m
 echo "[iField,voxel_size,matrix_size,CF,delta_TE,TE,B0_dir,files]=Read_DICOM(DICOM_dir);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Estimate the frequency offset in each of the voxel using a complex
-# fitting (even echo spacing)
+
+# fitting (even echo spacing) <--uncomment the line below if even echo spacing was used for the QSM scan
 echo "[iFreq_raw, N_std] = Fit_ppm_complex(iField);" >> Subj_${Subj}_MEDI_QSM.m
+
+# fitting (uneven echo spacing) <--uncomment the line below if uneven echo spacing was used for the QSM scan
+#echo "[iFreq_raw N_std] = Fit_ppm_complex_TE(iField,TE);" >> Subj_${Subj}_MEDI_QSM.m
+
 # Compute magnitude image
 echo "iMag = sqrt(sum(abs(iField).^2,4));" >> Subj_${Subj}_MEDI_QSM.m
 
+#Select either "region-growing" (default) OR "laplacian" phase unwrapping but NOT BOTH. Uncomment the one you wish to use and comment-out the other one
+
 # Spatial phase unwrapping (region-growing)
 echo "iFreq = unwrapPhase(iMag, iFreq_raw, matrix_size);" >> Subj_${Subj}_MEDI_QSM.m
+
+# Spatial phase unwrapping (laplacian)
+#echo "iFreq = unwrapLaplacian(iFreq_raw, matrix_size, voxel_size);" >> Subj_${Subj}_MEDI_QSM.m
 
 # Use FSL BET to extract brain mask
 echo "Mask = BET(iMag,matrix_size,voxel_size);" >> Subj_${Subj}_MEDI_QSM.m
@@ -387,6 +417,30 @@ else
 
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_QSM_Orig_Mask_CSF -z i -b n QSM_Orig_Mask_CSF/
 	#mv QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF*.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF.nii.gz
+
+	clear ObliFileQSM	
+	ObliFileQSM=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map.nii.gz)
+
+	if (( $ObliFileQSM == 1 )); then
+
+		echo ""	
+		echo "QSM Map appears to be oblique (QSM scan collected at an angle). Deoblique will be used..."
+		echo ""	
+
+		mv ${Subj}_QSM_Map.nii.gz ${Subj}_QSM_Map_Obli.nii.gz
+		mv ${Subj}_RDF.nii.gz ${Subj}_RDF_Obli.nii.gz
+		mv QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF*.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF_Obli.nii.gz
+
+		singularity run -e $Path/Functions/QSM_Container.simg \
+			3dWarp -deoblique -prefix ${Subj}_QSM_Map.nii.gz ${Subj}_QSM_Map_Obli.nii.gz
+
+		singularity run -e $Path/Functions/QSM_Container.simg \
+			3dWarp -deoblique -prefix ${Subj}_RDF.nii.gz ${Subj}_RDF_Obli.nii.gz
+
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+			3dWarp -deoblique -prefix QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF_Obli.nii.gz
+		
+	fi		
 
 	echo ""		
 	echo "---------------------------------------------------------------"	

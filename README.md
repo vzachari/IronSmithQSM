@@ -24,18 +24,17 @@ h) Provide comprehensive user feedback and detailed error reporting. When an err
 
 ## Release Notes (latest release):  
 
-#### Ironsmith QSM v1.3 Beta
+#### Ironsmith QSM v1.4 Beta (12/12/2022)
 
 Can be installed via `git clone https://github.com/vzachari/IronSmithQSM.git`  
 or via direct download as described in section #2, Installation.
 
-Updates:  
-1. Fixed bug related to [issue #3 : MEDI new ref fails](https://github.com/vzachari/IronSmithQSM/issues/3) .
-  * *Ironsmith will now automatically align all FreeSurfer derived QSM reference masks to the QSM data inside Matlab. This issue occurs because MEDI Toolbox loads the QSM data in Matlab in a slightly different format than the Matlab function niftiread().*
-2. FreeSurfer derived QSM reference mask erosion is now selected based on provided QSM data.
-  * *For instance, less erosion might be used for younger participants who have smaller ventricles whereas more erosion might be used for older adults who might have larger ventricles. This update ensures "too much erosion" does not take place and QSM reference masks always have enough voxels. If without eroding, less than 100 voxels per QSM reference mask are present, Ironsmith will exit with an error describing the issue.*
-3. MEDI Toolbox/Matlab output is now displayed on screen while Ironsmith is running, as with other code. MEDI Toolbox/Matlab output is also saved in the appropriate log file under OutputFolder/Subj/LogFiles.  
-4. Updates to README.md and README.pdf for clarity/readability.
+Updates:
+1. Fixed bug related to [issue #5](https://github.com/vzachari/IronSmithQSM/issues/5). Ironsmith would crash if MyInputFile.csv was provided with complete path to file **AND** BOM/line endings needed adjustment.    
+2. Fixed bug related to numbers appearing in scientific notation instead of in decimal.  
+3. Support for oblique MRI datasets added (MRI scans collected at an angle). Previously these would look misaligned in certain NIFTI viewers.  
+4. Options added in MEDI.sh so one can choose the phase unwrapping techinque desired (region-growing or laplacian).  
+5. Options added in MEDI.sh so one can specify if even or uneven echo spacing was used for the QSM scan.  
 
 **NOTE for Siemens XA30 software users:**  
 MEDI Toolbox (version 01/15/2020) does not support XA30 enhanced DICOMs. To fix this issue:    
@@ -111,8 +110,8 @@ Option 2: using git
 ##### For Ironsmith v1.2 (09/29/2021): FreeSurfer7.1.1 (10.8GB)
 From: https://drive.google.com/file/d/1NFV2z0yIEPKGblQVrcMe8bza8ZS21AO7/view?usp=sharing  
 
-##### For Ironsmith v1.0 (06/04/2021): FreeSurfer6.0.0  (8.3GB)
-From: https://drive.google.com/file/d/1Q1KC665q1Pv_GSWPWH9cfUsoJcd-dxEB/view?usp=sharing  
+##### For Ironsmith v1.0 (06/04/2021): FreeSurfer6.0.0   
+Ironsmith V1.0 is no longer supported due to University of Kentucky cloud space limitations. Please use a newer version of Ironsmith.
 
 ##### c) Place QSM_Container.simg in IronSmithQSM/Functions
 

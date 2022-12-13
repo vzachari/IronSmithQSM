@@ -2,7 +2,7 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 05/12/2022
+#Authored by Valentinos Zachariou on 12/12/2022
 #
 #	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
@@ -35,10 +35,10 @@ set -e #Exit on error
 #MatPath="Same path as one used in Matlab_Config.txt"
 #MEDIVer="This is just a label. It should match the version of MEDI toolbox you have"
 
-#Subj="20865_11881"
-#OutFolder="/home/data3/vzachari/UPenn_QSM_Help/UPenn_Output"
+#Subj="1301L2"
+#OutFolder="/home/data3/vzachari/DaughertyQSM_Help/Iron_Output_Test"
 #Path="/home/data3/vzachari/QSM_Toolkit/IronSmithQSM"
-#QSM_Dicom_Dir="/home/data3/vzachari/UPenn_QSM_Help/UPenn_Output/20865_11881/QSM/QSM_DICOM"
+#QSM_Dicom_Dir="/home/data3/vzachari/DaughertyQSM_Help/Iron_Output_Test/1301L2/QSM/QSM_DICOM"
 #MatPath="/usr/local/MATLAB/R2019b/bin/matlab"
 #MEDIVer="This is just a label. It should match the version of MEDI toolbox you have"
 
@@ -97,6 +97,7 @@ echo ""
 LatVent="$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS.nii.gz"
 LatVentErx1="$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx1.nii.gz"
 LatVentErx2="$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_Lateral_Ventricle_Mask_AL_QSM_RS_Erx2.nii.gz"
+WMErx1="$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_WM_Mask_AL_QSM_RS_Erx1.nii.gz"
 
 LatVentCount=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 	3dBrickStat -non-zero -count $LatVent | awk '{$1=$1};1')
@@ -153,6 +154,28 @@ else
 fi
 
 
+
+if [ -f "${Subj}_QSM_Map_Obli.nii.gz" ]; then
+
+	echo ""	
+	echo "QSM scan appears to be oblique (collected at an angle). Adjusting csf reference masks accordingly"
+	echo ""	
+
+	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+		3dresample -master ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_LatVent_Mask_Obli.nii.gz -input $WhatCSFMask
+
+	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+		3dresample -master ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_WM_Mask_Obli.nii.gz -input $WMErx1
+
+	clear WhatCSFMask WMErx1
+	WhatCSFMask="$OutFolder/$Subj/QSM/${Subj}_FS_LatVent_Mask_Obli.nii.gz"
+	WMErx1="$OutFolder/$Subj/QSM/${Subj}_FS_WM_Mask_Obli.nii.gz"
+fi
+
+
+	
+
+
 #Create Custom MEDI pipeline file specific to each participant
 
 echo ""
@@ -178,7 +201,7 @@ echo "New_CSF_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_CSF');" >> 
 echo "New_WM_Mask_Dir = fullfile('$OutFolder/$Subj/QSM/QSM_New_Mask_WM');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "Mask_CSF_New = niftiread(fullfile('$WhatCSFMask'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "Mask_WM_New = niftiread(fullfile('$OutFolder/$Subj/QSM/FreeSurf_QSM_Masks/SubC_Mask_AL_QSM_RS_Erx1/${Subj}_freesurfer_LR_WM_Mask_AL_QSM_RS_Erx1.nii.gz'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "Mask_WM_New = niftiread(fullfile('$WMErx1'));" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "load('RDF.mat');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 echo "load('files.mat');" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
@@ -200,9 +223,9 @@ echo "Affine3DR3=files.Affine3D(3,:);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
      
-echo "MatOrder(1)=find(abs(Affine3DR1)==1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "MatOrder(2)=find(abs(Affine3DR2)==1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "MatOrder(3)=find(abs(Affine3DR3)==1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(1)=find(abs(Affine3DR1)>0.98 & abs(Affine3DR1)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(2)=find(abs(Affine3DR2)>0.98 & abs(Affine3DR2)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(3)=find(abs(Affine3DR3)>0.98 & abs(Affine3DR3)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
@@ -432,6 +455,34 @@ else
 
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_QSM_New_Mask_WM -z i -b n QSM_New_Mask_WM/
 	#mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM.nii.gz
+
+	clear ObliFileQSM	
+	ObliFileQSM=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map_New_CSF.nii.gz)
+
+	if (( $ObliFileQSM == 1 )); then
+
+		echo ""	
+		echo "QSM Map (new CSF) appears to be oblique (QSM scan collected at an angle). Deoblique will be used..."
+		echo ""	
+
+		mv ${Subj}_QSM_Map_New_CSF.nii.gz ${Subj}_QSM_Map_New_CSF_Obli.nii.gz
+		mv ${Subj}_QSM_Map_New_WM.nii.gz ${Subj}_QSM_Map_New_WM_Obli.nii.gz
+		mv QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF*.nii.gz QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF_Obli.nii.gz
+		mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM_Obli.nii.gz
+
+		singularity run -e $Path/Functions/QSM_Container.simg \
+			3dWarp -deoblique -prefix ${Subj}_QSM_Map_New_CSF.nii.gz ${Subj}_QSM_Map_New_CSF_Obli.nii.gz
+
+		singularity run -e $Path/Functions/QSM_Container.simg \
+			3dWarp -deoblique -prefix ${Subj}_QSM_Map_New_WM.nii.gz ${Subj}_QSM_Map_New_WM_Obli.nii.gz
+
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+			3dWarp -deoblique -prefix QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF.nii.gz QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF_Obli.nii.gz
+
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+			3dWarp -deoblique -prefix QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM_Obli.nii.gz
+		
+	fi		
 
 	echo ""		
 	echo "---------------------------------------------------------------"	

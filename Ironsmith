@@ -57,7 +57,7 @@ echo -e "\t\t               ~~~~ {_ -_(())          "
 echo -e "\t\t                      '\  }            "
 echo -e "\t\t                       { }             "
 echo -e "				            "
-echo -e "\t	  Ironsmith QSM Toolkit V1.3 Beta (05/12/2022)		       "
+echo -e "\t	  Ironsmith QSM Toolkit V1.4 Beta (12/12/2022)		       "
 echo -e "\t	  Valentinos Zachariou	    		  	     	       "
 echo -e "\t	  University of Kentucky 	                               "
 echo -e "\t	  https://github.com/vzachari/IronSmithQSM		       "
@@ -257,8 +257,9 @@ echo ""
 
 if [ -f "$CSVFile" ]; then
 	
-	unset CSVFileDir
+	unset CSVFileDir CSVFileName
 	CSVFileDir=$(dirname $(readlink -f $CSVFile))
+	CSVFileName=$(basename $CSVFile)
 
 	echo ""
 	echo "$CSVFile Found in $CSVFileDir"
@@ -272,8 +273,8 @@ if [ -f "$CSVFile" ]; then
 		echo "$CSVFile has a mix of MS Windows and MacOS line endings (╯°□°）╯︵ ┻━┻ . Converting to Unix line endings..."
 		echo ""		
 
-		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r$//' /mnt/$CSVFile		
-		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r/\n/g' /mnt/$CSVFile
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r$//' /mnt/$CSVFileName		
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r/\n/g' /mnt/$CSVFileName
 		
 		
 	elif file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1; then
@@ -282,7 +283,7 @@ if [ -f "$CSVFile" ]; then
 		echo "$CSVFile has MS Windows line endings. Converting to Unix line endings..."
 		echo ""
 
-		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r$//' /mnt/$CSVFile
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r$//' /mnt/$CSVFileName
 
 	elif file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
 
@@ -290,7 +291,7 @@ if [ -f "$CSVFile" ]; then
 		echo "$CSVFile has MacOS line endings. Converting to Unix line endings..."
 		echo ""
 		
-		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r/\n/g' /mnt/$CSVFile
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r/\n/g' /mnt/$CSVFileName
 
 	fi
 
@@ -302,7 +303,7 @@ if [ -f "$CSVFile" ]; then
 		echo "$CSVFile is encoded with UTF-8 Unicode (with BOM). Removing BOM..."
 		echo ""
 
-		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i '1s/^\xEF\xBB\xBF//' /mnt/$CSVFile
+		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i '1s/^\xEF\xBB\xBF//' /mnt/$CSVFileName
 
 	fi
 
