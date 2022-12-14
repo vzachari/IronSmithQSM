@@ -167,7 +167,7 @@ if [ -f "${Subj}_QSM_Map_Obli.nii.gz" ]; then
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 		3dresample -master ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_WM_Mask_Obli.nii.gz -input $WMErx1
 
-	clear WhatCSFMask WMErx1
+	unset WhatCSFMask WMErx1
 	WhatCSFMask="$OutFolder/$Subj/QSM/${Subj}_FS_LatVent_Mask_Obli.nii.gz"
 	WMErx1="$OutFolder/$Subj/QSM/${Subj}_FS_WM_Mask_Obli.nii.gz"
 fi
@@ -456,7 +456,7 @@ else
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_QSM_New_Mask_WM -z i -b n QSM_New_Mask_WM/
 	#mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM.nii.gz
 
-	clear ObliFileQSM	
+	unset ObliFileQSM	
 	ObliFileQSM=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map_New_CSF.nii.gz)
 
 	if (( $ObliFileQSM == 1 )); then

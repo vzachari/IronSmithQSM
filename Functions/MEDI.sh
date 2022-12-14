@@ -418,7 +418,7 @@ else
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg dcm2niix -f ${Subj}_QSM_Orig_Mask_CSF -z i -b n QSM_Orig_Mask_CSF/
 	#mv QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF*.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF.nii.gz
 
-	clear ObliFileQSM	
+	unset ObliFileQSM	
 	ObliFileQSM=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map.nii.gz)
 
 	if (( $ObliFileQSM == 1 )); then
