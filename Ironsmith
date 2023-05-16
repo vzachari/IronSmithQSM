@@ -57,7 +57,7 @@ echo -e "\t\t               ~~~~ {_ -_(())          "
 echo -e "\t\t                      '\  }            "
 echo -e "\t\t                       { }             "
 echo -e "				            "
-echo -e "\t	  Ironsmith QSM Toolkit V1.4 Beta (12/12/2022)		       "
+echo -e "\t	  Ironsmith QSM Toolkit V1.5 Beta (02/13/2023)		       "
 echo -e "\t	  Valentinos Zachariou	    		  	     	       "
 echo -e "\t	  University of Kentucky 	                               "
 echo -e "\t	  https://github.com/vzachari/IronSmithQSM		       "
@@ -267,7 +267,8 @@ if [ -f "$CSVFile" ]; then
 	
 	#Check if .csv file was created in Windows or Mac and convert to Unix line endings
 
-	if file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1 && file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
+	#if file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1 && file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
+	if singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg file /mnt/$CSVFileName | grep -w "CRLF" 1> /dev/null 2>&1 && singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg file /mnt/$CSVFileName | grep -w "CR" 1> /dev/null 2>&1; then
 
 		echo ""
 		echo "$CSVFile has a mix of MS Windows and MacOS line endings (╯°□°）╯︵ ┻━┻ . Converting to Unix line endings..."
@@ -277,7 +278,8 @@ if [ -f "$CSVFile" ]; then
 		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r/\n/g' /mnt/$CSVFileName
 		
 		
-	elif file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1; then
+	#elif file $CSVFile | grep -w "CRLF" 1> /dev/null 2>&1; then
+	elif singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg file /mnt/$CSVFileName | grep -w "CRLF" 1> /dev/null 2>&1; then
 		
 		echo ""
 		echo "$CSVFile has MS Windows line endings. Converting to Unix line endings..."
@@ -285,7 +287,8 @@ if [ -f "$CSVFile" ]; then
 
 		singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg sed -i 's/\r$//' /mnt/$CSVFileName
 
-	elif file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
+	#elif file $CSVFile | grep -w "CR" 1> /dev/null 2>&1; then
+	elif singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg file /mnt/$CSVFileName | grep -w "CR" 1> /dev/null 2>&1; then
 
 		echo ""
 		echo "$CSVFile has MacOS line endings. Converting to Unix line endings..."
@@ -297,7 +300,7 @@ if [ -f "$CSVFile" ]; then
 
 	#Check if .csv file is encoded using UTF-8 Unicode (with BOM) text and remove BOM
 
-	if file $CSVFile | grep -w "(with BOM)" 1> /dev/null 2>&1; then
+	if singularity run -e --bind $CSVFileDir:/mnt $Path/Functions/QSM_Container.simg file /mnt/$CSVFileName | grep -w "(with BOM)" 1> /dev/null 2>&1; then
 		
 		echo ""
 		echo "$CSVFile is encoded with UTF-8 Unicode (with BOM). Removing BOM..."
