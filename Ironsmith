@@ -11,9 +11,9 @@ Path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 log_file=$(echo "$Path/LogFiles/Output.Ironsmith_$(date +"%m_%d_%Y_%H_%M_%S").txt")
 exec &> >(tee -a "$log_file")
 
-#Authored by Valentinos Zachariou on 05/12/2022
+#Authored by Valentinos Zachariou on 05/25/2023
 #
-#	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2023 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Master Ironsmith script. Checks paths and file availability and creates variables for use by subsequent scripts.
 #	The Master script also creates the output directory in the user specified path.
@@ -57,7 +57,7 @@ echo -e "\t\t               ~~~~ {_ -_(())          "
 echo -e "\t\t                      '\  }            "
 echo -e "\t\t                       { }             "
 echo -e "				            "
-echo -e "\t	  Ironsmith QSM Toolkit V1.5 Beta (02/13/2023)		       "
+echo -e "\t	  Ironsmith QSM Toolkit V1.6 Beta (05/25/2023)		       "
 echo -e "\t	  Valentinos Zachariou	    		  	     	       "
 echo -e "\t	  University of Kentucky 	                               "
 echo -e "\t	  https://github.com/vzachari/IronSmithQSM		       "

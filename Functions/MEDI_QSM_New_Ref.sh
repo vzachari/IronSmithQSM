@@ -2,9 +2,9 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 12/12/2022
+#Authored by Valentinos Zachariou on 05/25/2023
 #
-#	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2023 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Script runs MEDI with eroded WM and lateral ventricles as the QSM reference
 #
@@ -154,7 +154,6 @@ else
 fi
 
 
-
 if [ -f "${Subj}_QSM_Map_Obli.nii.gz" ]; then
 
 	echo ""	
@@ -162,19 +161,27 @@ if [ -f "${Subj}_QSM_Map_Obli.nii.gz" ]; then
 	echo ""	
 
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
-		3dresample -master ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_LatVent_Mask_Obli.nii.gz -input $WhatCSFMask
+		3dWarp -oblique_parent ${Subj}_QSM_Map_Obli.nii.gz -NN -gridset ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_LatVent_Mask_Obli.nii.gz $WhatCSFMask
 
 	singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
-		3dresample -master ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_WM_Mask_Obli.nii.gz -input $WMErx1
+		3dWarp -oblique_parent ${Subj}_QSM_Map_Obli.nii.gz -NN -gridset ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_WM_Mask_Obli.nii.gz $WMErx1
+
+	#singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+		#3dcalc -a ${Subj}_FS_LatVent_Mask_ReObliNB.nii.gz -expr 'step(a)' -prefix ${Subj}_FS_LatVent_Mask_ReObliBin.nii.gz
+
+	#singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+		#3dcalc -a ${Subj}_FS_WM_Mask_ReObliNB.nii.gz -expr 'step(a)' -prefix ${Subj}_FS_WM_Mask_ReObliBin.nii.gz
+		
+	#singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+		#3dresample -master ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_LatVent_Mask_Obli.nii.gz -input ${Subj}_FS_LatVent_Mask_ReObliBin.nii.gz
+
+	#singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
+		#3dresample -master ${Subj}_QSM_Map_Obli.nii.gz -prefix ${Subj}_FS_WM_Mask_Obli.nii.gz -input ${Subj}_FS_WM_Mask_ReObliBin.nii.gz
 
 	unset WhatCSFMask WMErx1
 	WhatCSFMask="$OutFolder/$Subj/QSM/${Subj}_FS_LatVent_Mask_Obli.nii.gz"
 	WMErx1="$OutFolder/$Subj/QSM/${Subj}_FS_WM_Mask_Obli.nii.gz"
 fi
-
-
-	
-
 
 #Create Custom MEDI pipeline file specific to each participant
 
@@ -223,9 +230,9 @@ echo "Affine3DR3=files.Affine3D(3,:);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
      
-echo "MatOrder(1)=find(abs(Affine3DR1)>0.98 & abs(Affine3DR1)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "MatOrder(2)=find(abs(Affine3DR2)>0.98 & abs(Affine3DR2)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
-echo "MatOrder(3)=find(abs(Affine3DR3)>0.98 & abs(Affine3DR3)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(1)=find(abs(Affine3DR1)>0.92 & abs(Affine3DR1)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(2)=find(abs(Affine3DR2)>0.92 & abs(Affine3DR2)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
+echo "MatOrder(3)=find(abs(Affine3DR3)>0.92 & abs(Affine3DR3)<=1);" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
 echo "" >> Subj_${Subj}_MEDI_QSM_New_Ref.m
 
@@ -471,16 +478,16 @@ else
 		mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM_Obli.nii.gz
 
 		singularity run -e $Path/Functions/QSM_Container.simg \
-			3dWarp -deoblique -prefix ${Subj}_QSM_Map_New_CSF.nii.gz ${Subj}_QSM_Map_New_CSF_Obli.nii.gz
+			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map_New_CSF.nii.gz ${Subj}_QSM_Map_New_CSF_Obli.nii.gz
 
 		singularity run -e $Path/Functions/QSM_Container.simg \
-			3dWarp -deoblique -prefix ${Subj}_QSM_Map_New_WM.nii.gz ${Subj}_QSM_Map_New_WM_Obli.nii.gz
+			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map_New_WM.nii.gz ${Subj}_QSM_Map_New_WM_Obli.nii.gz
 
 		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
-			3dWarp -deoblique -prefix QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF.nii.gz QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF_Obli.nii.gz
+			3dWarp -deoblique -NN -prefix QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF.nii.gz QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF_Obli.nii.gz
 
 		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
-			3dWarp -deoblique -prefix QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM_Obli.nii.gz
+			3dWarp -deoblique -NN -prefix QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM_Obli.nii.gz
 		
 	fi		
 

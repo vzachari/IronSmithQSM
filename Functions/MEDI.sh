@@ -2,9 +2,9 @@
 
 set -e #Exit on error
 
-#Authored by Valentinos Zachariou on 12/12/2022
+#Authored by Valentinos Zachariou on 05/25/2023
 #
-#	Copyright (C) 2022 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
+#	Copyright (C) 2023 Valentinos Zachariou, University of Kentucky (see LICENSE file for more details)
 #
 #	Script evaluates QSM DICOM files and if all is good runs MEDI toolbox
 #
@@ -285,10 +285,10 @@ if (( $ObliFile1 == 1 )); then
 	mv ${Subj}_QSM_PHASE.nii.gz ${Subj}_QSM_PHASE_Obli.nii.gz
 
 	singularity run -e $Path/Functions/QSM_Container.simg \
-		3dWarp -deoblique -prefix ${Subj}_QSM_Mag.nii.gz ${Subj}_QSM_Mag_Obli.nii.gz
+		3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Mag.nii.gz ${Subj}_QSM_Mag_Obli.nii.gz
 
 	singularity run -e $Path/Functions/QSM_Container.simg \
-		3dWarp -deoblique -prefix ${Subj}_QSM_PHASE.nii.gz ${Subj}_QSM_PHASE_Obli.nii.gz
+		3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_PHASE.nii.gz ${Subj}_QSM_PHASE_Obli.nii.gz
 
 fi
 
@@ -432,13 +432,13 @@ else
 		mv QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF*.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF_Obli.nii.gz
 
 		singularity run -e $Path/Functions/QSM_Container.simg \
-			3dWarp -deoblique -prefix ${Subj}_QSM_Map.nii.gz ${Subj}_QSM_Map_Obli.nii.gz
+			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map.nii.gz ${Subj}_QSM_Map_Obli.nii.gz
 
 		singularity run -e $Path/Functions/QSM_Container.simg \
-			3dWarp -deoblique -prefix ${Subj}_RDF.nii.gz ${Subj}_RDF_Obli.nii.gz
+			3dWarp -deoblique -wsinc5 -prefix ${Subj}_RDF.nii.gz ${Subj}_RDF_Obli.nii.gz
 
 		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
-			3dWarp -deoblique -prefix QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF_Obli.nii.gz
+			3dWarp -deoblique -NN -prefix QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF_Obli.nii.gz
 		
 	fi		
 
