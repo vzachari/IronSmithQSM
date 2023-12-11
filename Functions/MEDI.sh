@@ -387,7 +387,7 @@ echo ""
 #Run MEDI_QSM.m FILE to create a QSM map
 #stty -tostop
 #$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM; catch warning('*ERROR*ERROR*ERROR*'); end; quit" #> ${Subj}_MEDI_Matlab_Log.txt
+$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM; catch ME; warning('*ERROR*ERROR*ERROR*'); rethrow(ME); end; quit" #> ${Subj}_MEDI_Matlab_Log.txt
 
 if (grep -Fq "*ERROR*ERROR*ERROR*" $log_file); then #${Subj}_MEDI_Matlab_Log.txt
 	
