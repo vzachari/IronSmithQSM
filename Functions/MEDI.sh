@@ -83,8 +83,13 @@ echo "Copying DICOM files from $QSM_Dicom_Dir to $OutFolder/$Subj/QSM/QSM_DICOM"
 echo ""
 
 
-singularity run -e --bind $QSM_Dicom_Dir:/mnt $Path/Functions/QSM_Container.simg find /mnt -mindepth 1 -maxdepth 1 -type f ! \
-		-regex '.*\(nii\|json\|txt\|nii.gz\|HEAD\|BRIK\|hdr\|img\)$' -exec cp '{}' 'QSM_DICOM/' ';'
+singularity run \
+-e \
+--bind $QSM_Dicom_Dir:/mnt \
+--bind $OutFolder/$Subj/QSM \
+$Path/Functions/QSM_Container.simg \
+find /mnt -mindepth 1 -maxdepth 1 -type f ! \
+-regex '.*\(nii\|json\|txt\|nii.gz\|HEAD\|BRIK\|hdr\|img\)$' -exec cp '{}' 'QSM_DICOM/' ';'
 
 
 echo ""
@@ -103,8 +108,8 @@ cd QSM_DICOM
 
 #Figure out which nifti file is the Mag and which is the Phase and check if they exist and if correct
 
-File1=$(singularity run -e $Path/Functions/QSM_Container.simg find ${Subj}_QSM_Files*.nii.gz -maxdepth 1 -printf "%s\t%p\n" | sort -nr | sed -n '1p' | awk 'FNR == 1 {print $2}') #presumably phase 
-File2=$(singularity run -e $Path/Functions/QSM_Container.simg find ${Subj}_QSM_Files*.nii.gz -maxdepth 1 -printf "%s\t%p\n" | sort -nr | sed -n '2p' | awk 'FNR == 1 {print $2}') #presumably magnitude
+File1=$(singularity run -e --bind $OutFolder/$Subj/QSM/QSM_DICOM $Path/Functions/QSM_Container.simg find ${Subj}_QSM_Files*.nii.gz -maxdepth 1 -printf "%s\t%p\n" | sort -nr | sed -n '1p' | awk 'FNR == 1 {print $2}') #presumably phase 
+File2=$(singularity run -e --bind $OutFolder/$Subj/QSM/QSM_DICOM $Path/Functions/QSM_Container.simg find ${Subj}_QSM_Files*.nii.gz -maxdepth 1 -printf "%s\t%p\n" | sort -nr | sed -n '2p' | awk 'FNR == 1 {print $2}') #presumably magnitude
 
 echo ""
 echo "Largest .nii.gz file in `pwd` is $File1, possibly the PHASE Scan"
@@ -116,7 +121,7 @@ echo ""
 
 if [[ $File1 == "${Subj}_QSM_Files"*"_ph".nii.gz ]]; then
 
-	QSM_Echos_File1=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -nv $File1)
+	QSM_Echos_File1=$(singularity run -e --bind $OutFolder/$Subj/QSM/QSM_DICOM $Path/Functions/QSM_Container.simg 3dinfo -nv $File1)
 	#QSM_Echos_File1=3	
 
 	echo ""
@@ -176,7 +181,7 @@ fi
 
 if [[ $File2 == "${Subj}_QSM_Files"*.nii.gz ]]; then
 
-	QSM_Echos_File2=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -nv $File2)
+	QSM_Echos_File2=$(singularity run -e --bind $OutFolder/$Subj/QSM/QSM_DICOM $Path/Functions/QSM_Container.simg 3dinfo -nv $File2)
 	#QSM_Echos_File2=3
 	
 	echo ""	
@@ -273,7 +278,7 @@ fi
 cd $OutFolder/$Subj/QSM
 mv QSM_DICOM/*.nii.gz .
 
-ObliFile1=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Mag.nii.gz)
+ObliFile1=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Mag.nii.gz)
 
 if (( $ObliFile1 == 1 )); then
 
@@ -284,10 +289,10 @@ if (( $ObliFile1 == 1 )); then
 	mv ${Subj}_QSM_Mag.nii.gz ${Subj}_QSM_Mag_Obli.nii.gz
 	mv ${Subj}_QSM_PHASE.nii.gz ${Subj}_QSM_PHASE_Obli.nii.gz
 
-	singularity run -e $Path/Functions/QSM_Container.simg \
+	singularity run -e --bind $OutFolder/$Subj/QSM/QSM_DICOM $Path/Functions/QSM_Container.simg \
 		3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Mag.nii.gz ${Subj}_QSM_Mag_Obli.nii.gz
 
-	singularity run -e $Path/Functions/QSM_Container.simg \
+	singularity run -e --bind $OutFolder/$Subj/QSM/QSM_DICOM $Path/Functions/QSM_Container.simg \
 		3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_PHASE.nii.gz ${Subj}_QSM_PHASE_Obli.nii.gz
 
 fi
@@ -419,7 +424,7 @@ else
 	#mv QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF*.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF.nii.gz
 
 	unset ObliFileQSM	
-	ObliFileQSM=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map.nii.gz)
+	ObliFileQSM=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map.nii.gz)
 
 	if (( $ObliFileQSM == 1 )); then
 
@@ -431,10 +436,10 @@ else
 		mv ${Subj}_RDF.nii.gz ${Subj}_RDF_Obli.nii.gz
 		mv QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF*.nii.gz QSM_Orig_Mask_CSF/${Subj}_QSM_Orig_Mask_CSF_Obli.nii.gz
 
-		singularity run -e $Path/Functions/QSM_Container.simg \
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map.nii.gz ${Subj}_QSM_Map_Obli.nii.gz
 
-		singularity run -e $Path/Functions/QSM_Container.simg \
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 			3dWarp -deoblique -wsinc5 -prefix ${Subj}_RDF.nii.gz ${Subj}_RDF_Obli.nii.gz
 
 		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
