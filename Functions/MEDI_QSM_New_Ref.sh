@@ -424,7 +424,7 @@ echo ""
 #Run MEDI_QSM_New_Ref.m FILE to create QSM Maps with new CSF and new WM masks as reference
 #stty -tostop
 #$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" #> ${Subj}_MEDI_New_Ref_Matlab_Log.txt
+$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM_New_Ref; catch ME; warning('*ERROR*ERROR*ERROR*'); rethrow(ME); end; quit" #> ${Subj}_MEDI_New_Ref_Matlab_Log.txt
 
 if (grep -Fq "*ERROR*ERROR*ERROR*" $log_file); then #${Subj}_MEDI_New_Ref_Matlab_Log.txt
 	
@@ -464,7 +464,7 @@ else
 	#mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM.nii.gz
 
 	unset ObliFileQSM	
-	ObliFileQSM=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map_New_CSF.nii.gz)
+	ObliFileQSM=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map_New_CSF.nii.gz)
 
 	if (( $ObliFileQSM == 1 )); then
 
@@ -477,10 +477,10 @@ else
 		mv QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF*.nii.gz QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF_Obli.nii.gz
 		mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM_Obli.nii.gz
 
-		singularity run -e $Path/Functions/QSM_Container.simg \
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map_New_CSF.nii.gz ${Subj}_QSM_Map_New_CSF_Obli.nii.gz
 
-		singularity run -e $Path/Functions/QSM_Container.simg \
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map_New_WM.nii.gz ${Subj}_QSM_Map_New_WM_Obli.nii.gz
 
 		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
