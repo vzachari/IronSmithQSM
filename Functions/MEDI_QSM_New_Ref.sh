@@ -424,7 +424,7 @@ echo ""
 #Run MEDI_QSM_New_Ref.m FILE to create QSM Maps with new CSF and new WM masks as reference
 #stty -tostop
 #$MatPath -nodisplay -nosplash -nodesktop -batch <-- Matlab 2020 only
-$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM_New_Ref; catch warning('*ERROR*ERROR*ERROR*'); end; quit" #> ${Subj}_MEDI_New_Ref_Matlab_Log.txt
+$MatPath -nodisplay -nosplash -nodesktop -r "try; Subj_${Subj}_MEDI_QSM_New_Ref; catch ME; warning('*ERROR*ERROR*ERROR*'); rethrow(ME); end; quit" #> ${Subj}_MEDI_New_Ref_Matlab_Log.txt
 
 if (grep -Fq "*ERROR*ERROR*ERROR*" $log_file); then #${Subj}_MEDI_New_Ref_Matlab_Log.txt
 	
