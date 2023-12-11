@@ -464,7 +464,7 @@ else
 	#mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM.nii.gz
 
 	unset ObliFileQSM	
-	ObliFileQSM=$(singularity run -e $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map_New_CSF.nii.gz)
+	ObliFileQSM=$(singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg 3dinfo -is_oblique ${Subj}_QSM_Map_New_CSF.nii.gz)
 
 	if (( $ObliFileQSM == 1 )); then
 
@@ -477,10 +477,10 @@ else
 		mv QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF*.nii.gz QSM_New_Mask_CSF/${Subj}_QSM_New_Mask_CSF_Obli.nii.gz
 		mv QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM*.nii.gz QSM_New_Mask_WM/${Subj}_QSM_New_Mask_WM_Obli.nii.gz
 
-		singularity run -e $Path/Functions/QSM_Container.simg \
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map_New_CSF.nii.gz ${Subj}_QSM_Map_New_CSF_Obli.nii.gz
 
-		singularity run -e $Path/Functions/QSM_Container.simg \
+		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
 			3dWarp -deoblique -wsinc5 -prefix ${Subj}_QSM_Map_New_WM.nii.gz ${Subj}_QSM_Map_New_WM_Obli.nii.gz
 
 		singularity run -e --bind $OutFolder/$Subj/QSM $Path/Functions/QSM_Container.simg \
